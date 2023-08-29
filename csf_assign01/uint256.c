@@ -49,7 +49,18 @@ uint32_t uint256_get_bits(UInt256 val, unsigned index) {
 // Compute the sum of two UInt256 values.
 UInt256 uint256_add(UInt256 left, UInt256 right) {
   UInt256 sum;
-  // TODO: implement
+  uint32_t overflow;
+  uint32_t space_check;
+  for(int i = 0; i < 8; ++i) {
+      space_check = ~(0U) - left.data[i];
+      if(space_check < right.data[i]) {
+          sum.data[i] = (right.data[i] - space_check) + overflow;
+          overflow = 1U;
+          continue;
+      }
+      sum.data[i] = left.data[i] + right.data[i] + overflow;
+      overflow = 0;
+  }
   return sum;
 }
 
