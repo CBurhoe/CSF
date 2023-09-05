@@ -74,14 +74,11 @@ UInt256 uint256_sub(UInt256 left, UInt256 right) {
 // Return the two's-complement negation of the given UInt256 value.
 UInt256 uint256_negate(UInt256 val) {
   UInt256 result;
+  uint32_t carry = 1;
   for(int i = 0; i < 8; ++i) {
-      val.data[i] = (~(val.data[i]));
+      val->data[i] = ~(val->data[i]) + carry;
+      carry = val->data[i] ==0;
   }
-  if(val.data[1] == ~(0U)) {
-
-  }
-  val.data[1] = val.data[1] + 1;
-  //Handle edge case of digits with 0
   return result;
 }
 
