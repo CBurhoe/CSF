@@ -21,7 +21,12 @@ UInt256 uint256_create_from_u32(uint32_t val) {
 // at index 3 is the most significant.
 UInt256 uint256_create(const uint32_t data[8]) {
   UInt256 result;
-  // TODO: implement
+  for (int i = 0; i < 8; ++i) {
+    result.data[i] = 0U;
+  }
+  for (int i = 0; i < 8; ++i) {
+    result.data[i] = data[i];
+  }
   return result;
 }
 
@@ -62,7 +67,7 @@ UInt256 uint256_add(UInt256 left, UInt256 right) {
           continue;
       }
       sum.data[i] = left.data[i] + right.data[i] + overflow;
-      overflow = 0;
+      overflow = 0U;
   }
   return sum;
 }
@@ -80,7 +85,7 @@ UInt256 uint256_negate(UInt256 val) {
   uint32_t carry = 1;
   for(int i = 0; i < 8; ++i) {
       val->data[i] = ~(val->data[i]) + carry;
-      carry = val->data[i] ==0;
+      carry = val->data[i] == 0;
   }
   return result;
 }
