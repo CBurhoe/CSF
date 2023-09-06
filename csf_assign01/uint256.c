@@ -10,9 +10,9 @@
 UInt256 uint256_create_from_u32(uint32_t val) {
   UInt256 result;
   for (int i = 0; i < 8; ++i) {
-      val.data[i] = 0U;
+      result.data[i] = 0U;
   }
-  val.data[0] = val;
+  result.data[0] = val;
   return result;
 }
 
