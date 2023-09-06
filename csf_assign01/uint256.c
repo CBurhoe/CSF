@@ -75,7 +75,8 @@ UInt256 uint256_add(UInt256 left, UInt256 right) {
 // Compute the difference of two UInt256 values.
 UInt256 uint256_sub(UInt256 left, UInt256 right) {
   UInt256 result;
-  result = left + uint256_negate(right);
+  UInt256 negated_right = uint256_negate(right);
+  result = left + negated_right;
   return result;
 }
 
