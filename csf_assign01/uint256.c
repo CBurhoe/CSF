@@ -9,7 +9,10 @@
 // all other bits are set to 0.
 UInt256 uint256_create_from_u32(uint32_t val) {
   UInt256 result;
-  // TODO: implement
+  for (int i = 0; i < 8; ++i) {
+      num.data[i] = 0U;
+  }
+  num.data[0] = val;
   return result;
 }
 
