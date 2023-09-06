@@ -50,7 +50,7 @@ char *uint256_format_as_hex(UInt256 val) {
 // significant 32 bits.
 uint32_t uint256_get_bits(UInt256 val, unsigned index) {
   uint32_t bits;
-  // TODO: implement
+  bits = val.data[index];
   return bits;
 }
 
