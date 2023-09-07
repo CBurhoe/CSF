@@ -128,7 +128,7 @@ UInt256 uint256_rotate_left(UInt256 val, unsigned nbits) {
 
 // Helper function to right rotate 32-bit words by nbits
 uint32_t uint32_rotate_right(uint32_t val, unsigned nbits) {
-  return (val >> nbits) | (val << (32 - nbits);
+  return (val >> nbits) | (val << (32 - nbits));
 }
 
 // Return the result of rotating every bit in val nbits to
