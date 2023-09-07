@@ -96,8 +96,8 @@ UInt256 uint256_negate(UInt256 val) {
 // Helper function to left rotate 32-bit words by nbits
 uint32_t uint32_rotate_left(uint32_t val, unsigned nbits) {
   nbits %= 32;
-  return (value << nbits) | (value >> (32 - nbits)); // Left shift by nbits and wrap most
-                                                     // significant bits into the least significant bits
+  return (val << nbits) | (val >> (32 - nbits)); // Left shift by nbits and wrap most
+                                                 // significant bits into the least significant bits
 }
 
 // Return the result of rotating every bit in val nbits to
@@ -125,6 +125,12 @@ UInt256 uint256_rotate_left(UInt256 val, unsigned nbits) {
   }
   
   return result;
+}
+
+// Helper function to right rotate 32-bit words by nbits
+uint32_t uint32_rotate_right(uint32_t val, unsigned nbits) {
+  nbits %= 32;
+  return (val >> nbits) | (val << (32 - nbits);
 }
 
 // Return the result of rotating every bit in val nbits to
