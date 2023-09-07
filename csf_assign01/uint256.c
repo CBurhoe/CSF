@@ -93,12 +93,37 @@ UInt256 uint256_negate(UInt256 val) {
   return result;
 }
 
+// Helper function to left rotate 32-bit words by nbits
+uint32_t uint32_rotate_left(uint32_t val, unsigned nbits) {
+  nbits %= 32;
+  return (value << nbits) | (value >> (32 - nbits)); // Left shift by nbits and wrap most
+                                                     // significant bits into the least significant bits
+}
+
 // Return the result of rotating every bit in val nbits to
 // the left.  Any bits shifted past the most significant bit
 // should be shifted back into the least significant bits.
 UInt256 uint256_rotate_left(UInt256 val, unsigned nbits) {
   UInt256 result;
-  // TODO: implement
+  unsigned nWordsShift = nbits / 32U;
+  unsigned nBitsShift = nbits % 32U;
+  
+  // Initialize all bits to zero
+  for (int i = 0; i < 8; ++i) {
+    result.data[i] = 0U;
+  }
+  
+  for (int i = 0; i < 8; ++i) {
+    // Find the number of words that the source index (val) is offset from the result index
+    int valWordIndex = (i - nWordsShift + 8) % 8;
+    
+    // Rotate the bits within each word
+    result.data[i] = uint32_rotate_left(val.data[sourceIndex], nBitsShift);
+    
+    // Wrap the bits shifted out of each word into the next word
+    result.data[i] |= val.data[(valWordIndex + 1) % 8] >> (32 - nBitsShift);
+  }
+  
   return result;
 }
 
