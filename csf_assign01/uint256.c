@@ -43,8 +43,8 @@ char *uint32_to_hex_string(uint32_t value) {
     if(hex == NULL) {
         return NULL;
     }
-
-
+    sprintf(hex, "%x", value);
+    return hex;
 }
 
 
