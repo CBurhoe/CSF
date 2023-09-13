@@ -51,9 +51,12 @@ char *uint32_to_hex_string(uint32_t value) {
 // Return a dynamically-allocated string of hex digits representing the
 // given UInt256 value.
 char *uint256_format_as_hex(UInt256 val) {
-  char *hex = NULL;
-
-  // TODO: implement
+  char *hex = (char *)malloc(65 * sizeof(char)); //num_words * hex_chars_per_word + \n
+  for (int i = 7; i >= 0; --i) {
+    char *hexWord = uint32_to_hex_string(val.data[i]);
+    strcat(hex, hexWord);
+    free(hexword);
+  }
   return hex;
 }
 
