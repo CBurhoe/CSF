@@ -39,6 +39,11 @@ UInt256 uint256_create_from_hex(const char *hex) {
 
 // Helper function to convert a uint32_t value to a hexadecimal string
 char *uint32_to_hex_string(uint32_t value) {
+    char *hex = (char *)malloc(9 * sizeof(char));
+    if(hex == NULL) {
+        return NULL;
+    }
+
 
 }
 
