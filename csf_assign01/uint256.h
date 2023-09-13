@@ -27,6 +27,9 @@ UInt256 uint256_create(const uint32_t data[8]);
 // Create a UInt256 value from a string of hexadecimal digits.
 UInt256 uint256_create_from_hex(const char *hex);
 
+// Helper function to convert a uint32_t value to a hexadecimal string
+char *uint32_to_hex_string(uint32_t value);
+
 // Return a dynamically-allocated string of hex digits representing the
 // given UInt256 value.
 char *uint256_format_as_hex(UInt256 val);
@@ -51,10 +54,16 @@ UInt256 uint256_negate(UInt256 val);
 UInt256 uint256_mul(UInt256 left, UInt256 right);
 #endif
 
+// Helper function to left rotate 32-bit words by nbits
+uint32_t uint32_rotate_left(uint32_t val, unsigned nbits);
+
 // Return the result of rotating every bit in val nbits to
 // the left.  Any bits shifted past the most significant bit
 // should be shifted back into the least significant bits.
 UInt256 uint256_rotate_left(UInt256 val, unsigned nbits);
+
+// Helper function to right rotate 32-bit words by nbits
+uint32_t uint32_rotate_right(uint32_t val, unsigned nbits);
 
 // Return the result of rotating every bit in val nbits to
 // the right. Any bits shifted past the least significant bit

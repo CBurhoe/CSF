@@ -37,10 +37,17 @@ UInt256 uint256_create_from_hex(const char *hex) {
   return result;
 }
 
+// Helper function to convert a uint32_t value to a hexadecimal string
+char *uint32_to_hex_string(uint32_t value) {
+
+}
+
+
 // Return a dynamically-allocated string of hex digits representing the
 // given UInt256 value.
 char *uint256_format_as_hex(UInt256 val) {
   char *hex = NULL;
+
   // TODO: implement
   return hex;
 }
