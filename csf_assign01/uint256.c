@@ -33,7 +33,19 @@ UInt256 uint256_create(const uint32_t data[8]) {
 // Create a UInt256 value from a string of hexadecimal digits.
 UInt256 uint256_create_from_hex(const char *hex) {
   UInt256 result;
-  // TODO: implement
+  char *endptr;
+  char buff[9];
+  size_t hexLength = strlen(hex);
+  size_t numWordsToFill = (hexLength / 8) * 8;
+  
+  for (size_t i = 0; i < numWordsToFill; i += 8) {
+    strncpy(buff, hex + i, 8);
+    buff[8] = '\0';
+    
+    uint32_t decimalWord = strtoul(buff, &endptr, 16);
+    result.data[i/8] = decimalWord;
+  }
+  
   return result;
 }
 
