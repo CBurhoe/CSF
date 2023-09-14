@@ -114,8 +114,8 @@ UInt256 uint256_negate(UInt256 val) {
   UInt256 result;
   uint32_t carry = 1;
   for(int i = 0; i < 8; ++i) {
-      val.data[i] = ~(val.data[i]) + carry;
-      carry = val.data[i] == 0;
+      result.data[i] = ~(val.data[i]) + carry;
+      carry = result.data[i] == 0;
   }
   return result;
 }
