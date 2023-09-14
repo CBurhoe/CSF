@@ -115,11 +115,13 @@ UInt256 uint256_sub(UInt256 left, UInt256 right) {
 // Return the two's-complement negation of the given UInt256 value.
 UInt256 uint256_negate(UInt256 val) {
   UInt256 result;
+  for (int i = 0;i < 8; ++i) {
+    result.data[i] = 0U;
+  }
   uint32_t carry = 1;
   
   for(int i = 0; i < 8; ++i) {
-      uint64_t wordResult = ~(val.data[i]) + carry;
-      result.data[i] = (uint32_t)wordResult;
+      result.data[i] = ~(val.data[i]) + carry;
       carry = (val.data[i] == UINT32_MAX) ? 1 : 0;
   }
   return result;
