@@ -39,6 +39,10 @@ UInt256 uint256_create_from_hex(const char *hex) {
   size_t numWordsToFill = (hexLength / 8) * 8;
   size_t remainingHexBits = hexLength % 8;
   
+  for (int i = 0; i < 8; ++i) {
+    result.data[i] = 0U;
+  }
+  
   if (numWordsToFill){
     for (size_t i = 0; i < numWordsToFill; i += 8) {
       strncpy(buff, hex + i, 8);
