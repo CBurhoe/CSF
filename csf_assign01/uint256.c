@@ -77,7 +77,7 @@ char *uint256_format_as_hex(UInt256 val) {
     } else {
       char hexWord[9];
       sprintf(hex, "%08x", val.data[i]);
-      hexWord[8] = '\0';
+//      hexWord[8] = '\0';
       strcat(hex, hexWord);
     }
   }
