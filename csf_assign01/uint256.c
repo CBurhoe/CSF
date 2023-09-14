@@ -67,7 +67,7 @@ char *uint256_format_as_hex(UInt256 val) {
   for (int i = 7; i >= 0; --i) {
     char *hexWord = uint32_to_hex_string(val.data[i]);
     strcat(hex, hexWord);
-    free(hexword);
+    free(hexWord);
   }
   return hex;
 }
