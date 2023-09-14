@@ -49,17 +49,6 @@ UInt256 uint256_create_from_hex(const char *hex) {
   return result;
 }
 
-// Helper function to convert a uint32_t value to a hexadecimal string
-char *uint32_to_hex_string(uint32_t value) {
-    char *hex = (char *)malloc(9 * sizeof(char));
-    if(hex == NULL) {
-        return NULL;
-    }
-    sprintf(hex, "%x", value);
-    return hex;
-}
-
-
 // Return a dynamically-allocated string of hex digits representing the
 // given UInt256 value.
 char *uint256_format_as_hex(UInt256 val) {
@@ -77,7 +66,6 @@ char *uint256_format_as_hex(UInt256 val) {
     } else {
       char hexWord[9];
       sprintf(hexWord, "%08x", val.data[i]);
-//      hexWord[8] = '\0';
       strcat(hex, hexWord);
     }
   }

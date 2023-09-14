@@ -27,9 +27,6 @@ UInt256 uint256_create(const uint32_t data[8]);
 // Create a UInt256 value from a string of hexadecimal digits.
 UInt256 uint256_create_from_hex(const char *hex);
 
-// Helper function to convert a uint32_t value to a hexadecimal string
-char *uint32_to_hex_string(uint32_t value);
-
 // Return a dynamically-allocated string of hex digits representing the
 // given UInt256 value.
 char *uint256_format_as_hex(UInt256 val);
