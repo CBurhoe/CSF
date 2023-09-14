@@ -118,7 +118,8 @@ UInt256 uint256_negate(UInt256 val) {
   uint32_t carry = 1;
   
   for(int i = 0; i < 8; ++i) {
-      result.data[i] = ~(val.data[i]) + carry;
+      uint64_t wordResult = ~(val.data[i]) + carry;
+      result.data[i] = (uint32_t)wordResult;
       carry = (val.data[i] == UINT32_MAX) ? 1 : 0;
   }
   return result;
