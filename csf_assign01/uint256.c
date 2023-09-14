@@ -74,8 +74,7 @@ char *uint256_format_as_hex(UInt256 val) {
       sprintf(hex, "%x", val.data[i]);
       strcat(hex, hexWord);
       leadingZeroes = 0;
-    }
-  }else{
+    }else{
     if (val.data[i] == 0U && leadingZeroes) {continue;}
     if (leadingZeroes) {
       char hexWord[9];
