@@ -63,7 +63,7 @@ char *uint32_to_hex_string(uint32_t value) {
 // Return a dynamically-allocated string of hex digits representing the
 // given UInt256 value.
 char *uint256_format_as_hex(UInt256 val) {
-  char *hex = (char *)calloc(65 * sizeof(char)); //num_words * hex_chars_per_word + \0
+  char *hex = calloc(65, sizeof(char)); //num_words * hex_chars_per_word + \0
   uint32_t leadingZeroes = 1;
   hex[0] = '\0'; // Initialize the hex string with a null terminator
   
