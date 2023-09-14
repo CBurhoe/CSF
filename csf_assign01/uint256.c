@@ -71,12 +71,12 @@ char *uint256_format_as_hex(UInt256 val) {
     if (val.data[i] == 0U && leadingZeroes) { continue; }
     if (leadingZeroes) {
       char hexWord[9];
-      sprintf(hex, "%x", val.data[i]);
+      sprintf(hexWord, "%x", val.data[i]);
       strcat(hex, hexWord);
       leadingZeroes = 0;
     } else {
       char hexWord[9];
-      sprintf(hex, "%08x", val.data[i]);
+      sprintf(hexWord, "%08x", val.data[i]);
 //      hexWord[8] = '\0';
       strcat(hex, hexWord);
     }
