@@ -44,7 +44,7 @@ UInt256 uint256_create_from_hex(const char *hex) {
   }
   
   if (numWordsToFill){
-    for (size_t i = 0; i < numWordsToFill; i += 8) {
+    for (size_t i = 0; i < (numWordsToFill + 1); i += 8) {
       strncpy(buff, hex + i, 8);
       buff[8] = '\0';
       
@@ -57,7 +57,11 @@ UInt256 uint256_create_from_hex(const char *hex) {
     strncpy(buff, hex + numWordsToFill, remainingHexBits);
     buff[remainingHexBits] = '\0';
     uint32_t decimalWord = strtoul(buff, &endptr, 16);
-    result.data[numWordsToFill/8 + 1] = decimalWord;
+    if (numWordsToFill) {
+      result.data[numWordsToFill / 8 + 1] = decimalWord;
+    }else{
+      result.data[0] = decimalWord;
+    }
   }
   
   return result;
