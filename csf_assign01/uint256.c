@@ -118,12 +118,12 @@ UInt256 uint256_negate(UInt256 val) {
   for (int i = 0;i < 8; ++i) {
     result.data[i] = 0U;
   }
-  uint32_t carry = 1;
+  uint32_t carry = 1s;
   
   for(int i = 0; i < 8; ++i) {
-    uint64_t wordResult = ~(val.data[i]) + carry;
+    uint64_t wordResult = (uint64_t)(~(val.data[i])) + carry;
     result.data[i] = (uint32_t)wordResult;
-    carry = (wordResult >> 31);
+    carry = (wordResult >> 32);
 //    carry = (result.data[i] == 0) ? 1 : 0;
   }
   return result;
