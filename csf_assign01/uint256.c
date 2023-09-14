@@ -129,37 +129,30 @@ UInt256 uint256_negate(UInt256 val) {
 }
 
 // Helper function to left rotate 32-bit words by nbits
-uint32_t uint32_rotate_left(uint32_t val, unsigned nbits) {
-  return (val << nbits) | (val >> (32 - nbits)); // Left shift by nbits and wrap most
-                                                 // significant bits into the least significant bits
+uint64_t uint32_rotate_left(uint32_t val, uint32_t nbits) {
+  uint64_t val64Bits = (uint64_t) val;
+  return (val64Bits << nbits) | (val64Bits >> (32 - nbits)); // Left shift by nbits and store bits shifted out into upper 32 bits
 }
 
 // Return the result of rotating every bit in val nbits to
 // the left.  Any bits shifted past the most significant bit
 // should be shifted back into the least significant bits.
 UInt256 uint256_rotate_left(UInt256 val, unsigned nbits) {
-  UInt256 result = val;
+  UInt256 result;
   unsigned nWordsShift = nbits / 32;
   unsigned nBitsShift = nbits % 32;
   
-//  // Initialize all bits to zero
-//  for (int i = 0; i < 8; ++i) {
-//    result.data[i] = 0U;
-//  }
-  
+  //Rotate the result according to the number of whole word shifts
   for (int i = 0; i < 8; ++i) {
-    // Find the number of words that the source index (val) is offset from the result index
-    uint32_t valWordIndex = (i + nWordsShift + 8) % 8;
-    
-    // Rotate the bits within each word
-    result.data[i] = uint32_rotate_left(val.data[valWordIndex], nBitsShift);
-    
-//    // Wrap the bits shifted out of each word into the next word
-//    result.data[i] |= val.data[(valWordIndex + 1) % 8] >> (32 - nBitsShift);
-//
-    if ((valWordIndex > 0) && (nBitsShift > 0)) {
-      result.data[i] |= val.data[(valWordIndex - 1 + 8) % 8] >> (32 - nBitsShift);
+    if ((i + nWordsShift) > 7) {
+      result.data[(i + nWordsShift) - 8] = (val.data[i] << nBitsShift) | (val.data[i - 1] >> (32 - nBitsShift));
+      continue;
     }
+    if (i == 0) {
+      result.data[i + nWordsShift] = (val.data[i] << nBitsShift) | (val.data[i + 7] >> (32 - nBitsShift));
+      
+    }
+    result.data[i + nWordsShift] = (val.data[i] << nBitsShift) | (val.data[i - 1] >> (32 - nBitsShift));
   }
   
   return result;
