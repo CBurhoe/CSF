@@ -63,7 +63,13 @@ char *uint32_to_hex_string(uint32_t value) {
 // Return a dynamically-allocated string of hex digits representing the
 // given UInt256 value.
 char *uint256_format_as_hex(UInt256 val) {
-  char *hex = (char *)malloc(65 * sizeof(char)); //num_words * hex_chars_per_word + \n
+  char *hex = (char *)malloc(65 * sizeof(char)); //num_words * hex_chars_per_word + \0
+  if (hex == NULL) {
+    fprintf(stderr, "Memory allocation failed.\n");
+    exit(1);
+  }
+  hex[0] = '\0'; // Initialize the hex string with a null terminator
+  
   for (int i = 7; i >= 0; --i) {
     char *hexWord = uint32_to_hex_string(val.data[i]);
     strcat(hex, hexWord);
@@ -71,6 +77,7 @@ char *uint256_format_as_hex(UInt256 val) {
   }
   return hex;
 }
+
 
 // Get 32 bits of data from a UInt256 value.
 // Index 0 is the least significant 32 bits, index 3 is the most
