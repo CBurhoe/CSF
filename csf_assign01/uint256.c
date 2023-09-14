@@ -123,7 +123,7 @@ UInt256 uint256_negate(UInt256 val) {
   for(int i = 0; i < 8; ++i) {
     uint64_t wordResult = ~(val.data[i]) + carry;
     result.data[i] = (uint32_t)wordResult;
-    carry = (wordResult >> 32);
+    carry = (wordResult >> 31);
 //    carry = (result.data[i] == 0) ? 1 : 0;
   }
   return result;
