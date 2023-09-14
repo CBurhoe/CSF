@@ -68,25 +68,17 @@ char *uint256_format_as_hex(UInt256 val) {
   hex[0] = '\0'; // Initialize the hex string with a null terminator
   
   for (int i = 7; i >= 0; --i) {
-    if (i == 7) {
-      if (val.data[i] == 0U) { continue; }
+    if (val.data[i] == 0U && leadingZeroes) { continue; }
+    if (leadingZeroes) {
       char hexWord[9];
       sprintf(hex, "%x", val.data[i]);
       strcat(hex, hexWord);
       leadingZeroes = 0;
     } else {
-      if (val.data[i] == 0U && leadingZeroes) { continue; }
-      if (leadingZeroes) {
-        char hexWord[9];
-        sprintf(hex, "%x", val.data[i]);
-        strcat(hex, hexWord);
-        leadingZeroes = 0;
-      } else {
-        char hexWord[9];
-        sprintf(hex, "%08x", val.data[i]);
-        hexWord[8] = '\0';
-        strcat(hex, hexWord);
-      }
+      char hexWord[9];
+      sprintf(hex, "%08x", val.data[i]);
+      hexWord[8] = '\0';
+      strcat(hex, hexWord);
     }
   }
   if (!strlen(hex)) {
