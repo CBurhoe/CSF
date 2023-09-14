@@ -116,9 +116,10 @@ UInt256 uint256_sub(UInt256 left, UInt256 right) {
 UInt256 uint256_negate(UInt256 val) {
   UInt256 result;
   uint32_t carry = 1;
+  
   for(int i = 0; i < 8; ++i) {
       result.data[i] = ~(val.data[i]) + carry;
-      carry = result.data[i] == 0;
+      carry = (val.data[i] == UINT32_MAX) ? 1 : 0;
   }
   return result;
 }
