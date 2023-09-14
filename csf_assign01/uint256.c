@@ -37,13 +37,23 @@ UInt256 uint256_create_from_hex(const char *hex) {
   char buff[9];
   size_t hexLength = strlen(hex);
   size_t numWordsToFill = (hexLength / 8) * 8;
+  size_t remainingHexBits = hexLength % 8;
   
-  for (size_t i = 0; i < numWordsToFill; i += 8) {
-    strncpy(buff, hex + i, 8);
-    buff[8] = '\0';
-    
+  if (numWordsToFill){
+    for (size_t i = 0; i < numWordsToFill; i += 8) {
+      strncpy(buff, hex + i, 8);
+      buff[8] = '\0';
+      
+      uint32_t decimalWord = strtoul(buff, &endptr, 16);
+      result.data[i / 8] = decimalWord;
+      if (i == 64) {return result;}
+    }
+  }
+  if (remainingHexBits) {
+    strncpy(buff, hex + numWordsToFill, remainingHexBits);
+    buff[remainingHexBits] = '\0';
     uint32_t decimalWord = strtoul(buff, &endptr, 16);
-    result.data[i/8] = decimalWord;
+    result.data[numWordsToFill/8 + 1] = decimalWord;
   }
   
   return result;
