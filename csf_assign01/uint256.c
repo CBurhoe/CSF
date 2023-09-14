@@ -91,17 +91,13 @@ uint32_t uint256_get_bits(UInt256 val, unsigned index) {
 // Compute the sum of two UInt256 values.
 UInt256 uint256_add(UInt256 left, UInt256 right) {
   UInt256 sum;
-  uint32_t overflow;
-  uint32_t space_check;
+  uint32_t carry = 0U;
+  
+
   for(int i = 0; i < 8; ++i) {
-      space_check = ~(0U) - left.data[i];
-      if(space_check < right.data[i]) {
-          sum.data[i] = (right.data[i] - space_check) + overflow;
-          overflow = 1U;
-          continue;
-      }
-      sum.data[i] = left.data[i] + right.data[i] + overflow;
-      overflow = 0U;
+      uint64_t wordSum = (uint64_t)left.data[i] +  right.data[i] + carry;
+      sum.data[i] = (uint32_t)wordSum;
+      carry = (wordSum >> 32);
   }
   return sum;
 }
