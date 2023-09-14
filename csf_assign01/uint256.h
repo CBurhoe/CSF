@@ -54,9 +54,6 @@ UInt256 uint256_negate(UInt256 val);
 UInt256 uint256_mul(UInt256 left, UInt256 right);
 #endif
 
-// Helper function to left rotate 32-bit words by nbits
-uint32_t uint32_rotate_left(uint32_t val, unsigned nbits);
-
 // Return the result of rotating every bit in val nbits to
 // the left.  Any bits shifted past the most significant bit
 // should be shifted back into the least significant bits.

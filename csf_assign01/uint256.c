@@ -128,12 +128,6 @@ UInt256 uint256_negate(UInt256 val) {
   return result;
 }
 
-// Helper function to left rotate 32-bit words by nbits
-uint64_t uint32_rotate_left(uint32_t val, uint32_t nbits) {
-  uint64_t val64Bits = (uint64_t) val;
-  return (val64Bits << nbits) | (val64Bits >> (32 - nbits)); // Left shift by nbits and store bits shifted out into upper 32 bits
-}
-
 // Return the result of rotating every bit in val nbits to
 // the left.  Any bits shifted past the most significant bit
 // should be shifted back into the least significant bits.
