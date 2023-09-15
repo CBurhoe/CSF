@@ -108,8 +108,6 @@ uint32_t uint256_get_bits(UInt256 val, unsigned index) {
 UInt256 uint256_add(UInt256 left, UInt256 right) {
   UInt256 sum;
   uint32_t carry = 0U;
-  
-
   for(int i = 0; i < 8; ++i) {
       uint64_t wordSum = (uint64_t)left.data[i] +  right.data[i] + carry;
       sum.data[i] = (uint32_t)wordSum;
