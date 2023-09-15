@@ -282,10 +282,11 @@ void test_sub(TestObjs *objs) {
 }
 
 void test_add3(TestObjs *objs) {
-  UInt256 result;
+  UInt256 result1, result2;
   
-  result = uint256_add(objs->max, objs->max);
-  ASSERT_SAME(objs->max.data[0] - 1, result.data[0]);
+  result1 = uint256_add(objs->max, objs->max);
+  result2 = uint256_sub(objs->max, objs->one);
+  ASSERT_SAME(result1, result2);
 }
 
 void test_sub3(TestObjs *objs) {
