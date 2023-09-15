@@ -44,7 +44,11 @@ void test_create(TestObjs *objs);
 void test_create_from_hex(TestObjs *objs);
 void test_format_as_hex(TestObjs *objs);
 void test_add(TestObjs *objs);
+void test_add2();
+void test_add3();
 void test_sub(TestObjs *objs);
+void test_sub2();
+void test_sub3();
 void test_negate(TestObjs *objs);
 void test_rotate_left(TestObjs *objs);
 void test_rotate_right(TestObjs *objs);
@@ -62,7 +66,11 @@ int main(int argc, char **argv) {
   TEST(test_create_from_hex);
   TEST(test_format_as_hex);
   TEST(test_add);
+  TEST(test_add2);
+  TEST(test_add3);
   TEST(test_sub);
+  TEST(test_sub2);
+  TEST(test_sub3);
   TEST(test_negate);
   TEST(test_rotate_left);
   TEST(test_rotate_right);
@@ -201,6 +209,65 @@ void test_add(TestObjs *objs) {
   ASSERT_SAME(objs->zero, result);
 }
 
+void test_add2() {
+  UInt256 left, right, result;
+  
+  left.data[7] = 0xfe8e166U;
+  left.data[6] = 0x0511faa4U;
+  left.data[5] = 0x0c59fb7eU;
+  left.data[4] = 0x84545635U;
+  left.data[3] = 0xe53d3d66U;
+  left.data[2] = 0x9aa1a366U;
+  left.data[1] = 0x2e5ff909U;
+  left.data[0] = 0xe7cd6959U;
+  right.data[0] = 0xc8c43c60U;
+  right.data[1] = 0x19b80d3eU;
+  right.data[2] = 0x86b59088U;
+  right.data[3] = 0xe7cfa875U;
+  right.data[4] = 0x8b3d1236U;
+  right.data[5] = 0x8a71e0feU;
+  right.data[6] = 0x76d17aa1U;
+  right.data[7] = 0xb9965a8U;
+  result = uint256_add(left, right);
+  ASSERT(0xb091a5b9U == result.data[0]);
+  ASSERT(0x48180648U == result.data[1]);
+  ASSERT(0x215733eeU == result.data[2]);
+  ASSERT(0xcd0ce5dcU == result.data[3]);
+  ASSERT(0x0f91686cU == result.data[4]);
+  ASSERT(0x96cbdc7dU == result.data[5]);
+  ASSERT(0x7be37545U == result.data[6]);
+  ASSERT(0x1b82470eU == result.data[7]);
+}
+
+void test_sub2() {
+  UInt256 left, right, result;
+  left.data[0] = 0xU;
+  left.data[1] = 0xU;
+  left.data[2] = 0xU;
+  left.data[3] = 0xU;
+  left.data[4] = 0xU;
+  left.data[5] = 0xU;
+  left.data[6] = 0xU;
+  left.data[7] = 0xU;
+  right.data[0] = 0xU;
+  right.data[1] = 0xU;
+  right.data[2] = 0xU;
+  right.data[3] = 0xU;
+  right.data[4] = 0xU;
+  right.data[5] = 0xU;
+  right.data[6] = 0xU;
+  right.data[7] = 0xU;
+  result = uint256_sub(left, right);
+  ASSERT(0xU == result.data[0]);
+  ASSERT(0xU == result.data[1]);
+  ASSERT(0xU == result.data[2]);
+  ASSERT(0xU == result.data[3]);
+  ASSERT(0xU == result.data[4]);
+  ASSERT(0xU == result.data[5]);
+  ASSERT(0xU == result.data[6]);
+  ASSERT(0xU == result.data[7]);
+}
+
 void test_sub(TestObjs *objs) {
   UInt256 result;
 
@@ -212,6 +279,64 @@ void test_sub(TestObjs *objs) {
 
   result = uint256_sub(objs->zero, objs->one);
   ASSERT_SAME(objs->max, result);
+}
+
+void test_add3() {
+  UInt256 left, right, result;
+  left.data[0] = 0xU;
+  left.data[1] = 0xU;
+  left.data[2] = 0xU;
+  left.data[3] = 0xU;
+  left.data[4] = 0xU;
+  left.data[5] = 0xU;
+  left.data[6] = 0xU;
+  left.data[7] = 0xU;
+  right.data[0] = 0xU;
+  right.data[1] = 0xU;
+  right.data[2] = 0xU;
+  right.data[3] = 0xU;
+  right.data[4] = 0xU;
+  right.data[5] = 0xU;
+  right.data[6] = 0xU;
+  right.data[7] = 0xU;
+  result = uint256_sub(left, right);
+  ASSERT(0xU == result.data[0]);
+  ASSERT(0xU == result.data[1]);
+  ASSERT(0xU == result.data[2]);
+  ASSERT(0xU == result.data[3]);
+  ASSERT(0xU == result.data[4]);
+  ASSERT(0xU == result.data[5]);
+  ASSERT(0xU == result.data[6]);
+  ASSERT(0xU == result.data[7]);
+}
+
+void test_sub3() {
+  UInt256 left, right, result;
+  left.data[0] = 0xU;
+  left.data[1] = 0xU;
+  left.data[2] = 0xU;
+  left.data[3] = 0xU;
+  left.data[4] = 0xU;
+  left.data[5] = 0xU;
+  left.data[6] = 0xU;
+  left.data[7] = 0xU;
+  right.data[0] = 0xU;
+  right.data[1] = 0xU;
+  right.data[2] = 0xU;
+  right.data[3] = 0xU;
+  right.data[4] = 0xU;
+  right.data[5] = 0xU;
+  right.data[6] = 0xU;
+  right.data[7] = 0xU;
+  result = uint256_sub(left, right);
+  ASSERT(0xU == result.data[0]);
+  ASSERT(0xU == result.data[1]);
+  ASSERT(0xU == result.data[2]);
+  ASSERT(0xU == result.data[3]);
+  ASSERT(0xU == result.data[4]);
+  ASSERT(0xU == result.data[5]);
+  ASSERT(0xU == result.data[6]);
+  ASSERT(0xU == result.data[7]);
 }
 
 void test_negate(TestObjs *objs) {
