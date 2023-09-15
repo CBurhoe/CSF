@@ -241,31 +241,31 @@ void test_add2() {
 
 void test_sub2() {
   UInt256 left, right, result;
-  left.data[0] = 0xU;
-  left.data[1] = 0xU;
-  left.data[2] = 0xU;
-  left.data[3] = 0xU;
-  left.data[4] = 0xU;
-  left.data[5] = 0xU;
-  left.data[6] = 0xU;
-  left.data[7] = 0xU;
-  right.data[0] = 0xU;
-  right.data[1] = 0xU;
-  right.data[2] = 0xU;
-  right.data[3] = 0xU;
-  right.data[4] = 0xU;
-  right.data[5] = 0xU;
-  right.data[6] = 0xU;
-  right.data[7] = 0xU;
+  left.data[0] = 0x811b76a7U;
+  left.data[1] = 0xa62ec8b9U;
+  left.data[2] = 0x4fa0678aU;
+  left.data[3] = 0xd93d0c55U;
+  left.data[4] = 0xa7f28329U;
+  left.data[5] = 0x581133efU;
+  left.data[6] = 0x658cb3efU;
+  left.data[7] = 0x4ffbbafU;
+  right.data[0] = 0xbefd49b9U;
+  right.data[1] = 0x5dbf613bU;
+  right.data[2] = 0x74aa109dU;
+  right.data[3] = 0x73043f4bU;
+  right.data[4] = 0x3d159cdaU;
+  right.data[5] = 0xbc598be0U;
+  right.data[6] = 0x48a75f76U;
+  right.data[7] = 0x48c0d6eU;
   result = uint256_sub(left, right);
-  ASSERT(0xU == result.data[0]);
-  ASSERT(0xU == result.data[1]);
-  ASSERT(0xU == result.data[2]);
-  ASSERT(0xU == result.data[3]);
-  ASSERT(0xU == result.data[4]);
-  ASSERT(0xU == result.data[5]);
-  ASSERT(0xU == result.data[6]);
-  ASSERT(0xU == result.data[7]);
+  ASSERT(0xc21e2ceeU == result.data[0]);
+  ASSERT(0x486f677dU == result.data[1]);
+  ASSERT(0xdaf656edU == result.data[2]);
+  ASSERT(0x6638cd09U == result.data[3]);
+  ASSERT(0x6adce64fU == result.data[4]);
+  ASSERT(0x9bb7a80fU == result.data[5]);
+  ASSERT(0x1ce55478U == result.data[6]);
+  ASSERT(0x73ae41U == result.data[7]);
 }
 
 void test_sub(TestObjs *objs) {
