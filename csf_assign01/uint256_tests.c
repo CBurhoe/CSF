@@ -285,7 +285,7 @@ void test_add3(TestObjs *objs) {
   UInt256 result;
   
   result = uint256_add(objs->max, objs->max);
-  ASSERT_SAME(objs->max.data[0] - 1, result.data[0])
+  ASSERT_SAME(objs->max.data[0] - 1, result.data[0]);
 }
 
 void test_sub3(TestObjs *objs) {
