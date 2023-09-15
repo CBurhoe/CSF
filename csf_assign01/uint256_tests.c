@@ -281,62 +281,18 @@ void test_sub(TestObjs *objs) {
   ASSERT_SAME(objs->max, result);
 }
 
-void test_add3() {
-  UInt256 left, right, result;
-  left.data[0] = 0xU;
-  left.data[1] = 0xU;
-  left.data[2] = 0xU;
-  left.data[3] = 0xU;
-  left.data[4] = 0xU;
-  left.data[5] = 0xU;
-  left.data[6] = 0xU;
-  left.data[7] = 0xU;
-  right.data[0] = 0xU;
-  right.data[1] = 0xU;
-  right.data[2] = 0xU;
-  right.data[3] = 0xU;
-  right.data[4] = 0xU;
-  right.data[5] = 0xU;
-  right.data[6] = 0xU;
-  right.data[7] = 0xU;
-  result = uint256_sub(left, right);
-  ASSERT(0xU == result.data[0]);
-  ASSERT(0xU == result.data[1]);
-  ASSERT(0xU == result.data[2]);
-  ASSERT(0xU == result.data[3]);
-  ASSERT(0xU == result.data[4]);
-  ASSERT(0xU == result.data[5]);
-  ASSERT(0xU == result.data[6]);
-  ASSERT(0xU == result.data[7]);
+void test_add3(TestObjs *objs) {
+  UInt256 result;
+  
+  result = uint256_add(objs->max, objs->max);
+  ASSERT_SAME(objs->max.data[0] - 1, result.data[0])
 }
 
-void test_sub3() {
-  UInt256 left, right, result;
-  left.data[0] = 0xU;
-  left.data[1] = 0xU;
-  left.data[2] = 0xU;
-  left.data[3] = 0xU;
-  left.data[4] = 0xU;
-  left.data[5] = 0xU;
-  left.data[6] = 0xU;
-  left.data[7] = 0xU;
-  right.data[0] = 0xU;
-  right.data[1] = 0xU;
-  right.data[2] = 0xU;
-  right.data[3] = 0xU;
-  right.data[4] = 0xU;
-  right.data[5] = 0xU;
-  right.data[6] = 0xU;
-  right.data[7] = 0xU;
-  result = uint256_sub(left, right);
-  ASSERT(0xU == result.data[0]);
-  ASSERT(0xU == result.data[1]);
-  ASSERT(0xU == result.data[2]);
-  ASSERT(0xU == result.data[3]);
-  ASSERT(0xU == result.data[4]);
-  ASSERT(0xU == result.data[5]);
-  ASSERT(0xU == result.data[6]);
-  ASSERT(0xU == result.data[7]);
+void test_sub3(TestObjs *objs) {
+  UInt256 result;
+  
+  result = uint256_sub(objs->max, objs->max);
+  ASSERT_SAME(objs->zero, result);
 }
 
 void test_negate(TestObjs *objs) {
