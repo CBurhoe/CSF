@@ -42,22 +42,26 @@ uint32_t wc_hash(const unsigned char *w) {
 // of the other, it is considered as "less than". E.g.,
 // "hi" would compare as less than "high".
 int wc_str_compare(const unsigned char *lhs, const unsigned char *rhs) {
+  //base case for equal length, equal char value strings
   if (*lhs == '\0' && *rhs == '\0') {
     return 0;
   }
+  //redundant, covered by char comparison
 //  if (*lhs == '\0') {
 //    return -1;
 //  }
 //  if (*rhs == '\0') {
 //    return 1;
 //  }
+  //compare char at pointer location. \0 is lowest val char, so covers base case of different length strings
   if (*lhs < *rhs) {
     return -1;
   } else if (*lhs > *rhs) {
     return 1;
-  } else {
-    return wc_str_compare(lhs + 1, rhs + 1);
   }
+  
+  //recursive case
+  return wc_str_compare(lhs + 1, rhs + 1);
 }
 
 // Copy NUL-terminated source string to the destination buffer.
