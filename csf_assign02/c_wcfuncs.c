@@ -22,10 +22,10 @@
 // being unsigned (in the range 0..255)
 uint32_t wc_hash(const unsigned char *w) {
   uint32_t hash_code = 5381;
-  unsigned char *hashing_pointer = w;
-  
-  while (*w != '\0') {
-    hash_code = hash_code * 33 + (*)w;
+  uint32_t i = 0;
+  while (w[i] != '\0') {
+    hash_code = hash_code * 33 + w[i];
+    ++i;
   }
   
   return hash_code;
