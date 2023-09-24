@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   } else {
     input_stream = stdin;
   }
-  struct WordEntry *hash_table[HASHTABLE_SIZE];
+  struct WordEntry **hash_table = (struct WordEntry **)malloc(HASHTABLE_SIZE * sizeof(struct WordEntry));
   unsigned char word[MAX_WORDLEN + 1];
   while (wc_readnext(input_stream, word)) {
     ++total_words;
@@ -47,6 +47,21 @@ int main(int argc, char **argv) {
     new_entry->count++;
   }
   
+  struct WordEntry *most_frequent_word = *hash_table;
+  for (int i = 0; i < HASHTABLE_SIZE; ++i) {
+    if (hash_table[i]->count > most_frequent_word->count) {
+      most_frequent_word = hash_table[i];
+      continue;
+    }
+    if (hash_table[i]->count < most_frequent_word->count) {
+      continue;
+    }
+    if (wc_str_compare(hash_table[i], most_frequent_word) == -1) {
+      most_frequent_word = hash_table[i];
+    }
+  }
+  best_word = most_frequent_word->word;
+  best_word_count = most_frequent_word->count;
   
 
   printf("Total words read: %u\n", (unsigned int) total_words);
@@ -54,7 +69,12 @@ int main(int argc, char **argv) {
   printf("Most frequent word: %s (%u)\n", (const char *) best_word, best_word_count);
 
   // TODO: make sure file is closed (if one was opened)
+  fclose(input_stream);
   // TODO: make sure memory is freed
+  for (int i = 0; i < HASHTABLE_SIZE; ++i) {
+    wc_free_chain(hash_table[i]);
+  }
+  free(hash_table);
 
   return 0;
 }
