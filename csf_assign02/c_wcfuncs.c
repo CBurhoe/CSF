@@ -138,7 +138,14 @@ int wc_readnext(FILE *in, unsigned char *w) {
 // Convert the NUL-terminated character string in the array
 // pointed-to by w so that every letter is lower-case.
 void wc_tolower(unsigned char *w) {
-  // TODO: implement
+  int i = 0;
+  char c;
+  while ((c = *(w + i)) != '\0') {
+    if ((c >= 'A') && (c <= 'Z')) {
+      *(w + i) += 32;
+    }
+    ++i;
+  }
 }
 
 // Remove any non-alphaabetic characters from the end of the
