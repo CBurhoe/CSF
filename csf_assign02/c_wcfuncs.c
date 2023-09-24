@@ -117,7 +117,22 @@ int wc_isalpha(unsigned char c) {
 // MAX_WORDLEN characters, then only the first MAX_WORDLEN
 // characters in the sequence should be stored in the array.
 int wc_readnext(FILE *in, unsigned char *w) {
-  // TODO: implement
+  int c;
+  do {
+    c = fgets(in);
+    if (c == EOF) {
+      return 0;
+    }
+  } while (wc_isspace((unsigned char)c));
+  for (int i = 0; i < MAX_WORDLEN; ++i) {
+    *(w + i) = (unsigned char)c;
+    *(w + i + 1) = '\0';
+    c = fgets(in);
+    if (wc_isspace((unsigned char)c) || (c == EOF)) {
+      break;
+    }
+  }
+  return 1;
 }
 
 // Convert the NUL-terminated character string in the array
