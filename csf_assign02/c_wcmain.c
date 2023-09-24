@@ -26,6 +26,26 @@ int main(int argc, char **argv) {
   } else {
     input_stream = stdin;
   }
+  struct WordEntry *hash_table[HASHTABLE_SIZE];
+  unsigned char word[MAX_WORDLEN + 1];
+  while (wc_readnext(input_stream, word)) {
+    ++total_words;
+    
+    /*
+  use wc_tolower to convert word to lower case
+
+  use wc_trim_non_alpha to remove non-alphabetic characters at end of word
+
+  use wc_find_or_insert to find or insert the word in the hash table
+
+  increment the WordEntry's count
+     */
+    wc_tolower(word);
+    wc_trim_non_alpha(word);
+    struct WordEntry new_entry = wc_dict_find_or_insert(hash_table, HASHTABLE_SIZE, word);
+    if (new_entry->count == 0) { ++unique_words; }
+    new_entry->count++;
+  }
   
   
 

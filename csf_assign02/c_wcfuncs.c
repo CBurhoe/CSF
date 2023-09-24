@@ -66,7 +66,7 @@ int wc_str_compare(const unsigned char *lhs, const unsigned char *rhs) {
 
 // Copy NUL-terminated source string to the destination buffer.
 void wc_str_copy(unsigned char *dest, const unsigned char *source) {
-  int i = o;
+  uint32_t i = 0;
   while (source[i] != '\0') {
     dest[i] = source[i];
     ++i;
@@ -116,7 +116,7 @@ int wc_isalpha(unsigned char c) {
 // MAX_WORDLEN characters, then only the first MAX_WORDLEN
 // characters in the sequence should be stored in the array.
 int wc_readnext(FILE *in, unsigned char *w) {
-  int c;
+  uint32_t c;
   do {
     c = fgets(in);
     if (c == EOF) {
@@ -137,8 +137,8 @@ int wc_readnext(FILE *in, unsigned char *w) {
 // Convert the NUL-terminated character string in the array
 // pointed-to by w so that every letter is lower-case.
 void wc_tolower(unsigned char *w) {
-  int i = 0;
-  char c;
+  uint32_t i = 0;
+  unsigned char c;
   while ((c = *(w + i)) != '\0') {
     if ((c >= 'A') && (c <= 'Z')) {
       *(w + i) += 32;
@@ -150,7 +150,7 @@ void wc_tolower(unsigned char *w) {
 // Remove any non-alphaabetic characters from the end of the
 // NUL-terminated character string pointed-to by w.
 void wc_trim_non_alpha(unsigned char *w) {
-  int i = 0;
+  uint32_t i = 0;
   while ((*(w + i) != '\0') && wc_isalpha(w + i)) {
     ++i;
   }
