@@ -202,5 +202,8 @@ struct WordEntry *wc_dict_find_or_insert(struct WordEntry *buckets[], unsigned n
 
 // Free all of the nodes in given linked list of WordEntry objects.
 void wc_free_chain(struct WordEntry *p) {
-  // TODO: implement
+  if (p->next != NULL) {
+    wc_free_chain(p->next);
+  }
+  free(p);
 }
