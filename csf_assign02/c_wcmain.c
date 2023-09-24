@@ -14,7 +14,20 @@ int main(int argc, char **argv) {
   const unsigned char *best_word = (const unsigned char *) "";
   uint32_t best_word_count = 0;
 
+  FILE *input_stream;
+  
   // TODO: implement
+  if (argc == 2) {
+    input_stream = fopen(argv[1], "r");
+    if (input_stream == NULL) {
+      fprintf(stderr, "Could not open file.\n");
+      return 1;
+    }
+  } else {
+    input_stream = stdin;
+  }
+  
+  
 
   printf("Total words read: %u\n", (unsigned int) total_words);
   printf("Unique words read: %u\n", (unsigned int) unique_words);
