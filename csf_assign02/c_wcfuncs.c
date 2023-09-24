@@ -167,7 +167,23 @@ void wc_trim_non_alpha(unsigned char *w) {
 // the new node should have its count value set to 0. (It is the caller's
 // job to update the count.)
 struct WordEntry *wc_find_or_insert(struct WordEntry *head, const unsigned char *s, int *inserted) {
-  // TODO: implement
+  struct WordEntry *word_ptr = head;
+  while (word_ptr != NULL) {
+    if (wc_str_compare(word_ptr->word, s) == 0) {
+      *inserted = 0;
+      return word_ptr;
+    } else {
+      word_ptr = word_ptr->next;
+    }
+  }
+  
+  struct WordEntry *new_word;
+  new_word = (struct WordEntry *)malloc(sizeof(struct WordEntry));
+  new_word->next = head;
+  new_word->count = 0;
+  wc_str_copy(new_word->word, s);
+  *inserted = 1;
+  return new_word;
 }
 
 // Find or insert the WordEntry object for the given string (s), returning
