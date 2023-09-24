@@ -73,6 +73,7 @@ void wc_str_copy(unsigned char *dest, const unsigned char *source) {
     *dest = '\0';
     source_cp = source_cp + 1;
   }
+  //TODO: Check capacity of source and destination
 }
 
 // Return 1 if the character code in c is a whitespace character,
