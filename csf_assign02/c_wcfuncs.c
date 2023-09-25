@@ -119,7 +119,7 @@ int wc_isalpha(unsigned char c) {
 int wc_readnext(FILE *in, unsigned char *w) {
   uint32_t c;
   do {
-    c = fgets(in);
+    c = fgetc(in);
     if (c == EOF) {
       return 0;
     }
