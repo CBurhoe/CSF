@@ -97,7 +97,7 @@ int wc_isspace(unsigned char c) {
 // Return 1 if the character code in c is an alphabetic character
 // ('A' through 'Z' or 'a' through 'z'), 0 otherwise.
 int wc_isalpha(unsigned char c) {
-  if ((c >= 'A' && c <= 'Z') || (c> = 'a' && c <= 'z')) {
+  if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
     return 1;
   } else {
     return 0;
