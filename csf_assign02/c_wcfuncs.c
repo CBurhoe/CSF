@@ -31,6 +31,7 @@ uint32_t wc_hash(const unsigned char *w) {
   return hash_code;
 }
 
+
 // Compare two strings lexicographically. Return
 //
 // - a negative value if lhs string is less than rhs string
