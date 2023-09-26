@@ -121,17 +121,17 @@ wc_isspace:
     /*
     *%rdi - input char c
     */
-    cmpb $9, %r10 //compare input with \t
+    cmpb $9, (%r10) //compare input with \t
     jz .LisWhitespace //is tab, jump to success label
-    cmpb $10, %r10 // compare input with \n
+    cmpb $10, (%r10) // compare input with \n
     jz .LisWhitespace //is newline, jump to success label
-    cmpb $11, %r10 // compare input with \v
+    cmpb $11, (%r10) // compare input with \v
     jz .LisWhitespace //is vertical tab, jump to success label
-    cmpb $12, %r10 // compare input with \f
+    cmpb $12, (%r10) // compare input with \f
     jz .LisWhitespace //is form feed, jump to success label
-    cmpb $13, %r10 // compare input with \r
+    cmpb $13, (%r10) // compare input with \r
     jz .LisWhitespace //is carriage return, jump to success label
-    cmpb $32, %r10 // compare input with ' '
+    cmpb $32, (%r10) // compare input with ' '
     jz .LisWhitespace //is space, jump to success label
     movq $0, %rax //no conditions met, load 0 for return
     addq $8, %rsp //adjust stack pointer
