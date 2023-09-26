@@ -156,9 +156,9 @@ wc_isalpha:
 	/*
 	*%rdi - char input c
 	*/
-	cmpb (%dil), $65 //compare c with 'A'
+	cmpb %dil, $65 //compare c with 'A'
 	jl .LnotAlphabetical //fail case
-	cmpb (%dil), $90 //compare c with 'Z'
+	cmpb %dil, $90 //compare c with 'Z'
 	jle .LisAlphabetical //success case
 
 	cmpb %rdi, $97 //compare c with 'a'
