@@ -107,6 +107,8 @@ wc_isspace:
     cmpb $32, %rdi // compare input with ' '
     jz .LisWhitespace //is space, jump to success label
     movq $0, %rax //no conditions met, load 0 for return
+    addq $8, %rsp //adjust stack pointer
+    ret //return result
 
 .LisWhitespace:
     movq $1, %rax //condition was met, load 1 for return
