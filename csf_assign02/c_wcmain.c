@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "wcfuncs.h"
+#include <stdlib.h>
 
 // Suggested number of buckets for the hash table
 #define HASHTABLE_SIZE 13249
