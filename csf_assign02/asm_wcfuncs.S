@@ -58,7 +58,8 @@ wc_hash:
 	.globl wc_str_compare
 wc_str_compare:
     subq $8, %rsp //adjust stack pointer
-    movq $0, %r10 //assume equal strings
+    movq $0, %rax //assume equal strings
+    movq $0, %rbx //initialize secondary return register
 
 .LcmpLoop:
     cmpb (%rdi), (%rsi) //are current bytes equal?
@@ -71,15 +72,15 @@ wc_str_compare:
     jmp .LcmpLoop //jump to top of loop
 
 .LequalStrings:
-    movq $0, %rax
-    addq $8, %rsp
+    movq $0, %rax //strings are equal
+    addq $8, %rsp //adjust stack pointer
     ret
 
 .LnotEqualStrings:
-    movzbq %rax, (%rdi)
-    movzbq %rbx, (%rsi)
-    sub rax, rbx
-    addq $8, %rsp
+    movzbq %rax, (%rdi) //move byte with zero extension to return register
+    movzbq %rbx, (%rsi) //move byte with zero extension to secondary return register
+    sub rax, rbx //compare return registers
+    addq $8, %rsp //adjust stack pointer
 	ret
 
 /*
