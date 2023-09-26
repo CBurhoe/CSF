@@ -57,7 +57,29 @@ wc_hash:
  */
 	.globl wc_str_compare
 wc_str_compare:
-	/* TODO: implement */
+    subq $8, %rsp //adjust stack pointer
+    movq $0, %r10 //assume equal strings
+
+.LcmpLoop:
+    cmpb (%rdi), (%rsi) //are current bytes equal?
+    jne .LnotEqualStrings //if not, jump out of loop
+    cmpb (%rdi), $0 //are pointers at a null terminator?
+    jz .LequalStrings //if yes, strings are equal!
+
+    inc %rdi //advance to next char of first string
+    inc %rsi //advance to next char of second string
+    jmp .LcmpLoop //jump to top of loop
+
+.LequalStrings:
+    movq $0, %rax
+    addq $8, %rsp
+    ret
+
+.LnotEqualStrings:
+    movzbq %rax, (%rdi)
+    movzbq %rbx, (%rsi)
+    sub rax, rbx
+    addq $8, %rsp
 	ret
 
 /*
