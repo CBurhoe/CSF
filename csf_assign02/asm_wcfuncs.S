@@ -107,11 +107,12 @@ wc_isspace:
     cmpb $32, %rdi // compare input with ' '
     jz .LisWhitespace //is space, jump to success label
     movq $0, %rax //no conditions met, load 0 for return
-    ret //return 0
 
 .LisWhitespace:
     movq $1, %rax //condition was met, load 1 for return
-    ret //return 1
+
+    addq $8, %rsp //adjust stack pointer
+    ret //return result
 /*
  * Return 1 if the character code in c is an alphabetic character
  * ('A' through 'Z' or 'a' through 'z'), 0 otherwise.
