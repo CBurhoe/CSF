@@ -80,8 +80,8 @@ wc_str_compare:
     ret
 
 .LnotEqualStrings:
-    movzbq %rax, al //move byte with zero extension to return register
-    movzbq %rbx, bl //move byte with zero extension to secondary return register
+    movzbq al, %rax //move byte with zero extension to return register
+    movzbq bl, %rbx //move byte with zero extension to secondary return register
     sub rbx, rax //compare return registers
     addq $8, %rsp //adjust stack pointer
 	ret
