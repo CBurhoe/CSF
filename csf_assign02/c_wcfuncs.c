@@ -198,9 +198,9 @@ struct WordEntry *wc_find_or_insert(struct WordEntry *head, const unsigned char 
 // Returns a pointer to the WordEntry object in the appropriate linked list
 // which represents s.
 struct WordEntry *wc_dict_find_or_insert(struct WordEntry *buckets[], unsigned num_buckets, const unsigned char *s) {
-  int *inserted;
+  int inserted = 0;
   uint32_t hash = wc_hash(s);
-  struct WordEntry *word_ptr = wc_find_or_insert(buckets[hash % num_buckets], s, inserted);
+  struct WordEntry *word_ptr = wc_find_or_insert(buckets[hash % num_buckets], s, &inserted);
   return word_ptr;
 }
 
