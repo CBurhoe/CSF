@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
     if (hash_table[i]->count < most_frequent_word->count) {
       continue;
     }
-    if (wc_str_compare(hash_table[i], most_frequent_word) == -1) {
+    if (wc_str_compare(hash_table[i]->word, most_frequent_word->word) == -1) {
       most_frequent_word = hash_table[i];
     }
   }
