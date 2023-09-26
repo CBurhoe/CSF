@@ -89,9 +89,29 @@ wc_str_copy:
  */
 	.globl wc_isspace
 wc_isspace:
-	/* TODO: implement */
-	ret
+    subq $8, %rsp //adjust stack pointer
 
+    /*
+    *%rdi - input char c
+    */
+    cmpb $9, %rdi //compare input with \t
+    jz .LisWhitespace //is tab, jump to success label
+    cmpb $10, %rdi // compare input with \n
+    jz .LisWhitespace //is newline, jump to success label
+    cmpb $11, %rdi // compare input with \v
+    jz .LisWhitespace //is vertical tab, jump to success label
+    cmpb $12, %rdi // compare input with \f
+    jz .LisWhitespace //is form feed, jump to success label
+    cmpb $13, %rdi // compare input with \r
+    jz .LisWhitespace //is carriage return, jump to success label
+    cmpb $32, %rdi // compare input with ' '
+    jz .LisWhitespace //is space, jump to success label
+    movq $0, %rax //no conditions met, load 0 for return
+    ret //return 0
+
+.LisWhitespace:
+    movq $1, %rax //condition was met, load 1 for return
+    ret //return 1
 /*
  * Return 1 if the character code in c is an alphabetic character
  * ('A' through 'Z' or 'a' through 'z'), 0 otherwise.
