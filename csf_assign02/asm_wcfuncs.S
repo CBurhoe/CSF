@@ -159,12 +159,12 @@ wc_isalpha:
 	movb %dil, %al
 	cmpb $65, %al //compare c with 'A'
 	jl .LnotAlphabetical //fail case
-	cmpb %al, $90 //compare c with 'Z'
+	cmpb $90, %al //compare c with 'Z'
 	jle .LisAlphabetical //success case
 
-	cmpb %al, $97 //compare c with 'a'
+	cmpb $97, %al //compare c with 'a'
 	jl .LnotAlphabetical //fail case
-	cmpb %al, $122 //compare c with 'z'
+	cmpb $122, %al //compare c with 'z'
 	jle .LisAlphabetical //success case
 
 .LnotAlphabetical:
