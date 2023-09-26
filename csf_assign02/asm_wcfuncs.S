@@ -139,14 +139,16 @@ wc_isalpha:
 	cmpb %rdi, $122 //compare c with 'z'
 	jle .LisAlphabetical //success case
 
-.LisAlphabetical:
-    movq %rax, $1
-
 .LnotAlphabetical:
-    movq %rax, $0
-
-    addq $8, %rsp
+    movq %rax, $0 //failed cases
+    addq $8, %rsp //adjust stack pointer
 	ret
+
+.LisAlphabetical:
+    movq %rax, $1 //succeeded in a case
+    addq $8, %rsp //adjust stack pointer
+	ret
+
 
 /*
  * Read the next word from given input stream, storing
