@@ -62,8 +62,8 @@ wc_str_compare:
     movq $0, %rbx //initialize secondary return register
 
 .LcmpLoop:
-    movb [%rdi], %al
-    movb [%rsi], %bl
+    movb (%rdi), %al
+    movb (%rsi), %bl
     cmpb %al, %bl //are current bytes equal?
 
     jne .LnotEqualStrings //if not, jump out of loop
