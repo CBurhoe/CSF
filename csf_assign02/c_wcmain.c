@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
      */
     wc_tolower(word);
     wc_trim_non_alpha(word);
-    struct WordEntry new_entry = wc_dict_find_or_insert(hash_table, HASHTABLE_SIZE, word);
+    struct WordEntry *new_entry = wc_dict_find_or_insert(hash_table, HASHTABLE_SIZE, word);
     if (new_entry->count == 0) { ++unique_words; }
     new_entry->count++;
   }
