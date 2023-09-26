@@ -127,7 +127,7 @@ int wc_readnext(FILE *in, unsigned char *w) {
   for (int i = 0; i < MAX_WORDLEN; ++i) {
     *(w + i) = (unsigned char)c;
     *(w + i + 1) = '\0';
-    c = fgets(in);
+    c = fgetc(in);
     if (wc_isspace((unsigned char)c) || (c == EOF)) {
       break;
     }
