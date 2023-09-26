@@ -152,7 +152,7 @@ void wc_tolower(unsigned char *w) {
 // NUL-terminated character string pointed-to by w.
 void wc_trim_non_alpha(unsigned char *w) {
   uint32_t i = 0;
-  while ((*(w + i) != '\0') && wc_isalpha(w + i)) {
+  while ((*(w + i) != '\0') && wc_isalpha(*(w + i))) {
     ++i;
   }
   *(w + i) = '\0';
@@ -200,7 +200,7 @@ struct WordEntry *wc_find_or_insert(struct WordEntry *head, const unsigned char 
 struct WordEntry *wc_dict_find_or_insert(struct WordEntry *buckets[], unsigned num_buckets, const unsigned char *s) {
   int *inserted;
   uint32_t hash = wc_hash(s);
-  struct WordEntry word_ptr = wc_find_or_insert(buckets[hash % num_buckets], s, inserted);
+  struct WordEntry *word_ptr = wc_find_or_insert(buckets[hash % num_buckets], s, inserted);
   return word_ptr;
 }
 
