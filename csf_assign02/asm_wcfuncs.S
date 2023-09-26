@@ -122,7 +122,28 @@ wc_isspace:
  */
 	.globl wc_isalpha
 wc_isalpha:
-	/* TODO: implement */
+	subq $8, %rsp //adjust stack pointer
+
+	/*
+	*%rdi - char input c
+	*/
+	cmpb %rdi, $65 //compare c with 'A'
+	jl .LnotAlphabetical //fail case
+	cmpb %rdi, $90 //compare c with 'Z'
+	jle .LisAlphabetical //success case
+
+	cmpb %rdi, $97 //compare c with 'a'
+	jl .LnotAlphabetical //fail case
+	cmpb %rdi, $122 //compare c with 'z'
+	jle .LisAlphabetical //success case
+
+.LisAlphabetical:
+    movq %rax, $1
+
+.LnotAlphabetical:
+    movq %rax, $0
+
+    addq $8, %rsp
 	ret
 
 /*
