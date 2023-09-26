@@ -167,12 +167,12 @@ wc_isalpha:
 	jle .LisAlphabetical //success case
 
 .LnotAlphabetical:
-    movq %rax, $0 //failed cases
+    movq $0, %rax //failed cases
     addq $8, %rsp //adjust stack pointer
 	ret
 
 .LisAlphabetical:
-    movq %rax, $1 //succeeded in a case
+    movq $1, %rax //succeeded in a case
     addq $8, %rsp //adjust stack pointer
 	ret
 
