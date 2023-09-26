@@ -62,9 +62,12 @@ wc_str_compare:
     movq $0, %rbx //initialize secondary return register
 
 .LcmpLoop:
-    cmpb (%rdi), (%rsi) //are current bytes equal?
+    movb [%rdi], al
+    movb [%rsi], bl
+    cmpb al, bl //are current bytes equal?
+
     jne .LnotEqualStrings //if not, jump out of loop
-    cmpb (%rdi), $0 //are pointers at a null terminator?
+    cmpb $0, al //are pointers at a null terminator?
     jz .LequalStrings //if yes, strings are equal!
 
     inc %rdi //advance to next char of first string
@@ -77,9 +80,9 @@ wc_str_compare:
     ret
 
 .LnotEqualStrings:
-    movzbq %rax, (%rdi) //move byte with zero extension to return register
-    movzbq %rbx, (%rsi) //move byte with zero extension to secondary return register
-    sub rax, rbx //compare return registers
+    movzbq %rax, al //move byte with zero extension to return register
+    movzbq %rbx, bl //move byte with zero extension to secondary return register
+    sub rbx, rax //compare return registers
     addq $8, %rsp //adjust stack pointer
 	ret
 
