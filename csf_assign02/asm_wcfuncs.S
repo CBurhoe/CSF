@@ -216,7 +216,16 @@ wc_isalpha:
  */
 	.globl wc_readnext
 wc_readnext:
-	/* TODO: implement */
+    subq $8, %rsp //adjust stack pointer
+    pushq %r12 //store value from caller saved register
+    movq $0, %r12 //initialize counter to 0
+
+
+.LreadInLoop:
+
+
+    popq %r12 //restore caller saved value to register
+    addq $8, %rsp //restore stack pointer
 	ret
 
 /*
