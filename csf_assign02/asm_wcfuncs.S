@@ -41,10 +41,13 @@ wc_hash:
 .equ HASH_CODE, 5381 //define constant for base hash code
 
     subq $8, %rsp //adjust stack pointer
+    pushq %rbx //save value from rbx in next stack qword
 
 
 
 	/* TODO: implement */
+	popq %rbx //restore value saved in stack to rbx
+	addq $8, %rsp //restore stack pointer
 	ret
 
 /*
