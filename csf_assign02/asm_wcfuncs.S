@@ -47,6 +47,10 @@ wc_hash:
     cmbp $0, (%rdi) //check if input char pointer at null terminator
     jz .LhashCodeDone //if yes, jump out of loop
 
+    inc %rdi //advance to next character
+    jmp .LhashCodeLoop //continue loop
+
+
 .LhashCodeDone:
 
     movq $HASH_CODE, %rbx // load base hashcode const into register for calculating hashcode
