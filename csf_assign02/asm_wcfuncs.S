@@ -43,6 +43,14 @@ wc_hash:
     subq $8, %rsp //adjust stack pointer
     pushq %rbx //save value from rbx in next stack qword
 
+.LhashCodeLoop:
+    cmbp $0, (%rdi) //check if input char pointer at null terminator
+    jz .LhashCodeDone //if yes, jump out of loop
+
+.LhashCodeDone:
+
+    movq $HASH_CODE, %rbx // load base hashcode const into register for calculating hashcode
+
 
 
 	/* TODO: implement */
