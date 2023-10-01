@@ -229,6 +229,25 @@ wc_readnext:
 	.globl wc_tolower
 wc_tolower:
 	/* TODO: implement */
+	subq $8, %rsp //adjust stack pointer
+	movq %rdi, %r10 //move input into caller saved register
+
+.LconvertCharsLoop:
+    cmpb $0, (%r10) //check if pointer is at null terminator
+    jz .LconvertCharsDone //if yes, jump out of loop
+    cmpb $65, (%r10) //compare char with 'A'
+    jb .LadvanceLoop //if below 'A', continue loop without change
+    cmpb $90, (%r10) //compare char with 'Z'
+    ja .LadvanceLoop //if above 'Z', continue loop without change
+    addb $32, (%r10) //if char was between 'A', 'Z' inclusive, increment by 32 to lowercase
+
+.LadvanceLoop:
+    inc %r10 //advance to next char
+    jmp .LconvertCharsLoop //next loop iteration
+
+.LconvertCharsDone:
+    movq %r10, %rax //load new string into return register
+    addq $8, %rsp //restore stack pointer
 	ret
 
 /*
