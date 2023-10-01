@@ -228,7 +228,6 @@ wc_readnext:
  */
 	.globl wc_tolower
 wc_tolower:
-	/* TODO: implement */
 	subq $8, %rsp //adjust stack pointer
 	movq %rdi, %r10 //move input into caller saved register
 
