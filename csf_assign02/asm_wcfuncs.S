@@ -217,14 +217,21 @@ wc_isalpha:
 	.globl wc_readnext
 wc_readnext:
     subq $8, %rsp //adjust stack pointer
-    pushq %r12 //store value from caller saved register
-    movq $0, %r12 //initialize counter to 0
+    pushq %r10 //store value from caller saved register
+    pushq %r11 //store value from caller saved register
+    movq $0, %r10 //initialize counter to 0
+    movq %rdi, %r11 //store input argument to caller saved register
 
 
 .LreadInLoop:
+    cmpb $0, (%r11)
+    jz .LreadInDone
+
+.LreadInDone:
 
 
-    popq %r12 //restore caller saved value to register
+    popq %r11
+    popq %r10 //restore caller saved value to register
     addq $8, %rsp //restore stack pointer
 	ret
 
