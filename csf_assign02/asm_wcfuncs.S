@@ -227,6 +227,9 @@ wc_readnext:
     cmpb $0, (%r13)
     jz .LreadInDone
 
+
+    call fgetc
+
 .LreadInDone:
 
 
