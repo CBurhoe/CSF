@@ -55,11 +55,7 @@ wc_hash:
 
 
 .LhashCodeDone:
-
-
-
-
-	/* TODO: implement */
+    movq %rbx, %rax //load hashcode into return register
 	popq %rbx //restore value saved in stack to rbx
 	addq $8, %rsp //restore stack pointer
 	ret
