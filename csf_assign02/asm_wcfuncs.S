@@ -37,6 +37,13 @@
  */
 	.globl wc_hash
 wc_hash:
+
+.equ HASH_CODE, 5381 //define constant for base hash code
+
+    subq $8, %rsp //adjust stack pointer
+
+
+
 	/* TODO: implement */
 	ret
 
@@ -59,7 +66,7 @@ wc_hash:
 wc_str_compare:
     subq $8, %rsp //adjust stack pointer
     movq $0, %rax //assume equal strings
-    movq $0, %rbx //initialize secondary return register
+    movq $0, %rbx //initialize secondary return register TODO: %rbx is callee-saved reg, need to save and restore value to use
 
 .LcmpLoop:
     movb (%rdi), %al
