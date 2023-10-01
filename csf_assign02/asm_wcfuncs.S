@@ -37,7 +37,7 @@
  */
 	.globl wc_hash
 wc_hash:
-
+//TODO: verify functional
 .equ HASH_CODE, 5381 //define constant for base hash code
 
     subq $8, %rsp //adjust stack pointer
