@@ -125,8 +125,8 @@ wc_str_copy:
     movb (%rsi), (%rdi) //move source bit into destination bit
     inc %rsi //advance source pointer
     inc %rdi //advance destination pointer
-    movb $0, (%rdi)
-    jmp .LcopyLoop
+    movb $0, (%rdi) //put a null terminator on the end of string
+    jmp .LcopyLoop //continue loop
 
 .LcopyDone:
     addq $8, %rsp //adjust stack pointer
