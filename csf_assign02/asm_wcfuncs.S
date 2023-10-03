@@ -117,6 +117,19 @@ wc_str_compare:
 	.globl wc_str_copy
 wc_str_copy:
 	/* TODO: implement */
+	subq $8, %rsp //adjust stack pointer
+
+.LcopyLoop:
+    cmpb $0, (%rsi) //check if source char is null terminator
+    jz .LcopyDone //if yes, jump out of loop
+    movb (%rsi), (%rdi) //move source bit into destination bit
+    inc %rsi //advance source pointer
+    inc %rdi //advance destination pointer
+    movb $0, (%rdi)
+    jmp .LcopyLoop
+
+.LcopyDone:
+    addq $8, %rsp //adjust stack pointer
 	ret
 
 /*
