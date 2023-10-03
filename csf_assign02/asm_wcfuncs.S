@@ -79,6 +79,7 @@ wc_hash:
 wc_str_compare:
     subq $8, %rsp //adjust stack pointer
     movq $0, %rax //assume equal strings
+    push %rbx //save calle saved register value
     movq $0, %rbx //initialize secondary return register TODO: %rbx is callee-saved reg, need to save and restore value to use
 
 .LcmpLoop:
@@ -96,6 +97,7 @@ wc_str_compare:
 
 .LequalStrings:
     movq $0, %rax //strings are equal
+    pop %rbx
     addq $8, %rsp //adjust stack pointer
     ret
 
