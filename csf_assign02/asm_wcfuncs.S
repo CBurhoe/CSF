@@ -191,15 +191,14 @@ wc_isalpha:
 	/*
 	*%rdi - char input c
 	*/
-	movb %dil, %al
-	cmpb $65, %al //compare c with 'A'
+	cmpb $65, %dil //compare c with 'A'
 	jl .LnotAlphabetical //fail case
-	cmpb $90, %al //compare c with 'Z'
+	cmpb $90, %dil //compare c with 'Z'
 	jle .LisAlphabetical //success case
 
-	cmpb $97, %al //compare c with 'a'
+	cmpb $97, %dil //compare c with 'a'
 	jl .LnotAlphabetical //fail case
-	cmpb $122, %al //compare c with 'z'
+	cmpb $122, %dil //compare c with 'z'
 	jle .LisAlphabetical //success case
 
 .LnotAlphabetical:
