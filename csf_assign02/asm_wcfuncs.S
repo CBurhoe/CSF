@@ -230,7 +230,7 @@ wc_isalpha:
  *    int wc_readnext(FILE *in, unsigned char *w);
  */
 	.globl wc_readnext
-wc_readnext:
+wc_readnext: //TODO: implement correctly
     subq $8, %rsp //adjust stack pointer
     pushq %r12 //store value from caller saved register
     pushq %r13 //store value from caller saved register
@@ -279,7 +279,7 @@ wc_tolower:
     jmp .LconvertCharsLoop //next loop iteration
 
 .LconvertCharsDone:
-    movq %r10, %rax //load new string into return register
+    movq %r10, %rax //load new string into return register //FIXME: void function, result stored in function parameter
     addq $8, %rsp //restore stack pointer
 	ret
 
@@ -293,6 +293,21 @@ wc_tolower:
 	.globl wc_trim_non_alpha
 wc_trim_non_alpha:
 	/* TODO: implement */
+	subq $8, %rsp
+	pushq %r12 //store callee saved register value
+	movq %rdi, %r12 //move input string to callee saved register
+
+.LcharLoop:
+    movb (%r12), (%dil) //move current byte into first argument byte
+    call wc_isalpha //call function wc_isalpha on current byte
+    cmpq $0, %rax //check if current byte is non-alphabetical
+    jz .LcharDone //if yes, jump out of loop
+    inc %r12 //advance to next byte/char in string
+    jmp .LcharLoop //continue loop
+
+.LcharDone:
+    movb $0, (%r12) //set last char to null terminator
+    popq %r12 //restore callee saved register value
 	ret
 
 /*
