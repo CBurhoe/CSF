@@ -357,6 +357,20 @@ wc_dict_find_or_insert:
 	.globl wc_free_chain
 wc_free_chain:
 	/* TODO: implement */
+	subq $8, %rsp //adjust stack pointer
+	pushq %r12 //store value in callee saved register
+	movq %rdi, %r12 //load wordentry pointer into %r12
+
+    cmpq $0, WORDENTRY_NEXT_OFFSET(%r12) //check if wordentry->next is null (end of chain)
+    jz .LendOfChain //if end of chain, jump past recursive call
+	movq WORDENTRY_NEXT_OFFSET(%r12), %rdi //put wordentry->next into arg1 register
+	call wc_free_chain //recursively call function on next wordentry
+
+.LendOfChain:
+    movq %r12, %rdi //move current wordentry into arg1 register
+    call free //call free function on current wordentry
+
+	popq %r12 //restore value in callee saved register
 	ret
 
 /*
