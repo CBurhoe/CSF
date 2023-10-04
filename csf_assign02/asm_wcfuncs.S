@@ -328,7 +328,28 @@ wc_trim_non_alpha:
  */
 	.globl wc_find_or_insert
 wc_find_or_insert:
-	/* TODO: implement */
+	subq $8, %rsp //adjust stack pointer
+	pushq %r12 //store value in callee saved register
+	pushq %r13 //store value in callee saved register
+	pushq %r14 //store value in callee saved register
+	movq %rdi, %r12 //store linked list head pointer in r12
+	movq %rsi, %r13 //store search string pointer in r13
+	movq %rdx, %r14 //store insertion status int pointer in r14
+
+.LsearchLoop:
+
+
+.LwordFound:
+
+
+.LwordMissing:
+
+
+.Ldone:
+    popq %r14 //restore value in callee saved register
+    popq %r13 //restore value in callee saved register
+    popq %r12 //restore value in callee saved register
+    addq $8, %rsp //restore stack pointer
 	ret
 
 /*
