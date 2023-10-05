@@ -49,7 +49,7 @@ wc_hash:
     movq $33, %r8 //insert value into register
     mulq %r8 //multiply previous hashcode val by 33
     movq %rax, %rbx //move hash value back into rbx
-    addq (%rdi), %rbx //add character code to hashcode
+    addb (%rdi), %rbx //add character code to hashcode
     inc %rdi //advance to next character
     jmp .LhashCodeLoop //continue loop
 
