@@ -338,6 +338,9 @@ wc_find_or_insert:
 
 .LsearchLoop:
 
+    //todo: ensure comparison is done on the value of wordentry->next, not the location
+    cmpq $0, WORDENTRY_NEXT_OFFSET(%r12) //check if current wordentry is the end of the chain
+    jz .LwordMissing //if end of chain, jump to fail condition
 
 .LwordFound:
 
