@@ -333,9 +333,12 @@ wc_find_or_insert:
 	pushq %r12 //store value in callee saved register
 	pushq %r13 //store value in callee saved register
 	pushq %r14 //store value in callee saved register
-	movq %rdi, %r12 //store linked list head pointer in r12
+	pushq %r15 //store value in callee saved register
+	movq %rdi, %r15 //store linked list head pointer in r15
 	movq %rsi, %r13 //store search string pointer in r13
 	movq %rdx, %r14 //store insertion status int pointer in r14
+	movq %rdi, %r12 //store current wordentry pointer in r12
+
 
 .LsearchLoop:
     movq WORDENTRY_WORD_OFFSET(%r12), %rdi //load current word pointer into first arg register
@@ -350,14 +353,23 @@ wc_find_or_insert:
     jmp .LsearchLoop //continue loop
 
 .LwordFound:
-    movq $0, (%r14) //assign int at pointer to 0
+    movq $0, (%r14) //set int at pointer to 0
     movq %r12, %rax //put address of wordentry in return register
     jmp .Ldone //jump to end of procedure
 
 .LwordMissing:
+    movq WORDENTRY_SIZE, %rdi //move wordentry size into arg1 register
+    call malloc //allocate new wordentry struct
+    movq %rax, %r12 //load new wordentry into r12
+    movq %r13, WORDENTRY_WORD_OFFSET(%r12) //put search string pointer into wordentry->word
+    movq $0, WORDENTRY_COUNT_OFFSET(%r12) //set word count to 0
+    movq %r15, WORDENTRY_NEXT_OFFSET(%r12) //set wordentry->next to head of chain
+    movq $1, (%r14) //set int at pointer to 1
+    movq %r12, %rax
 
 
 .Ldone:
+    popq %r15 //restore value in callee saved register
     popq %r14 //restore value in callee saved register
     popq %r13 //restore value in callee saved register
     popq %r12 //restore value in callee saved register
