@@ -121,7 +121,8 @@ wc_str_copy:
 .LcopyLoop:
     cmpb $0, (%rsi) //check if source char is null terminator
     jz .LcopyDone //if yes, jump out of loop
-    movb (%rsi), (%rdi) //move source bit into destination bit
+    movb (%rsi), %r8b //move byte into lower byte register
+    movb %rb8, (%rdi) //move source bit into destination bit
     inc %rsi //advance source pointer
     inc %rdi //advance destination pointer
     movb $0, (%rdi) //put a null terminator on the end of string
