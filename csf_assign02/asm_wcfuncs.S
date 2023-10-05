@@ -390,6 +390,9 @@ wc_find_or_insert:
 	.globl wc_dict_find_or_insert
 wc_dict_find_or_insert:
 	/* TODO: implement */
+	subq $8, %rsp //adjust stack pointer
+
+    addq $8, %rsp //restore stack pointer
 	ret
 
 /*
