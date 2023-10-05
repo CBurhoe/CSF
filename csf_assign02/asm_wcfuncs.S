@@ -38,12 +38,11 @@
  */
 	.globl wc_hash
 wc_hash:
-//TODO: verify functional
 .equ HASH_CODE, 5381 //define constant for base hash code
 
     subq $8, %rsp //adjust stack pointer
     pushq %rbx //save value from rbx in next stack qword
-    movq $HASH_CODE, %rbx // load base hashcode const into register for calculating hashcode
+    movq HASH_CODE, %rbx // load base hashcode const into register for calculating hashcode
 
 .LhashCodeLoop:
     cmpb $0, (%rdi) //check if input char pointer at null terminator
