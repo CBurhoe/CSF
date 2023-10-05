@@ -47,7 +47,7 @@ wc_hash:
 
 
 .LhashCodeLoop:
-    cmbp $0, (%rdi) //check if input char pointer at null terminator
+    cmpb $0, (%rdi) //check if input char pointer at null terminator
     jz .LhashCodeDone //if yes, jump out of loop
     mulq $33, %rbx //multiply previous hashcode val by 33
     addq (%rdi), %rbx //add character code to hashcode
