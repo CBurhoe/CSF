@@ -38,7 +38,6 @@
  */
 	.globl wc_hash
 wc_hash:
-
     subq $8, %rsp //adjust stack pointer
     pushq %rbx //save value from rbx in next stack qword
     movq $5381, %rbx // load base hashcode const into register for calculating hashcode
@@ -46,7 +45,9 @@ wc_hash:
 .LhashCodeLoop:
     cmpb $0, (%rdi) //check if input char pointer at null terminator
     jz .LhashCodeDone //if yes, jump out of loop
-    imulq $33, %rbx //multiply previous hashcode val by 33
+    movq %rbx, %rax //move hash value into return register
+    mulq $33 //multiply previous hashcode val by 33
+    movq %rax, %rbx //move hash value back into rbx
     addq (%rdi), %rbx //add character code to hashcode
     inc %rdi //advance to next character
     jmp .LhashCodeLoop //continue loop
