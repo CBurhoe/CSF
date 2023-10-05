@@ -365,8 +365,7 @@ wc_find_or_insert:
     movq $0, WORDENTRY_COUNT_OFFSET(%r12) //set word count to 0
     movq %r15, WORDENTRY_NEXT_OFFSET(%r12) //set wordentry->next to head of chain
     movq $1, (%r14) //set int at pointer to 1
-    movq %r12, %rax
-
+    movq %r12, %rax //move pointer to new wordentry into return register
 
 .Ldone:
     popq %r15 //restore value in callee saved register
