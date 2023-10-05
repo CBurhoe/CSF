@@ -337,10 +337,16 @@ wc_find_or_insert:
 	movq %rdx, %r14 //store insertion status int pointer in r14
 
 .LsearchLoop:
-
+    movq WORDENTRY_WORD_OFFSET(%r12), %rdi //load current word pointer into first arg register
+    movq %r13, %rsi // move search string into second arg register
+    call wc_str_compare //call compare function on current str and search str
+    cmpq $0, %rax //check if words are the same or not
+    jz .LwordFound //if equal, jump to success case
     //todo: ensure comparison is done on the value of wordentry->next, not the location
     cmpq $0, WORDENTRY_NEXT_OFFSET(%r12) //check if current wordentry is the end of the chain
-    jz .LwordMissing //if end of chain, jump to fail condition
+    jz .LwordMissing //if end of chain, jump to fail case
+    addq WORDENTRY_NEXT_OFFSET(%r12), %r12 //move to next word chain
+    jmp .LsearchLoop //continue loop
 
 .LwordFound:
 
