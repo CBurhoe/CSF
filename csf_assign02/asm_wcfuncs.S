@@ -349,7 +349,9 @@ wc_find_or_insert:
     jmp .LsearchLoop //continue loop
 
 .LwordFound:
-
+    movq $0, (%r14) //assign int at pointer to 0
+    movq %r12, %rax //put address of wordentry in return register
+    jmp .Ldone //jump to end of procedure
 
 .LwordMissing:
 
