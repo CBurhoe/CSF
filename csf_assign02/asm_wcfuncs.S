@@ -297,7 +297,7 @@ wc_trim_non_alpha:
 	movq %rdi, %r12 //move input string to callee saved register
 
 .LcharLoop:
-    movb (%r12), (%dil) //move current byte into first argument byte
+    movb (%r12), %dil //move current byte into first argument byte
     call wc_isalpha //call function wc_isalpha on current byte
     cmpq $0, %rax //check if current byte is non-alphabetical
     jz .LcharDone //if yes, jump out of loop
