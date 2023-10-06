@@ -282,17 +282,19 @@ wc_readnext: //TODO: implement correctly
 
 .LreadInDone:
     cmpq $0, %r14 //check if no chars read in
-    jg .LcharReadIn //if greater than 0, chars were read in
+    jg .Lsuccess //if greater than 0, chars were read in
     movq $0, %rax //load fail case into return register
-    ret
+    jmp .Lend //finished procedure
 
-.LcharReadIn:
+.Lsuccess:
+    movq $1, %rax //load success case into return register
+
+.Lend:
     popq %r15 //restore caller saved value to register
     popq %r14 //restore caller saved value to register
     popq %r13 //restore caller saved value to register
     popq %r12 //restore caller saved value to register
     addq $8, %rsp //restore stack pointer
-    movq $1, %rax //load success case into return register
 	ret
 
 /*
