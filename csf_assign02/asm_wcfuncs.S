@@ -484,7 +484,7 @@ wc_dict_find_or_insert:
     call malloc //allocate memory for integer
     movq %rax, %r13 //put address of allocated int into r13
     movq $0, (%r13) //initialize heap allocated int to 0
-    movq (%r15,%r12), %rdi //put pointer to bucket into arg1 register
+    leaq (%r15,%r12), %rdi //put pointer to bucket into arg1 register
     movq %r14, %rsi //put input string into arg2 register
     movq %r13, %rdx //put address of insert status int into arg3 register
     call wc_find_or_insert //find or insert wordentry into bucket/chain
