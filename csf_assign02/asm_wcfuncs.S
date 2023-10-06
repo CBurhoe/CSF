@@ -299,9 +299,10 @@ wc_tolower:
  * C function prototype:
  *    void wc_trim_non_alpha(unsigned char *w);
  */
+
+ /*VERIFIED*/
 	.globl wc_trim_non_alpha
 wc_trim_non_alpha:
-	/* TODO: implement */
 	subq $8, %rsp
 	pushq %r12 //store callee saved register value
 	pushq %r13 //store callee saved register value
