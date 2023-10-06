@@ -242,23 +242,57 @@ wc_readnext: //TODO: implement correctly
     subq $8, %rsp //adjust stack pointer
     pushq %r12 //store value from caller saved register
     pushq %r13 //store value from caller saved register
-    movq $0, %r12 //initialize counter to 0
-    movq %rdi, %r13 //store input argument to caller saved register
+    pushq %r14 //store value from caller saved register
+    pushq %r15 //store value from caller saved register
+    movq $0, %r12 //initialize to 0
+    movq %rdi, %r13 //store input argument to callee saved register
+    movq $0, %r14 //initialize counter to 0
+    movq %rsi, %r15 //put string into r15
 
 
-.LreadInLoop:
-    cmpb $0, (%r13)
+.LreadInLoopOne:
+    movq %r13, %rdi //put stream pointer into argument register
+    call fgetc //get next char in stream
+    movb %al, %r12b //move char into callee saved register
+    cmpb $-1, %r12b //check if reached EOF
+    jz .LreadInDone //stream ended
+    movb %r12b, %dil //move char into arg1 register
+    call wc_isspace //check if char is space
+    cmpq $0, %rax //check result
+    jz .LreadInLoopTwo //found non-whitespace, jump to next loop
+    jmp .LreadInLoopOne //still whitespace, continue loop 1
+
+.LreadInLoopTwo:
+    cmpq MAX_WORDLEN, %r14 //check if number of chars read is at max length
     jz .LreadInDone
-
-
-    call fgetc
+    movq %r13, %rdi //put stream pointer into argument register
+    call fgetc //get next char in stream
+    movb %al, %r12b //move char into callee saved register
+    cmpb $-1, %r12b //check if reached EOF
+    jz .LreadInDone //stream ended
+    movb %r12b, %dil //move char into arg1 register
+    call wc_isspace //check if char is space
+    cmpq $1, %rax //check result
+    jz .LreadInDone //found whitespace, end of string
+    movb %r12b, (%r15) //move char into string
+    inc %r14 //char read in
+    inc %r15 //advance char pointer
+    movb $0, (%r15) //set last char to null terminator
+    jmp .LreadInLoopTwo //continue loop
 
 .LreadInDone:
+    cmpq $0, %r14 //check if no chars read in
+    jg .LcharReadIn //if greater than 0, chars were read in
+    movq $0, %rax //load fail case into return register
+    ret
 
-
-    popq %r13
+.LcharReadIn:
+    popq %r15 //restore caller saved value to register
+    popq %r14 //restore caller saved value to register
+    popq %r13 //restore caller saved value to register
     popq %r12 //restore caller saved value to register
     addq $8, %rsp //restore stack pointer
+    movq $1, %rax //load success case into return register
 	ret
 
 /*
@@ -423,9 +457,10 @@ wc_dict_find_or_insert:
  * C function prototype:
  *    void wc_free_chain(struct WordEntry *p);
  */
+
+ /*VERIFIED*/
 	.globl wc_free_chain
 wc_free_chain:
-	/* TODO: implement */
 	subq $8, %rsp //adjust stack pointer
 	pushq %r12 //store value in callee saved register
 	movq %rdi, %r12 //load wordentry pointer into %r12
