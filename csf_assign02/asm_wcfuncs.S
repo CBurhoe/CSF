@@ -151,6 +151,8 @@ wc_str_copy:
  * C function prototype:
  *    int wc_isspace(unsigned char c);
  */
+
+ /*VERIFIED*/
 	.globl wc_isspace
 wc_isspace:
     subq $8, %rsp //adjust stack pointer
@@ -183,6 +185,8 @@ wc_isspace:
  * C function prototype:
  *    int wc_isalpha(unsigned char c);
  */
+
+ /*VERIFIED*/
 	.globl wc_isalpha
 wc_isalpha:
 	subq $8, %rsp //adjust stack pointer
@@ -258,6 +262,8 @@ wc_readnext: //TODO: implement correctly
  * C function prototype:
  *    void wc_tolower(unsigned char *w);
  */
+
+ /*VERIFIED*/
 	.globl wc_tolower
 wc_tolower:
 	subq $8, %rsp //adjust stack pointer
@@ -277,7 +283,6 @@ wc_tolower:
     jmp .LconvertCharsLoop //next loop iteration
 
 .LconvertCharsDone:
-    movq %r10, %rax //load new string into return register //FIXME: void function, result stored in function parameter
     addq $8, %rsp //restore stack pointer
 	ret
 
