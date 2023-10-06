@@ -480,12 +480,16 @@ wc_dict_find_or_insert:
     idivq %r13 //divide rax (hash_code) by r13 (num_buckets)
     movq %rdx, %r15 //load hash mod num_buckets into r15
 
+    movq $4, %rdi //load size of int into arg1 register
+    call malloc //allocate memory for integer
+    movq %rax, %r13 //put address of allocated int into r13
     movq (%r15,%r12), %rdi //put pointer to bucket into arg1 register
     movq %r14, %rsi //put input string into arg2 register
-    movq $0, %r15 //set r15 to 0 for inserted status
-    leaq (%r15), %rdx //put address of inserted status int into arg3 register
+    movq %r13, %rdx //put address of insert status int into arg3 register
     call wc_find_or_insert //find or insert wordentry into bucket/chain
 
+    movq %r13, %rdi //move allocated int pointer into arg1
+    call free //free allocated variable
     popq %r15 //restore callee saved register
     popq %r14 //restore callee saved register
     popq %r13 //restore callee saved register
