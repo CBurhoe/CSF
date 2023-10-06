@@ -263,8 +263,6 @@ wc_readnext: //TODO: implement correctly
     jmp .LreadInLoopOne //still whitespace, continue loop 1
 
 .LreadInLoopTwo:
-    cmpq MAX_WORDLEN, %r14 //check if number of chars read is at max length
-    jz .LreadInDone
     movq %r13, %rdi //put stream pointer into argument register
     call fgetc //get next char in stream
     movb %al, %r12b //move char into callee saved register
@@ -278,6 +276,8 @@ wc_readnext: //TODO: implement correctly
     inc %r14 //char read in
     inc %r15 //advance char pointer
     movb $0, (%r15) //set last char to null terminator
+    cmpq MAX_WORDLEN, %r14 //check if number of chars read is at max length
+    jz .LreadInDone
     jmp .LreadInLoopTwo //continue loop
 
 .LreadInDone:
