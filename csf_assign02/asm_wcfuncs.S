@@ -487,7 +487,15 @@ wc_dict_find_or_insert:
     movq %r14, %rsi //put input string into arg2 register
     movq %r13, %rdx //put address of insert status int into arg3 register
     call wc_find_or_insert //find or insert wordentry into bucket/chain
+    cmpq $0, (%r13) //check if word was inserted
+    jz .LwordInserted //word was inserted
+    jmp .LwordInChain //word already in chain
 
+.LwordInserted:
+    leaq (%r15, %r12), %r15 //find address of appropriate bucket
+    movq %rax, (%r15)
+
+.LwordInChain:
     movq %r13, %rdi //move allocated int pointer into arg1
     call free //free allocated variable
     popq %r15 //restore callee saved register
