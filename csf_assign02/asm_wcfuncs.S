@@ -402,6 +402,8 @@ wc_find_or_insert:
 	movq %rdx, %r14 //store insertion status int pointer in r14
 	movq %rdi, %r12 //store current wordentry pointer in r12
 
+    cmpq $0, %r15 //check if head is null
+    jz .LwordMissing //no words in chain
 
 .LsearchLoop:
     movq WORDENTRY_WORD_OFFSET(%r12), %rdi //put word pointer into arg1 register
