@@ -412,7 +412,7 @@ wc_find_or_insert:
     jz .LwordMissing //no words in chain
 
 .LsearchLoop:
-    movq WORDENTRY_WORD_OFFSET(%r12), %rdi //put word pointer into arg1 register
+    leaq WORDENTRY_WORD_OFFSET(%r12), %rdi //put word pointer into arg1 register
     movq %r13, %rsi // move search string into second arg register
     call wc_str_compare //call compare function on current str and search str
     cmpq $0, %rax //check if words are the same or not
