@@ -237,6 +237,8 @@ wc_isalpha:
  * C function prototype:
  *    int wc_readnext(FILE *in, unsigned char *w);
  */
+
+ /*VERIFIED*/
 	.globl wc_readnext
 wc_readnext: //TODO: implement correctly
     subq $8, %rsp //adjust stack pointer
