@@ -98,17 +98,17 @@ wc_str_compare:
 
 .LequalStrings:
     movq $0, %rax //strings are equal
-    jmp .Ldone //jump to end
+    jmp .Lfinished //jump to end
 
 .LleftGreater:
     movq $1, %rax //positive value return
-    jmp .Ldone //jump to end
+    jmp .Lfinished //jump to end
 
 .LrightGreater:
     movq $-1, %rax //negative value return
-    jmp .Ldone //jump to end
+    jmp .Lfinished //jump to end
 
-.Ldone:
+.Lfinished:
     addq $8, %rsp //adjust stack pointer
 	ret
 
