@@ -496,6 +496,7 @@ wc_dict_find_or_insert:
 
 .LwordInserted:
     //leaq 1(%r15, %r12), %r15 //find address of appropriate bucket
+    movq (%r15), %r15 //access memory location
     movq %rax, (%r15) //put address of wordentry object into index of array
 
 .LwordInChain:
