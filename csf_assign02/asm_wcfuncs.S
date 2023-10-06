@@ -266,6 +266,8 @@ wc_readnext: //TODO: implement correctly
     movb $0, (%r15) //set last char to null terminator
 
 .LreadInLoopTwo:
+    cmpq MAX_WORDLEN, %r14 //check if number of chars read is at max length
+    jz .LreadInDone
     movq %r13, %rdi //put stream pointer into argument register
     call fgetc //get next char in stream
     movb %al, %r12b //move char into callee saved register
