@@ -126,18 +126,24 @@ wc_str_compare:
 wc_str_copy:
 	/* TODO: implement */
 	subq $8, %rsp //adjust stack pointer
+	pushq %r12 //store callee saved register value
+	pushq %r13 //store callee saved register value
+	movq %rdi, %r12 //move destination buffer to r12
+	movq %rsi, %r13 //move source string to r13
 
 .LcopyLoop:
-    cmpb $0, (%rsi) //check if source char is null terminator
+    cmpb $0, (%r13) //check if source char is null terminator
     jz .LcopyDone //if yes, jump out of loop
-    movb (%rsi), %r8b //move byte into lower byte register
-    movb %r8b, (%rdi) //move source bit into destination bit
-    inc %rsi //advance source pointer
-    inc %rdi //advance destination pointer
-    movb $0, (%rdi) //put a null terminator on the end of string
+    movb (%r13), %r8b //move byte into lower byte register
+    movb %r8b, (%r12) //move source bit into destination bit
+    inc %r13 //advance source pointer
+    inc %r12 //advance destination pointer
+    movb $0, (%r12) //put a null terminator on the end of string
     jmp .LcopyLoop //continue loop
 
 .LcopyDone:
+    popq %r13 //restore callee stored register
+    popq %r12 //restore callee stored register
     addq $8, %rsp //adjust stack pointer
 	ret
 
