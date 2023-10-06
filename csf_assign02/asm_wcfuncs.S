@@ -433,7 +433,7 @@ wc_find_or_insert:
     call malloc //allocate new wordentry struct
     movq %rax, %r12 //load new wordentry into r12
     movq %r13, %rsi //move string into arg2 register
-    movq WORDENTRY_WORD_OFFSET(%r12), %rdi //put wordentry->word address into  arg1 register
+    leaq WORDENTRY_WORD_OFFSET(%r12), %rdi //put wordentry->word address into  arg1 register
     call wc_str_copy //copy input string into wordentry->word
     movq $0, WORDENTRY_COUNT_OFFSET(%r12) //set word count to 0
     movq %r15, WORDENTRY_NEXT_OFFSET(%r12) //set wordentry->next to head of chain
