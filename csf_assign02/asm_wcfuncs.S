@@ -120,6 +120,8 @@ wc_str_compare:
  * C function prototype:
  *    void wc_str_copy(unsigned char *dest, const unsigned char *source);
  */
+
+ /*VERIFIED*/
 	.globl wc_str_copy
 wc_str_copy:
 	/* TODO: implement */
