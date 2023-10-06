@@ -481,8 +481,9 @@ wc_dict_find_or_insert:
     movq %rdx, %r15 //load hash mod num_buckets into r15
 
     movq $4, %rdi //load size of int into arg1 register
-    call calloc //allocate memory for integer
+    call malloc //allocate memory for integer
     movq %rax, %r13 //put address of allocated int into r13
+    movq $0, (%r13) //initialize heap allocated int to 0
     movq (%r15,%r12), %rdi //put pointer to bucket into arg1 register
     movq %r14, %rsi //put input string into arg2 register
     movq %r13, %rdx //put address of insert status int into arg3 register
