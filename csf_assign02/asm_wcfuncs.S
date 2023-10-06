@@ -480,7 +480,7 @@ wc_dict_find_or_insert:
     idivq %r13 //divide rax (hash_code) by r13 (num_buckets)
     movq %rdx, %r15 //load hash mod num_buckets into r15
 
-    movq %r15(%r12), %rdi //put pointer to bucket into arg1 register
+    movq (%r15,%r12), %rdi //put pointer to bucket into arg1 register
     movq %r14, %rsi //put input string into arg2 register
     movq $0, %r15 //set r15 to 0 for inserted status
     leaq %r15, %rdx //put address of inserted status int into arg3 register
