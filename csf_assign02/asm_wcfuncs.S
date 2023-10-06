@@ -317,6 +317,7 @@ wc_trim_non_alpha:
 .LcharDone:
     movb $0, (%r12) //set last char to null terminator
     popq %r12 //restore callee saved register value
+    addq $8, %rsp
 	ret
 
 /*
