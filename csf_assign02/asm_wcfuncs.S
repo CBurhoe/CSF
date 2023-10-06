@@ -486,9 +486,6 @@ wc_dict_find_or_insert:
     leaq %r15, %rdx //put address of inserted status int into arg3 register
     call wc_find_or_insert //find or insert wordentry into bucket/chain
 
-
-
-
     popq %r15 //restore callee saved register
     popq %r14 //restore callee saved register
     popq %r13 //restore callee saved register
