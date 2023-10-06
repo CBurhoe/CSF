@@ -466,7 +466,33 @@ wc_find_or_insert:
 wc_dict_find_or_insert:
 	/* TODO: implement */
 	subq $8, %rsp //adjust stack pointer
+    pushq %r12 //store callee saved register value
+    pushq %r13 //store callee saved register value
+    pushq %r14 //store callee saved register value
+    pushq %r15 //store callee saved register value
+    movq %rdi, %r12 //load buckets array pointer int0 r12
+    movq %rsi, %r13 //load num_buckets value into r13
+    movq %rdx %r14 //load input string pointer into r14
 
+.LdictionarySearch:
+    movq %r14, %rdi //load input string pointer into arg1 register
+    call wc_hash //calculate hash code for string
+    idivq %r13 //divide rax (hash_code) by r13 (num_buckets)
+    movq %rdx, %r15 //load hash mod num_buckets into r15
+
+    movq %r15(%r12), %rdi //put pointer to bucket into arg1 register
+    movq %r14, %rsi //put input string into arg2 register
+    movq $0, %r15 //set r15 to 0 for inserted status
+    leaq %r15, %rdx //put address of inserted status int into arg3 register
+    call wc_find_or_insert //find or insert wordentry into bucket/chain
+
+
+
+
+    popq %r15 //restore callee saved register
+    popq %r14 //restore callee saved register
+    popq %r13 //restore callee saved register
+    popq %r12 //restore callee saved register
     addq $8, %rsp //restore stack pointer
 	ret
 
