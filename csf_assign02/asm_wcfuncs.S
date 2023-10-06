@@ -279,7 +279,7 @@ wc_readnext: //TODO: implement correctly
     inc %r14 //char read in
     inc %r15 //advance buffer pointer
     movb $0, (%r15) //set last char to null terminator
-    cmpq MAX_WORDLEN, %r14 //check if number of chars read is at max length
+    cmpq $MAX_WORDLEN, %r14 //check if number of chars read is at max length
     jge .LreadInDone
     jmp .LreadInLoopTwo //continue loop
 
