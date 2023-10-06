@@ -396,6 +396,8 @@ wc_trim_non_alpha:
  * C function prototype:
  *    struct WordEntry *wc_find_or_insert(struct WordEntry *head, const unsigned char *s, int *inserted);
  */
+
+ /*VERIFIED*/
 	.globl wc_find_or_insert
 wc_find_or_insert:
 	subq $8, %rsp //adjust stack pointer
