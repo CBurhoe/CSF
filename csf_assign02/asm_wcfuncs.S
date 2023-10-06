@@ -492,8 +492,8 @@ wc_dict_find_or_insert:
     jmp .LwordInChain //word already in chain
 
 .LwordInserted:
-    leaq (%r15, %r12), %r15 //find address of appropriate bucket
-    movq %rax, (%r15)
+    movq (%r15, %r12), %r15 //find address of appropriate bucket
+    movq %rax, %r15 //put address of wordentry object into index of array
 
 .LwordInChain:
     movq %r13, %rdi //move allocated int pointer into arg1
