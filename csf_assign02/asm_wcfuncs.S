@@ -404,7 +404,8 @@ wc_find_or_insert:
 
 
 .LsearchLoop:
-    movq WORDENTRY_WORD_OFFSET(%r12), %rdi //load current word pointer into first arg register
+    movq WORDENTRY_WORD_OFFSET(%r12), %r8 //load current word pointer location into r8
+    movq (%r8), %rdi //put word pointer into arg1 register
     movq %r13, %rsi // move search string into second arg register
     call wc_str_compare //call compare function on current str and search str
     cmpq $0, %rax //check if words are the same or not
