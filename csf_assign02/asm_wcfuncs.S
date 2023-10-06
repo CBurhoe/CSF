@@ -260,7 +260,6 @@ wc_readnext: //TODO: implement correctly
     call wc_isspace //check if char is space
     cmpq $1, %rax //check result
     jz .LreadInLoopOne //still whitespace, continue loop 1
-
     movb %r12b, (%r15) //put first char into buffer
     inc %r14 //char read in
     inc %r15 //advance buffer pointer
