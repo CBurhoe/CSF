@@ -258,9 +258,13 @@ wc_readnext: //TODO: implement correctly
     jz .LreadInDone //stream ended
     movb %r12b, %dil //move char into arg1 register
     call wc_isspace //check if char is space
-    cmpq $0, %rax //check result
-    jz .LreadInLoopTwo //found non-whitespace, jump to next loop
-    jmp .LreadInLoopOne //still whitespace, continue loop 1
+    cmpq $1, %rax //check result
+    jz .LreadInLoopOne //still whitespace, continue loop 1
+
+    movb %r12b, (%r15) //put first char into buffer
+    inc %r14 //char read in
+    inc %r15 //advance buffer pointer
+    movb $0, (%r15) //set last char to null terminator
 
 .LreadInLoopTwo:
     movq %r13, %rdi //put stream pointer into argument register
@@ -272,9 +276,9 @@ wc_readnext: //TODO: implement correctly
     call wc_isspace //check if char is space
     cmpq $1, %rax //check result
     jz .LreadInDone //found whitespace, end of string
-    movb %r12b, (%r15) //move char into string
+    movb %r12b, (%r15) //move char into buffer
     inc %r14 //char read in
-    inc %r15 //advance char pointer
+    inc %r15 //advance buffer pointer
     movb $0, (%r15) //set last char to null terminator
     cmpq MAX_WORDLEN, %r14 //check if number of chars read is at max length
     jz .LreadInDone
