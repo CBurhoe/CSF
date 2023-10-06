@@ -423,7 +423,7 @@ wc_find_or_insert:
     jmp .Ldone //jump to end of procedure
 
 .LwordMissing:
-    movq WORDENTRY_SIZE, %rdi //move wordentry size into arg1 register
+    movq $WORDENTRY_SIZE, %rdi //move wordentry size into arg1 register
     call malloc //allocate new wordentry struct
     movq %rax, %r12 //load new wordentry into r12
     movq %r13, WORDENTRY_WORD_OFFSET(%r12) //put search string pointer into wordentry->word
