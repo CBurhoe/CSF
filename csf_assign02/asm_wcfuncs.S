@@ -411,7 +411,6 @@ wc_find_or_insert:
     call wc_str_compare //call compare function on current str and search str
     cmpq $0, %rax //check if words are the same or not
     jz .LwordFound //if equal, jump to success case
-    //todo: ensure comparison is done on the value of wordentry->next, not the location
     movq WORDENTRY_NEXT_OFFSET(%r12), %r8 //load address of wordentry->next into r8
     cmpq $0, %r8 //check if current wordentry is the end of the chain
     jz .LwordMissing //if end of chain, jump to fail case
