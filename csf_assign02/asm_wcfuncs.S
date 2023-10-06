@@ -77,6 +77,8 @@ wc_hash:
  * C function prototype:
  *    int wc_str_compare(const unsigned char *lhs, const unsigned char *rhs);
  */
+
+ /*VERIFIED*/
 	.globl wc_str_compare
 wc_str_compare:
     subq $8, %rsp //adjust stack pointer
