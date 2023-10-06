@@ -472,7 +472,7 @@ wc_dict_find_or_insert:
     pushq %r15 //store callee saved register value
     movq %rdi, %r12 //load buckets array pointer int0 r12
     movq %rsi, %r13 //load num_buckets value into r13
-    movq %rdx %r14 //load input string pointer into r14
+    movq %rdx, %r14 //load input string pointer into r14
 
 .LdictionarySearch:
     movq %r14, %rdi //load input string pointer into arg1 register
