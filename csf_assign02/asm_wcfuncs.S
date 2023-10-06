@@ -484,8 +484,8 @@ wc_dict_find_or_insert:
     call malloc //allocate memory for integer
     movq %rax, %r13 //put address of allocated int into r13
     movq $0, (%r13) //initialize heap allocated int to 0
-    leaq (%r15,%r12), %r8 //put address of chain head pointer into r8
-    movq (%r8), %rdi //put pointer to bucket into arg1 register
+    leaq 1(%r15,%r12), %r15 //put address of chain head pointer into r8
+    movq (%r15), %rdi //put pointer to bucket into arg1 register
     movq %r14, %rsi //put input string into arg2 register
     movq %r13, %rdx //put address of insert status int into arg3 register
     call wc_find_or_insert //find or insert wordentry into bucket/chain
@@ -495,7 +495,7 @@ wc_dict_find_or_insert:
     jmp .LwordInChain //word already in chain
 
 .LwordInserted:
-    leaq (%r15, %r12), %r15 //find address of appropriate bucket
+    //leaq 1(%r15, %r12), %r15 //find address of appropriate bucket
     movq %rax, (%r15) //put address of wordentry object into index of array
 
 .LwordInChain:
