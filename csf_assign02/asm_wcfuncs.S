@@ -304,18 +304,29 @@ wc_trim_non_alpha:
 	/* TODO: implement */
 	subq $8, %rsp
 	pushq %r12 //store callee saved register value
+	pushq %r13 //store callee saved register value
 	movq %rdi, %r12 //move input string to callee saved register
+	movq $0, %r13 //set value to 0
 
 .LcharLoop:
+    cmpb $0, (%r12) //check if char is null terminator
+    jz .LcharDone //if so, jump to end
     movb (%r12), %dil //move current byte into first argument byte
     call wc_isalpha //call function wc_isalpha on current byte
-    cmpq $0, %rax //check if current byte is non-alphabetical
-    jz .LcharDone //if yes, jump out of loop
+    cmpq $1, %rax //check if current byte is alphabetical
+    jz .LlastAlpha //current last alphabetical char
+
+    inc %r12 //advance to next byte/char in string
+    jmp .LcharLoop //continue loop
+
+.LlastAlpha:
+    movq %r12, %r13 //store address of laast alphabetical char in r13
     inc %r12 //advance to next byte/char in string
     jmp .LcharLoop //continue loop
 
 .LcharDone:
-    movb $0, (%r12) //set last char to null terminator
+    movb $0, 1(%r13) //set byte after last alphabetical character to null terminator
+    popq %r13 //restore callee saved register value
     popq %r12 //restore callee saved register value
     addq $8, %rsp
 	ret
