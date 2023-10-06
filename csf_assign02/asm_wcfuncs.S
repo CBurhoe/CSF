@@ -413,7 +413,7 @@ wc_find_or_insert:
     movq WORDENTRY_NEXT_OFFSET(%r12), %r8 //load address of wordentry->next into r8
     cmpq $0, (%r8) //check if current wordentry is the end of the chain
     jz .LwordMissing //if end of chain, jump to fail case
-    addq WORDENTRY_NEXT_OFFSET(%r12), %r12 //move to next word chain
+    movq (%r8), %r12 //move to next word chain
     jmp .LsearchLoop //continue loop
 
 .LwordFound:
