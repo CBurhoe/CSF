@@ -80,33 +80,35 @@ wc_hash:
 	.globl wc_str_compare
 wc_str_compare:
     subq $8, %rsp //adjust stack pointer
-    movq $0, %rax //assume equal strings
-    push %rbx //save calle saved register value
-    movq $0, %rbx //initialize secondary return register TODO: %rbx is callee-saved reg, need to save and restore value to use
 
 .LcmpLoop:
     movb (%rdi), %al
     movb (%rsi), %bl
     cmpb %al, %bl //are current bytes equal?
 
-    jne .LnotEqualStrings //if not, jump out of loop
-    cmpb $0, %al //are pointers at a null terminator?
-    jz .LequalStrings //if yes, strings are equal!
+    jl .LleftGreater //lhs is greater
+    jg .LrightGreater //rhs is greater
 
+.LequalSoFar:
+    cmpb $0, %al //are pointers at a null terminator?
+    jz .LequalStrings //strings are fully equal
     inc %rdi //advance to next char of first string
     inc %rsi //advance to next char of second string
-    jmp .LcmpLoop //jump to top of loop
+    jmp .LcmpLoop //jump back to loop
 
 .LequalStrings:
     movq $0, %rax //strings are equal
-    pop %rbx
-    addq $8, %rsp //adjust stack pointer
-    ret
+    jmp .Ldone //jump to end
 
-.LnotEqualStrings:
-    movzbq %al, %rax //move byte with zero extension to return register
-    movzbq %bl, %rbx //move byte with zero extension to secondary return register
-    sub %rbx, %rax //compare return registers
+.LleftGreater:
+    movq $1, %rax //positive value return
+    jmp .Ldone //jump to end
+
+.LrightGreater:
+    movq $-1, %rax //negative value return
+    jmp .Ldone //jump to end
+
+.Ldone:
     addq $8, %rsp //adjust stack pointer
 	ret
 
