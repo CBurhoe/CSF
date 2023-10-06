@@ -489,7 +489,7 @@ wc_dict_find_or_insert:
     movq %r13, %rdx //put address of insert status int into arg3 register
     call wc_find_or_insert //find or insert wordentry into bucket/chain
     movq (%r13), %r10
-    cmpq $0, %r10 //check if word was inserted
+    cmpq $1, %r10 //check if word was inserted
     jz .LwordInserted //word was inserted
     jmp .LwordInChain //word already in chain
 
