@@ -541,10 +541,12 @@ wc_free_chain:
     popq %r12 //retrieve next stored address
     dec %r13
 
+.LfinalWord:
     movq %r12, %rdi //move head of chain into arg1 register
     call free //free allocated memory
     popq %r13 //restore value in callee saved register
 	popq %r12 //restore value in callee saved register
+	addq $8, %rsp //restore stack pointer
 	ret
 
 /*
