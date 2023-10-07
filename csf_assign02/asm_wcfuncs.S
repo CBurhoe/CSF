@@ -520,17 +520,30 @@ wc_dict_find_or_insert:
 wc_free_chain:
 	subq $8, %rsp //adjust stack pointer
 	pushq %r12 //store value in callee saved register
+	pushq %r13 //store value in callee saved register
 	movq %rdi, %r12 //load wordentry pointer into %r12
+    movq $0, %r13 //track addresses stored on stack
 
+.LtraversalLoop:
     cmpq $0, WORDENTRY_NEXT_OFFSET(%r12) //check if wordentry->next is null (end of chain)
-    jz .LendOfChain //if end of chain, jump past recursive call
-	movq WORDENTRY_NEXT_OFFSET(%r12), %rdi //put wordentry->next into arg1 register
-	call wc_free_chain //recursively call function on next wordentry
+    jz .LendOfChainLoop //if end of chain, jump past recursive call
+    movq WORDENTRY_NEXT_OFFSET(%r12), %r10
+    pushq %r12 //store address on stack
+    inc %r13 //another address stored on stack
+	movq %r10, %r12 //put wordentry->next into arg1 register
+    jmp .LtraversalLoop //continue traversing chain
 
-.LendOfChain:
+.LendOfChainLoop:
+    cmpq $0, %r13 //check if addresses still stored on stack
+    jz .LfinalWord //if no addresses on stack, exit loop
     movq %r12, %rdi //move current wordentry into arg1 register
     call free //call free function on current wordentry
+    popq %r12 //retrieve next stored address
+    dec %r13
 
+    movq %r12, %rdi //move head of chain into arg1 register
+    call free //free allocated memory
+    popq %r13 //restore value in callee saved register
 	popq %r12 //restore value in callee saved register
 	ret
 
