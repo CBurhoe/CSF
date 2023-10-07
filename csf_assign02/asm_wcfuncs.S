@@ -540,6 +540,7 @@ wc_free_chain:
     call free //call free function on current wordentry
     popq %r12 //retrieve next stored address
     dec %r13
+    jmp .LendOfChainLoop //continue loop
 
 .LfinalWord:
     movq %r12, %rdi //move head of chain into arg1 register
