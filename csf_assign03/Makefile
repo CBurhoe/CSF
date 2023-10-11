@@ -3,7 +3,7 @@ CPPFLAGS = -g -Wall -Wextra -pedantic
 RM = rm -f
 
 SRCS = csim.cpp cache_structure.cpp
-OBJS = $($(SRCS), .cpp, .o)
+OBJS = $(subst .cpp,.o,$(SRCS))
 
 all : csim
 
