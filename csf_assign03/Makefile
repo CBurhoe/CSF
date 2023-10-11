@@ -1,5 +1,5 @@
 CXX = g++
-CPPFLAGS = -g -Wall -Wextra -pedantic -std=gnu11
+CPPFLAGS = -g -Wall -Wextra -pedantic
 RM = rm -f
 
 SRCS = csim.cpp
