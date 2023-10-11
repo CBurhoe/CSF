@@ -2,8 +2,8 @@ CXX = g++
 CPPFLAGS = -g -Wall -Wextra -pedantic
 RM = rm -f
 
-SRCS = csim.cpp
-OBJS = $(SRCS:%.cpp=%.o)
+SRCS = csim.cpp cache_structure.cpp
+OBJS = $($(SRCS), .cpp, .o)
 
 all : csim
 
