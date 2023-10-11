@@ -1,0 +1,8 @@
+//
+// Created by casey on 10/11/2023.
+//
+
+#ifndef UNTITLED_CACHE_STRUCTURE_H
+#define UNTITLED_CACHE_STRUCTURE_H
+
+#endif //UNTITLED_CACHE_STRUCTURE_H
