@@ -5,4 +5,6 @@
 #ifndef CACHE_STRUCTURE_H
 #define CACHE_STRUCTURE_H
 
+struct Slot {};
+
 #endif // CACHE_STRUCTURE_H

@@ -1,5 +1,5 @@
 CXX = g++
-CPPFLAGS = -g -Wall -Wextra -pedantic
+CPPFLAGS = -g -Wall -Wextra -pedantic -std=c++17
 RM = rm -f
 
 SRCS = csim.cpp cache_structure.cpp
