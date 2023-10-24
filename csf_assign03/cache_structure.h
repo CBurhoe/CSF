@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
+#include <map>
 
 struct Slot {
     uint32_t tag;
@@ -19,10 +20,17 @@ struct Slot {
 
 struct Set {
     std::vector<Slot> slots;
+    std::map<uint32_t, Slot*> slot_map;
 };
 
-struct Cache {
+class Cache {
+private:
     std::vector<Set> sets;
+    
+public:
+    Cache(uint32_t num_sets, uint32_t num_blocks, uint32_t block_size);
+    unsigned load();
+    unsigned store();
 };
 
 
