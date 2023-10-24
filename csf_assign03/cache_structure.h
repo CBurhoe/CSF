@@ -41,6 +41,7 @@ public:
     Cache(Parameters* params);
     unsigned load();
     unsigned store();
+    void run_simulation();
 };
 
 

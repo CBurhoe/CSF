@@ -7,8 +7,8 @@
 // Created by casey on 10/11/2023.
 //
 
-Cache::Cache(uint32_t num_sets, uint32_t num_blocks, uint32_t block_size) {
-
+Cache::Cache(Parameters* params) {
+ //todo
 }
 
 unsigned int Cache::load() {
@@ -19,4 +19,8 @@ unsigned int Cache::load() {
 unsigned int Cache::store() {
   //todo
   return 0;
+}
+
+void Cache::run_simulation() {
+  //todo
 }
