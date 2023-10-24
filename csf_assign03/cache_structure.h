@@ -26,4 +26,5 @@ struct Cache {
 };
 
 
+
 #endif // CACHE_STRUCTURE_H

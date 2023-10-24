@@ -1,6 +1,6 @@
 #include "cache_structure.h"
 #include <iostream>
-#include <stdint.h>
+#include <cstdint>
 #include <vector>
 
 //

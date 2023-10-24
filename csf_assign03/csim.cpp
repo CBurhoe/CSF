@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <vector>
 #include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include "cache_structure.h"
 
 int main(int argc, char **argv) {
