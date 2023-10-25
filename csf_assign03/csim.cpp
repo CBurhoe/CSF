@@ -5,6 +5,12 @@
 #include <cstdlib>
 #include "cache_structure.h"
 
+bool check_power_two(int val) {
+  if (val <= 0) {return false;}
+  
+  return (val & (val-1)) == 0;
+}
+
 int main(int argc, char **argv) {
   //TODO: Implement
   //Check for correct number of arguments
@@ -19,6 +25,12 @@ int main(int argc, char **argv) {
   std::string write_allocate = argv[4];
   std::string write_policy = argv[5];
   std::string eviction_policy = argv[6];
+  
+  //Check args 1,2,3 are powers of 2
+  
+  //Initialize parameters struct
+  
+  //Assign each argument to the correct parameter
   
   
   return 0;
