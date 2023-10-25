@@ -11,6 +11,42 @@ bool check_power_two(int val) {
   return (val & (val-1)) == 0;
 }
 
+bool set_write_allocate(Parameters* params, std::string& arg) {
+  if (arg == "write-allocate") {
+    params->write_allocate = 1;
+  } else if (arg == "no-write-allocate") {
+    params->write_allocate = 0;
+  } else {
+    std::cerr << "Invalid write-allocate argument" << std::endl;
+    return false;
+  }
+  return true;
+}
+
+bool set_write_policy(Parameters* params, std::string& arg) {
+  if (arg == "write-through") {
+    params->write_through = 1;
+  } else if (arg == "write-back") {
+    params->write_through = 0;
+  } else {
+    std::cerr << "Invalid write-policy argument" << std::endl;
+    return false;
+  }
+  return true;
+}
+
+bool set_eviction_policy(Parameters* params, std::string& arg) {
+  if (arg == "fifo") {
+    params->eviction_policy = 0;
+  } else if (arg == "lru") {
+    params->eviction_policy = 1;
+  } else {
+    std::cerr << "Invalid eviction-policy argument" << std::endl;
+    return false;
+  }
+  return true;
+}
+
 int main(int argc, char* argv[]) {
   //TODO: Implement
   //Check for correct number of arguments
@@ -44,6 +80,7 @@ int main(int argc, char* argv[]) {
   params.num_sets = num_sets;
   params.num_blocks = num_blocks;
   params.block_size = block_size;
+  
   
   //Initialize Cache object
   
