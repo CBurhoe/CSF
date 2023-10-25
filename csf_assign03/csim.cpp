@@ -96,7 +96,22 @@ int main(int argc, char* argv[]) {
   //Initialize Cache object
   Cache cache = Cache(&params);
   
+  //Simulation Stats
+  unsigned totalLoads = 0;
+  unsigned totalStores = 0;
+  unsigned loadHits = 0;
+  unsigned loadMisses = 0;
+  unsigned storeHits = 0;
+  unsigned storeMisses = 0;
+  unsigned totalCycles = 0;
+  
   //simulate cache functions
+  std::string instruction, hex_address, ignore;
+  unsigned address;
+  
+  unsigned nOffsetBits = cache.log2(cache.params->block_size);
+  unsigned nIndexBits = cache.log2(cache.params->num_sets);
+  
   
   return 0;
 }

@@ -24,7 +24,7 @@ struct Slot {
     bool full = false; // if false, slot is empty
     bool dirty = false; // if true, data must be written to memory before evicting
     unsigned load_order = 0;
-    unsigned access_ts = 0;
+    unsigned access_ts = 0; // used for LRU
 };
 
 struct Set {
@@ -35,11 +35,12 @@ struct Set {
 class Cache {
 private:
     std::vector<Set> sets;
-    Parameters* params;
 public:
+    Parameters* params;
     explicit Cache(Parameters* params);
     unsigned load();
     unsigned store();
+    unsigned log2(unsigned n);
     void run_simulation();
 };
 

@@ -29,6 +29,15 @@ unsigned int Cache::store() {
   return 0;
 }
 
+unsigned Cache::log2(unsigned n) {
+  unsigned val = 0;
+  while (n != 1) {
+    n >>= 1;
+    val++;
+  }
+  return val;
+}
+
 void Cache::run_simulation() {
   //todo
 }
