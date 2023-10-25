@@ -81,8 +81,20 @@ int main(int argc, char* argv[]) {
   params.num_blocks = num_blocks;
   params.block_size = block_size;
   
+  if (!set_write_allocate(&params, write_allocate)) {
+    return 4;
+  }
+  
+  if (!set_write_policy(&params, write_policy)) {
+    return 5;
+  }
+  
+  if (!set_eviction_policy(&params, eviction_policy)) {
+    return 6;
+  }
   
   //Initialize Cache object
+  Cache cache = Cache(&params);
   
   //simulate cache functions
   

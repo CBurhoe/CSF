@@ -37,7 +37,7 @@ private:
     std::vector<Set> sets;
     Parameters* params;
 public:
-    Cache(Parameters* params);
+    explicit Cache(Parameters* params);
     unsigned load();
     unsigned store();
     void run_simulation();
