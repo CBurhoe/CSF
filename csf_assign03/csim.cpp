@@ -112,6 +112,66 @@ int main(int argc, char* argv[]) {
   unsigned nOffsetBits = cache.log2(cache.params->block_size);
   unsigned nIndexBits = cache.log2(cache.params->num_sets);
   
+  while (std::cin >> instruction >> hex_address >> ignore) {
+    //convert hex_address to unsigned int
+    address = std::stoul(hex_address, nullptr, 16);
+    
+    //get offset and index
+    unsigned offset = address & ((1 << nOffsetBits) - 1);
+    unsigned index = (address >> nOffsetBits) & ((1 << nIndexBits) - 1);
+    
+    //get tag
+    unsigned tag = address >> (nOffsetBits + nIndexBits);
+    
+    Set set = cache.get_set(index);
+    
+    bool slot_exists = set.slot_map.find(tag) != set.slot_map.end();
+    
+    Slot slot;
+    if (slot_exists) {
+      slot = cache.get_slot(tag, &set);
+    }
+    
+    //check if load or store
+    if (instruction == "l") {
+      totalLoads++;
+      if (!slot_exists) {
+        loadMisses++;
+        cache.miss(index, tag, true, totalCycles);
+      } else {
+        loadHits++;
+        totalCycles++;
+        slot.access_ts = totalCycles;
+      }
+    } else if (instruction == "s") {
+      totalStores++;
+      if (cache.params->write_through == 1) { totalCycles += 100; }
+      if (!slot_exists) {
+        storeMisses++;
+        if (cache.params->write_allocate == 1) {
+          cache.miss(index, tag, false, totalCycles);
+        }
+      } else {
+        storeHits++;
+        if (cache.params->write_through == 0) {
+          totalCycles++;
+          slot.dirty = true;
+        }
+        slot.access_ts = totalCycles;
+      }
+    } else {
+      std::cerr << "Invalid instruction" << std::endl;
+      return 7;
+    }
+  }
+  
+  std::cout << "Total loads: " << totalLoads << std::endl;
+  std::cout << "Total stores: " << totalStores << std::endl;
+  std::cout << "Load hits: " << loadHits << std::endl;
+  std::cout << "Load misses: " << loadMisses << std::endl;
+  std::cout << "Store hits: " << storeHits << std::endl;
+  std::cout << "Store misses: " << storeMisses << std::endl;
+  std::cout << "Total cycles: " << totalCycles << std::endl;
   
   return 0;
 }

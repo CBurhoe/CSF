@@ -12,8 +12,8 @@
 
 struct Parameters {
     unsigned num_sets = 0; // positive power of 2
-    unsigned num_blocks = 0; // positive power of 2
-    unsigned block_size = 0; // positive power of 2, at least 4 bytes
+    unsigned num_slots = 0; // positive power of 2
+    unsigned slot_size = 0; // positive power of 2, at least 4 bytes
     unsigned write_allocate = 0; // 0 for no-write-allocate, 1 for write-allocate
     unsigned write_through = 0; // 0 for write-back, 1 for write-through
     unsigned eviction_policy = 0; // 0 for fifo, 1 for lru
@@ -35,13 +35,16 @@ struct Set {
 class Cache {
 private:
     std::vector<Set> sets;
+    unsigned read_write_length;
 public:
     Parameters* params;
     explicit Cache(Parameters* params);
-    unsigned load();
-    unsigned store();
     unsigned log2(unsigned n);
-    void run_simulation();
+    Set get_set(unsigned index);
+    Slot get_slot(unsigned tag, Set* set);
+    void miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles);
+    unsigned long evict(unsigned index, unsigned &totalCycles);
+    void replace(unsigned new_index, unsigned index, unsigned tag, bool load, unsigned &totalCycles);
 };
 
 
