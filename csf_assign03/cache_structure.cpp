@@ -49,7 +49,7 @@ void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles)
   Set* set = &this->sets.at(index);
   
   long new_index = -1;
-  for (long i = 0; i < set->slots.size(); i++) {
+  for (unsigned i = 0; i < set->slots.size(); i++) {
     if (!set->slots.at(i).full) {
       new_index = i;
       break;
