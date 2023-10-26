@@ -41,7 +41,7 @@ public:
     explicit Cache(Parameters* params);
     unsigned log2(unsigned n);
     Set get_set(unsigned index);
-    Slot get_slot(unsigned tag, Set* set);
+    static Slot get_slot(unsigned tag, Set* set);
     void miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles);
     unsigned long evict(unsigned index, unsigned &totalCycles);
     void replace(unsigned new_index, unsigned index, unsigned tag, bool load, unsigned &totalCycles);
