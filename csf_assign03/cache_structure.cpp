@@ -37,11 +37,9 @@ Set Cache::get_set(unsigned index) {
 
 Slot Cache::get_slot(unsigned tag, Set* set) {
   std::map<unsigned, Slot*>::iterator it = set->slot_map.find(tag);
-  bool blockExists = it != set->slot_map.end();
-  Slot* slotPtr = nullptr;
-  if (blockExists) {
-    slotPtr = it->second;
-  }
+  Slot* slotPtr;
+  slotPtr = it->second;
+  
   return *slotPtr;
 }
 
@@ -50,8 +48,8 @@ void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles)
   
   Set* set = &this->sets.at(index);
   
-  unsigned new_index = -1;
-  for (unsigned i = 0; i < set->slots.size(); i++) {
+  long new_index = -1;
+  for (long i = 0; i < set->slots.size(); i++) {
     if (!set->slots.at(i).full) {
       new_index = i;
       break;
