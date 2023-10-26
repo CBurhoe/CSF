@@ -71,6 +71,12 @@ unsigned long Cache::evict(unsigned int index, unsigned int &totalCycles) {
         j = i;
       }
     }
+  } else {
+    for (unsigned i = 0; i < this->params->num_slots; i++) {
+      if (set->slots.at(i).load_order < set->slots.at(j).load_order) {
+        j = i;
+      }
+    }
   }
   if (set->slots.at(j).dirty) {
     totalCycles += this->read_write_length;
