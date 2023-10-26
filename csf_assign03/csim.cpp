@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
   
   //Assign each argument to the correct parameter
   params.num_sets = num_sets;
-  params.num_blocks = num_blocks;
-  params.block_size = block_size;
+  params.num_slots = num_blocks;
+  params.slot_size = block_size;
   
   if (!set_write_allocate(&params, write_allocate)) {
     return 4;
@@ -109,15 +109,14 @@ int main(int argc, char* argv[]) {
   std::string instruction, hex_address, ignore;
   unsigned address;
   
-  unsigned nOffsetBits = cache.log2(cache.params->block_size);
+  unsigned nOffsetBits = cache.log2(cache.params->slot_size);
   unsigned nIndexBits = cache.log2(cache.params->num_sets);
   
   while (std::cin >> instruction >> hex_address >> ignore) {
     //convert hex_address to unsigned int
     address = std::stoul(hex_address, nullptr, 16);
     
-    //get offset and index
-    unsigned offset = address & ((1 << nOffsetBits) - 1);
+    //get index
     unsigned index = (address >> nOffsetBits) & ((1 << nIndexBits) - 1);
     
     //get tag
