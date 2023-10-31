@@ -90,6 +90,7 @@ void Cache::replace(unsigned int new_index, unsigned int index, unsigned int tag
   this->sets.at(index).slots.at(new_index).tag = tag;
   this->sets.at(index).slots.at(new_index).full = true;
   this->sets.at(index).slots.at(new_index).access_ts = totalCycles;
+  this->sets.at(index).slots.at(new_index).load_order = totalCycles;
   
   if (!load && this->params->write_through == 0) {
     this->sets.at(index).slots.at(new_index).dirty = true;
