@@ -23,7 +23,7 @@ struct Slot {
     unsigned tag = 0;
     bool full = false; // if false, slot is empty
     bool dirty = false; // if true, data must be written to memory before evicting
-    unsigned load_order = 0;
+    unsigned load_order = 0; // used for FIFO
     unsigned access_ts = 0; // used for LRU
 };
 
