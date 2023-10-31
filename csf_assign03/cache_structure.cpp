@@ -66,13 +66,13 @@ unsigned long Cache::evict(unsigned int index, unsigned int &totalCycles) {
   Set* set = &this->sets.at(index);
   unsigned j = 0;
   if (this->params->eviction_policy == 1) {
-    for (unsigned i = 0; i < this->params->num_slots; i++) {
+    for (unsigned i = 1; i < this->params->num_slots; i++) {
       if (set->slots.at(i).access_ts < set->slots.at(j).access_ts) {
         j = i;
       }
     }
   } else {
-    for (unsigned i = 0; i < this->params->num_slots; i++) {
+    for (unsigned i = 1; i < this->params->num_slots; i++) {
       if (set->slots.at(i).load_order < set->slots.at(j).load_order) {
         j = i;
       }
