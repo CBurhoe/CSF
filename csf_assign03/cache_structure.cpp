@@ -64,7 +64,7 @@ void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles)
 
 unsigned long Cache::evict(unsigned int index, unsigned int &totalCycles) {
   Set* set = &this->sets.at(index);
-  unsigned long j = 0;
+  unsigned j = 0;
   if (this->params->eviction_policy == 1) {
     for (unsigned i = 0; i < this->params->num_slots; i++) {
       if (set->slots.at(i).access_ts < set->slots.at(j).access_ts) {
