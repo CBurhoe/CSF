@@ -8,7 +8,9 @@
 bool check_power_two(int val) {
   if (val <= 0) {return false;}
   
-  return (val & (val-1)) == 0;
+  if ((val & (val-1)) == 0) {return true;}
+  
+  return false;
 }
 
 bool set_write_allocate(Parameters* params, std::string& arg) {
