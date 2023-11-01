@@ -124,14 +124,17 @@ int main(int argc, char* argv[]) {
     //get tag
     unsigned tag = address >> (nOffsetBits + nIndexBits);
     
-    Set set = cache.get_set(index);
-    
-    bool slot_exists = set.slot_map.find(tag) != set.slot_map.end();
-    
-    Slot slot;
+    Set set = cache.sets.at(index);
+    std::map<unsigned, Slot*>::iterator it = set.slot_map.find(tag);
+    bool slot_exists = (it != set.slot_map.end());
+    Slot *slot;
     if (slot_exists) {
-      slot = cache.get_slot(tag, &set);
+      slot = it->second;
     }
+    
+//    if (slot_exists) {
+//      slot = cache.get_slot(tag, &set);
+//    }
     
     //check if load or store
     if (instruction == "l") {
@@ -142,7 +145,7 @@ int main(int argc, char* argv[]) {
       } else {
         loadHits++;
         totalCycles++;
-        slot.access_ts = totalCycles;
+        slot->access_ts = totalCycles;
       }
     } else if (instruction == "s") {
       totalStores++;
@@ -156,9 +159,9 @@ int main(int argc, char* argv[]) {
         storeHits++;
         if (cache.params->write_through == 0) {
           totalCycles++;
-          slot.dirty = true;
+          slot->dirty = true;
         }
-        slot.access_ts = totalCycles;
+        slot->access_ts = totalCycles;
       }
     } else {
       std::cerr << "Invalid instruction" << std::endl;

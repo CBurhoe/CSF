@@ -34,14 +34,15 @@ struct Set {
 
 class Cache {
 private:
+
+public:
     std::vector<Set> sets;
     unsigned read_write_length;
-public:
     Parameters* params;
     explicit Cache(Parameters* params);
     unsigned log2(unsigned n);
     Set get_set(unsigned index);
-    static Slot get_slot(unsigned tag, Set* set);
+    Slot get_slot(unsigned tag, Set* set);
     void miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles);
     unsigned long evict(unsigned index, unsigned &totalCycles);
     void replace(unsigned new_index, unsigned index, unsigned tag, bool load, unsigned &totalCycles);
