@@ -124,10 +124,6 @@ int main(int argc, char* argv[]) {
     //get tag
     unsigned tag = address >> (nOffsetBits + nIndexBits);
     
-    if (cache.params->num_sets == 1) {
-      index = 0;
-    }
-    
     Set set = cache.sets.at(index);
     std::map<unsigned, Slot*>::iterator it = set.slot_map.find(tag);
     bool slot_exists = (it != set.slot_map.end());
