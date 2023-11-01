@@ -7,7 +7,7 @@
 
 bool check_power_two(int val) {
   if (val <= 0) {return false;}
-  
+  if (val == 1) {return true;}
   if ((val & (val-1)) == 0) {return true;}
   
   return false;
