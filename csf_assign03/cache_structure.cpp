@@ -9,13 +9,18 @@
 
 Cache::Cache(Parameters* params): params(params) {
   //todo
+//  for (unsigned i = 0; i < params->num_sets; i++) {
+//    Set set;
+//    for (unsigned j = 0; j < params->num_slots; j++) {
+//      Slot slot;
+//      set.slots.push_back(slot);
+//    }
+//    this->sets.push_back(set);
+//  }
+  this->sets = std::vector<Set>(params->num_sets);
   for (unsigned i = 0; i < params->num_sets; i++) {
-    Set set;
-    for (unsigned j = 0; j < params->num_slots; j++) {
-      Slot slot;
-      set.slots.push_back(slot);
-    }
-    this->sets.push_back(set);
+    //Fixme: allocate sets of slots without looping through every slot in each set
+    
   }
   unsigned long slot_size = this->params->slot_size >> 2;
   unsigned long memoryCycles = (slot_size << 6) + (slot_size << 5) + (slot_size << 2);
@@ -46,11 +51,11 @@ Slot Cache::get_slot(unsigned tag, Set* set) {
 void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles) {
   totalCycles += this->read_write_length;
   
-  Set* set = &this->sets.at(index);
+  std::vector<Slot> *slots = &this->sets.at(index).slots;
   
   long new_index = -1;
-  for (unsigned i = 0; i < set->slots.size(); i++) {
-    if (!set->slots.at(i).full) {
+  for (unsigned i = 0; i < slots->size(); i++) {
+    if (!slots->at(i).full) {
       new_index = i;
       break;
     }
@@ -63,25 +68,25 @@ void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles)
 }
 
 unsigned long Cache::evict(unsigned int index, unsigned int &totalCycles) {
-  Set* set = &this->sets.at(index);
+  std::vector<Slot> *slots = &this->sets.at(index).slots;
   unsigned j = 0;
   if (this->params->eviction_policy == 1) {
     for (unsigned i = 1; i < this->params->num_slots; i++) {
-      if (set->slots.at(i).access_ts < set->slots.at(j).access_ts) {
+      if (slots->at(i).access_ts < slots->at(j).access_ts) {
         j = i;
       }
     }
   } else {
     for (unsigned i = 1; i < this->params->num_slots; i++) {
-      if (set->slots.at(i).load_order < set->slots.at(j).load_order) {
+      if (slots->at(i).load_order < slots->at(j).load_order) {
         j = i;
       }
     }
   }
-  if (set->slots.at(j).dirty) {
+  if (slots->at(j).dirty) {
     totalCycles += this->read_write_length;
   }
-  this->sets.at(index).slot_map.erase(set->slots.at(j).tag);
+  this->sets.at(index).slot_map.erase(slots->at(j).tag);
   return j;
 }
 
