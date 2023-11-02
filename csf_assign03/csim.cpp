@@ -124,8 +124,9 @@ int main(int argc, char* argv[]) {
     //get tag
     unsigned tag = address >> (nOffsetBits + nIndexBits);
     
-    Set set = cache.sets.at(index);
-    std::map<unsigned, Slot*>::iterator it = set.slot_map.find(tag);
+    Set set = cache.sets[index];
+    //std::map<unsigned, Slot*>::iterator
+    auto it = set.slot_map.find(tag);
     bool slot_exists = (it != set.slot_map.end());
     Slot *slot;
     if (slot_exists) {
