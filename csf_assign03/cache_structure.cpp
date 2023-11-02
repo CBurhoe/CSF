@@ -9,19 +9,19 @@
 
 Cache::Cache(Parameters* params): params(params) {
   //todo
-//  for (unsigned i = 0; i < params->num_sets; i++) {
-//    Set set;
-//    for (unsigned j = 0; j < params->num_slots; j++) {
-//      Slot slot;
-//      set.slots.push_back(slot);
-//    }
-//    this->sets.push_back(set);
-//  }
-  this->sets = std::vector<Set>(params->num_sets);
   for (unsigned i = 0; i < params->num_sets; i++) {
-    //Fixme: allocate sets of slots without looping through every slot in each set
-    
+    Set set;
+    for (unsigned j = 0; j < params->num_slots; j++) {
+      Slot slot;
+      set.slots.push_back(slot);
+    }
+    this->sets.push_back(set);
   }
+//  this->sets = std::vector<Set>(params->num_sets);
+//  for (unsigned i = 0; i < params->num_sets; i++) {
+//    //Fixme: allocate sets of slots without looping through every slot in each set
+//
+//  }
   unsigned long slot_size = this->params->slot_size >> 2;
   unsigned long memoryCycles = (slot_size << 6) + (slot_size << 5) + (slot_size << 2);
   read_write_length = memoryCycles;
