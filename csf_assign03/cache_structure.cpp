@@ -51,19 +51,28 @@ Slot Cache::get_slot(unsigned tag, Set* set) {
 void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles) {
   totalCycles += this->read_write_length;
   
-  std::vector<Slot> *slots = &this->sets.at(index).slots;
+  Set set = this->sets.at(index);
+  std::vector<Slot> slots = set.slots;
   
-  long new_index = -1;
-  for (unsigned i = 0; i < slots->size(); i++) {
-    if (!slots->at(i).full) {
-      new_index = i;
-      break;
+  unsigned long new_index = 0;
+  // if there is no empty block, evict
+  if (slots.size() == set.slot_map.size()) {
+    new_index = evict(index, totalCycles);
+//    replace(new_index, index, tag, load, totalCycles);
+  } else {
+    for (unsigned i = 0; i < slots.size(); i++) {
+      if (!slots.at(i).full) {
+        new_index = i;
+        break;
+      }
     }
   }
-  // if there is no empty block, evict
-  if (new_index == -1) {
-    new_index = evict(index, totalCycles);
-  }
+  
+  
+//  // if there is no empty block, evict
+//  if (new_index == -1) {
+//    new_index = evict(index, totalCycles);
+//  }
   replace(new_index, index, tag, load, totalCycles);
 }
 
