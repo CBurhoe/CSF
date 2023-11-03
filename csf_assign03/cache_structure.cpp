@@ -8,7 +8,6 @@
 //
 
 Cache::Cache(Parameters* params): params(params) {
-  //todo
   for (unsigned i = 0; i < params->num_sets; i++) {
     Set set;
     for (unsigned j = 0; j < params->num_slots; j++) {
@@ -17,11 +16,7 @@ Cache::Cache(Parameters* params): params(params) {
     }
     this->sets.push_back(set);
   }
-//  this->sets = std::vector<Set>(params->num_sets);
-//  for (unsigned i = 0; i < params->num_sets; i++) {
-//    //Fixme: allocate sets of slots without looping through every slot in each set
-//
-//  }
+
   unsigned long slot_size = this->params->slot_size >> 2;
   unsigned long memoryCycles = (slot_size << 6) + (slot_size << 5) + (slot_size << 2);
   read_write_length = memoryCycles;
@@ -55,10 +50,8 @@ void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles)
   std::vector<Slot> slots = set.slots;
   
   unsigned long new_index = 0;
-  // if there is no empty block, evict
   if (slots.size() == set.slot_map.size()) {
     new_index = evict(index, totalCycles);
-//    replace(new_index, index, tag, load, totalCycles);
   } else {
     for (unsigned i = 0; i < slots.size(); i++) {
       if (!slots.at(i).full) {
@@ -68,11 +61,6 @@ void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles)
     }
   }
   
-  
-//  // if there is no empty block, evict
-//  if (new_index == -1) {
-//    new_index = evict(index, totalCycles);
-//  }
   replace(new_index, index, tag, load, totalCycles);
 }
 

@@ -132,10 +132,6 @@ int main(int argc, char* argv[]) {
       slot = it->second;
     }
     
-//    if (slot_exists) {
-//      slot = cache.get_slot(tag, &set);
-//    }
-    
     //check if load or store
     if (instruction == "l") {
       totalLoads++;
@@ -169,15 +165,12 @@ int main(int argc, char* argv[]) {
     }
   }
   
-//  std::cout << "Total loads: " << totalLoads << std::endl;
-//  std::cout << "Total stores: " << totalStores << std::endl;
-//  std::cout << "Load hits: " << loadHits << std::endl;
-//  std::cout << "Load misses: " << loadMisses << std::endl;
-//  std::cout << "Store hits: " << storeHits << std::endl;
-//  std::cout << "Store misses: " << storeMisses << std::endl;
-//  std::cout << "Total cycles: " << totalCycles << std::endl;
-  std::cout << "Total hits: " << loadHits + storeHits << std::endl;
-  std::cout << "Total misses: " << loadMisses + storeMisses << std::endl;
+  std::cout << "Total loads: " << totalLoads << std::endl;
+  std::cout << "Total stores: " << totalStores << std::endl;
+  std::cout << "Load hits: " << loadHits << std::endl;
+  std::cout << "Load misses: " << loadMisses << std::endl;
+  std::cout << "Store hits: " << storeHits << std::endl;
+  std::cout << "Store misses: " << storeMisses << std::endl;
   std::cout << "Total cycles: " << totalCycles << std::endl;
   
   return 0;
