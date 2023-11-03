@@ -54,8 +54,7 @@ void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles)
   Set set = this->sets.at(index);
   std::vector<Slot> slots = set.slots;
   
-  long new_index = -1;
-  /*
+  unsigned long new_index = 0;
   // if there is no empty block, evict
   if (slots.size() == set.slot_map.size()) {
     new_index = evict(index, totalCycles);
@@ -68,37 +67,7 @@ void Cache::miss(unsigned index, unsigned tag, bool load, unsigned &totalCycles)
       }
     }
   }
-  */
-  Slot least_recent_slot, first_in_slot = slots.at(0);
-  long least_recent_index, first_in_index;
   
-  for (unsigned i = 0; i < slots.size(); i++) {
-    if (!slots.at(i).full) {
-      new_index = i;
-      break;
-    } else {
-      if (slots.at(i).access_ts < least_recent_slot.access_ts) {
-        least_recent_slot = slots.at(i);
-        least_recent_index = i;
-      }
-      if (slots.at(i).load_order < first_in_slot.load_order) {
-        first_in_slot = slots.at(i);
-        first_in_index = i;
-      }
-    }
-  }
-  
-  if (new_index == -1) {
-    if (this->params->eviction_policy == 1) {
-      new_index = least_recent_index;
-    } else {
-      new_index = first_in_index;
-    }
-    if (slots.at(new_index).dirty) {
-      totalCycles += this->read_write_length;
-    }
-    set.slot_map.erase(slots.at(new_index).tag);
-  }
   
 //  // if there is no empty block, evict
 //  if (new_index == -1) {
