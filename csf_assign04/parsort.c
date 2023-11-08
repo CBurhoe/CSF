@@ -71,6 +71,9 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   size_t mid = begin + size/2;
 
   // TODO: parallelize the recursive sorting
+  
+  // FIXME: fork() two times and have each child recursively sort their half of the array
+  
   merge_sort(arr, begin, mid, threshold);
   merge_sort(arr, mid, end, threshold);
 
