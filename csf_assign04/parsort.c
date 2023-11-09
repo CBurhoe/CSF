@@ -73,7 +73,53 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   // TODO: parallelize the recursive sorting
   
   // FIXME: fork() two times and have each child recursively sort their half of the array
+  pid_t pidL = fork();
+  pid_t pidR = fork();
+
+  if (pidL == -1) {
+    fprintf(stderr, "Error: failed to start a new process\n");
+    exit(6);
+  } else if (pidL == 0) {
+    merge_sort(arr, begin, mid, threshold);
+    exit(0);
+  }
   
+  if (pidR == -1) {
+    fprintf(stderr, "Error: failed to start a new process\n");
+    exit(6);
+  } else if (pidR == 0) {
+    merge_sort(arr, mid, end, threshold);
+    exit(0);
+  }
+  
+  int status1, status2;
+  
+  pid_t pid1 = waitpid(pidL, &status1, 0);
+  pid_t pid2 = waitpid(pidR, &status2, 0);
+  
+  if (pid1 == -1) {
+    fprintf(stderr, "Error: waitpid failed\n");
+    exit(7);
+  }
+  if (pid2 == -1) {
+    fprintf(stderr, "Error: waitpid failed\n");
+    exit(7);
+  }
+  if (!WIFEXITED(status1) || !WIFEXITED(status2)) {
+    fprintf(stderr, "Error: child process terminated abnormally\n");
+    exit(8);
+  } else if (WEXITSTATUS(status1) != 0 || WEXITSTATUS(status2) != 0) {
+    fprintf(stderr, "Error: child process terminated abnormally\n");
+    exit(9);
+  }
+  
+  int64_t *temparr;
+  merge(arr, begin, mid, end, temparr);
+  for (int i = 0; i < end - begin; i++) {
+    arr[i] = temparr[i];
+  }
+  
+  /*
   merge_sort(arr, begin, mid, threshold);
   merge_sort(arr, mid, end, threshold);
 
@@ -95,6 +141,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   free(temp_arr);
 
   // success!
+  */
 }
 
 int main(int argc, char **argv) {
