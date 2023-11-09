@@ -92,7 +92,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     exit(0);
   }
   
-  int status1, status2;
+  int wstatus1, wstatus2;
   
   pid_t pid1 = waitpid(pidL, &status1, 0);
   pid_t pid2 = waitpid(pidR, &status2, 0);
