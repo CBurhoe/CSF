@@ -162,7 +162,7 @@ int main(int argc, char **argv) {
   }
 
   // TODO: open the file
-  int fd = open(argv[1], O_RDWR);
+  int fd = open(filename, O_RDWR);
   if (fd < 1) {
     fprintf(stderr, "Error: failed to open file\n");
     exit(2);
