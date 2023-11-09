@@ -175,8 +175,9 @@ int main(int argc, char **argv) {
     close(fd);
     exit(3);
   }
+  size_t file_size_in_bytes = statbuf.st_size;
   // TODO: map the file into memory using mmap
-
+  
   // TODO: sort the data!
 
   // TODO: unmap and close the file
