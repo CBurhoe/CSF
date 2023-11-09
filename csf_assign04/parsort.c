@@ -94,8 +94,8 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   
   int wstatus1, wstatus2;
   
-  pid_t pid1 = waitpid(pidL, &status1, 0);
-  pid_t pid2 = waitpid(pidR, &status2, 0);
+  pid_t pid1 = waitpid(pidL, &wstatus1, 0);
+  pid_t pid2 = waitpid(pidR, &wstatus2, 0);
   
   if (pid1 == -1) {
     fprintf(stderr, "Error: waitpid failed\n");
