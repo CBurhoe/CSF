@@ -158,10 +158,15 @@ int main(int argc, char **argv) {
   size_t threshold = (size_t) strtoul(argv[2], &end, 10);
   if (end != argv[2] + strlen(argv[2])) {
     // TODO: report an error (threshold value is invalid)
+    
   }
 
   // TODO: open the file
-
+  int fd = open(argv[1], O_RDWR);
+  if (fd < 1) {
+    fprintf(stderr, "Error: failed to open file\n");
+    exit(2);
+  }
   // TODO: use fstat to determine the size of the file
 
   // TODO: map the file into memory using mmap
