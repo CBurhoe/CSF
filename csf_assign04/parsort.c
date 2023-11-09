@@ -94,21 +94,22 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
   
   int wstatus1, wstatus2;
   
-  pid_t pid1 = waitpid(pidL, &wstatus1, 0);
-  pid_t pid2 = waitpid(pidR, &wstatus2, 0);
+  pid_t actualPidL = waitpid(pidL, &wstatus1, 0);
+  pid_t actualPidR= waitpid(pidR, &wstatus2, 0);
   
-  if (pid1 == -1) {
+  if (actualPidL == -1) {
     fprintf(stderr, "Error: waitpid failed\n");
     exit(7);
   }
-  if (pid2 == -1) {
+  if (actualPidR == -1) {
     fprintf(stderr, "Error: waitpid failed\n");
     exit(7);
   }
-  if (!WIFEXITED(status1) || !WIFEXITED(status2)) {
+  if (!WIFEXITED(wstatus1) || !WIFEXITED(wstatus2)) {
     fprintf(stderr, "Error: child process terminated abnormally\n");
     exit(8);
-  } else if (WEXITSTATUS(status1) != 0 || WEXITSTATUS(status2) != 0) {
+  }
+  if (WEXITSTATUS(wstatus1) != 0 || WEXITSTATUS(wstatus2) != 0) {
     fprintf(stderr, "Error: child process terminated abnormally\n");
     exit(9);
   }
