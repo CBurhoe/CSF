@@ -177,10 +177,19 @@ int main(int argc, char **argv) {
   }
   size_t file_size_in_bytes = statbuf.st_size;
   // TODO: map the file into memory using mmap
-  
+  int64_t *data = mmap(NULL, file_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  close(fd);
+  if (data == MAP_FAILED) {
+    fprintf(stderr, "Error: mmap failure\n");
+    exit(4);
+  }
   // TODO: sort the data!
-
+  merge_sort(data, 0, file_size_in_bytes / 8, threshold);
   // TODO: unmap and close the file
-
+  if (munmap(data, file_size_in_bytes)) {
+    fprintf(stderr, "Error: munmap failure\n");
+    exit(5);
+  }
   // TODO: exit with a 0 exit code if sort was successful
+  exit(0);
 }
