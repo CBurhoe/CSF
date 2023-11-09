@@ -168,7 +168,13 @@ int main(int argc, char **argv) {
     exit(2);
   }
   // TODO: use fstat to determine the size of the file
-  
+  struct stat statbuf;
+  int rc = fstat(fd, &statbuf);
+  if (rc != 0) {
+    fprintf(stderr, "Error: fstat error\n");
+    close(fd);
+    exit(3);
+  }
   // TODO: map the file into memory using mmap
 
   // TODO: sort the data!
