@@ -58,68 +58,69 @@ void fatal(const char *msg) {
 }
 
 void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
-  assert(end >= begin);
-  size_t size = end - begin;
-
-  if (size <= threshold) {
-    seq_sort(arr, begin, end);
-    return;
-  }
-
-  // recursively sort halves in parallel
-
-  size_t mid = begin + size/2;
-
-  // TODO: parallelize the recursive sorting
+    assert(end >= begin);
+    size_t size = end - begin;
+    
+    if (size <= threshold) {
+      seq_sort(arr, begin, end);
+      return;
+    }
+    
+    // recursively sort halves in parallel
+    
+    size_t mid = begin + size / 2;
+    
+    // TODO: parallelize the recursive sorting
+    
+    // FIXME: fork() two times and have each child recursively sort their half of the array
+    pid_t pidL = fork();
+    
+    if (pidL == -1) {
+      fprintf(stderr, "Error: failed to start a new process\n");
+      exit(6);
+    } else if (pidL == 0) {
+      merge_sort(arr, begin, mid, threshold);
+      exit(0);
+    }
   
-  // FIXME: fork() two times and have each child recursively sort their half of the array
-  pid_t pidL = fork();
-  pid_t pidR = fork();
-
-  if (pidL == -1) {
-    fprintf(stderr, "Error: failed to start a new process\n");
-    exit(6);
-  } else if (pidL == 0) {
-    merge_sort(arr, begin, mid, threshold);
-    exit(0);
+    pid_t pidR = fork();
+    
+    if (pidR == -1) {
+      fprintf(stderr, "Error: failed to start a new process\n");
+      exit(6);
+    } else if (pidR == 0) {
+      merge_sort(arr, mid, end, threshold);
+      exit(0);
+    }
+    
+    int wstatus1, wstatus2;
+    
+    pid_t actualPidL = waitpid(pidL, &wstatus1, 0);
+    pid_t actualPidR = waitpid(pidR, &wstatus2, 0);
+    
+    if (actualPidL == -1) {
+      fprintf(stderr, "Error: waitpid failed\n");
+      exit(7);
+    }
+    if (actualPidR == -1) {
+      fprintf(stderr, "Error: waitpid failed\n");
+      exit(7);
+    }
+    if (!WIFEXITED(wstatus1) || !WIFEXITED(wstatus2)) {
+      fprintf(stderr, "Error: child process terminated abnormally\n");
+      exit(8);
+    }
+    if (WEXITSTATUS(wstatus1) != 0 || WEXITSTATUS(wstatus2) != 0) {
+      fprintf(stderr, "Error: child process terminated abnormally\n");
+      exit(9);
+    }
+    
+    int64_t temparr[end - begin];
+    merge(arr, begin, mid, end, temparr);
+    for (int i = 0; i < end - begin; i++) {
+      arr[i] = temparr[i];
+    }
   }
-  
-  if (pidR == -1) {
-    fprintf(stderr, "Error: failed to start a new process\n");
-    exit(6);
-  } else if (pidR == 0) {
-    merge_sort(arr, mid, end, threshold);
-    exit(0);
-  }
-  
-  int wstatus1, wstatus2;
-  
-  pid_t actualPidL = waitpid(pidL, &wstatus1, 0);
-  pid_t actualPidR= waitpid(pidR, &wstatus2, 0);
-  
-  if (actualPidL == -1) {
-    fprintf(stderr, "Error: waitpid failed\n");
-    exit(7);
-  }
-  if (actualPidR == -1) {
-    fprintf(stderr, "Error: waitpid failed\n");
-    exit(7);
-  }
-  if (!WIFEXITED(wstatus1) || !WIFEXITED(wstatus2)) {
-    fprintf(stderr, "Error: child process terminated abnormally\n");
-    exit(8);
-  }
-  if (WEXITSTATUS(wstatus1) != 0 || WEXITSTATUS(wstatus2) != 0) {
-    fprintf(stderr, "Error: child process terminated abnormally\n");
-    exit(9);
-  }
-  
-  int64_t temparr[end - begin];
-  merge(arr, begin, mid, end, temparr);
-  for (int i = 0; i < end - begin; i++) {
-    arr[i] = temparr[i];
-  }
-  
   /*
   merge_sort(arr, begin, mid, threshold);
   merge_sort(arr, mid, end, threshold);
@@ -143,7 +144,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
 
   // success!
   */
-}
+
 
 int main(int argc, char **argv) {
   // check for correct number of command line arguments
