@@ -194,6 +194,5 @@ int main(int argc, char **argv) {
   }
   close(fd);
   // TODO: exit with a 0 exit code if sort was successful
-  fprintf(stdout, "Sort completed successfully\n");
   exit(0);
 }
