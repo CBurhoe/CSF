@@ -176,7 +176,7 @@ int main(int argc, char **argv) {
   size_t file_size_in_bytes = statbuf.st_size;
   // TODO: map the file into memory using mmap
   int64_t *data = mmap(NULL, file_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-  close(fd);
+//  close(fd);
   if (data == MAP_FAILED) {
     fprintf(stderr, "Error: mmap failure\n");
     exit(4);
@@ -188,6 +188,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Error: munmap failure\n");
     exit(5);
   }
+  close(fd);
   // TODO: exit with a 0 exit code if sort was successful
   fprintf(stdout, "Sort completed successfully\n");
   exit(0);
