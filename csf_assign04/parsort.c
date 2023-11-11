@@ -62,18 +62,14 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     size_t size = end - begin;
     
     if (size <= threshold) {
-//      seq_sort(arr, begin, end);
-      qsort(arr + begin, end - begin, 8, compare_i64);
+      seq_sort(arr, begin, end);
       return;
     }
     
-    // recursively sort halves in parallel
     
     size_t mid = (begin + end) / 2;
     
-    // TODO: parallelize the recursive sorting
-    
-    // FIXME: fork() two times and have each child recursively sort their half of the array
+    // fork() two times and have each child recursively sort their half of the array
     pid_t pidL = fork();
     pid_t pidR = fork();
     
@@ -122,29 +118,6 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     }
     free(temparr);
   }
-  /*
-  merge_sort(arr, begin, mid, threshold);
-  merge_sort(arr, mid, end, threshold);
-
-  // allocate temp array now, so we can avoid unnecessary work
-  // if the malloc fails
-  int64_t *temp_arr = (int64_t *) malloc(size * sizeof(int64_t));
-  if (temp_arr == NULL)
-    fatal("malloc() failed");
-
-  // child processes completed successfully, so in theory
-  // we should be able to merge their results
-  merge(arr, begin, mid, end, temp_arr);
-
-  // copy data back to main array
-  for (size_t i = 0; i < size; i++)
-    arr[begin + i] = temp_arr[i];
-
-  // now we can free the temp array
-  free(temp_arr);
-
-  // success!
-  */
 
 
 int main(int argc, char **argv) {
@@ -163,13 +136,13 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  // TODO: open the file
+  // open the file
   int fd = open(filename, O_RDWR);
   if (fd < 1) {
     fprintf(stderr, "Error: failed to open file\n");
     exit(2);
   }
-  // TODO: use fstat to determine the size of the file
+  // use fstat to determine the size of the file
   struct stat statbuf;
   int rc = fstat(fd, &statbuf);
   if (rc != 0) {
@@ -178,21 +151,20 @@ int main(int argc, char **argv) {
     exit(3);
   }
   size_t file_size_in_bytes = statbuf.st_size;
-  // TODO: map the file into memory using mmap
+  // map the file into memory using mmap
   int64_t *data = mmap(NULL, file_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-//  close(fd);
   if (data == MAP_FAILED) {
     fprintf(stderr, "Error: mmap failure\n");
     exit(4);
   }
-  // TODO: sort the data!
+  // sort the data!
   merge_sort(data, 0, file_size_in_bytes / 8, threshold);
-  // TODO: unmap and close the file
+  // unmap and close the file
   if (munmap(data, file_size_in_bytes)) {
     fprintf(stderr, "Error: munmap failure\n");
     exit(5);
   }
   close(fd);
-  // TODO: exit with a 0 exit code if sort was successful
+  // exit with a 0 exit code if sort was successful
   exit(0);
 }
