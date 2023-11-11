@@ -110,13 +110,23 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       fprintf(stderr, "Error: child process terminated abnormally\n");
       exit(9);
     }
-    
-//    int64_t temparr[end - begin];
-    int64_t *temparr;
-    merge(arr, begin, mid, end, temparr);
-    for (int i = 0; i < end - begin; i++) {
-      arr[i] = temparr;
+    int64_t *temparr = (int64_t *)malloc(size * sizeof(int64_t));
+    if (temparr == NULL) {
+      fatal("malloc() failed");
     }
+    merge(arr, begin, mid, end, temparr);
+    
+    // Copy merged data back to the main array
+    for (size_t i = 0; i < size; i++) {
+      arr[begin + i] = temparr[i];
+    }
+    free(temparr);
+//    int64_t temparr[end - begin];
+//    int64_t *temparr;
+//    merge(arr, begin, mid, end, temparr);
+//    for (int i = 0; i < end - begin; i++) {
+//      arr[i] = temparr;
+//    }
   }
   /*
   merge_sort(arr, begin, mid, threshold);
