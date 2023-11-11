@@ -74,6 +74,7 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     
     // FIXME: fork() two times and have each child recursively sort their half of the array
     pid_t pidL = fork();
+    pid_t pidR = fork();
     
     if (pidL == -1) {
       fprintf(stderr, "Error: failed to start a new process\n");
@@ -82,8 +83,6 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
       merge_sort(arr, begin, mid, threshold);
       exit(0);
     }
-  
-    pid_t pidR = fork();
     
     if (pidR == -1) {
       fprintf(stderr, "Error: failed to start a new process\n");
