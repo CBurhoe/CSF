@@ -62,7 +62,8 @@ void merge_sort(int64_t *arr, size_t begin, size_t end, size_t threshold) {
     size_t size = end - begin;
     
     if (size <= threshold) {
-      seq_sort(arr, begin, end);
+//      seq_sort(arr, begin, end);
+      qsort(arr + begin, end - begin, 8, compare_i64);
       return;
     }
     
