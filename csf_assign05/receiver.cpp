@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   conn.connect(server_hostname, server_port);
   // TODO: send rlogin and join messages (expect a response from
   //       the server for each one)
-  Message r_login = Message(TAG_RLOGIN, username); //fixme: initializing structs?
+  Message r_login = Message(TAG_RLOGIN, username);
   if (!conn.send(r_login)) {
     //TODO: handle failed send
   }
