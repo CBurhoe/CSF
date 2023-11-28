@@ -21,8 +21,6 @@ int main(int argc, char **argv) {
   Connection conn;
 
   // TODO: connect to server
-  //initialize server
-  Server server = new Server(server_port);
   //connect via hostname and port number
   conn.connect(server_hostname, server_port);
   // TODO: send rlogin and join messages (expect a response from
