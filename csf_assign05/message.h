@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 
 struct Message {
   // An encoded message may have at most this many characters,
@@ -20,6 +21,16 @@ struct Message {
     : tag(tag), data(data) { }
 
   // TODO: you could add helper functions
+  std::vector<std::string> split_delivery_payload() {
+    std::vector<std::string> result;
+    std::string token;
+    std::istringstream iss(data);
+    
+    while (std::getline(iss, token, ":")) {
+      result.push_back(token);
+    }
+    return result;
+  }
 };
 
 // standard message tags (note that you don't need to worry about

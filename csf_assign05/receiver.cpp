@@ -34,8 +34,10 @@ int main(int argc, char **argv) {
   if (!conn.receive(server_response)) {
     //TODO: handle failed receive
   }
-  if (!server_response.tag == TAG_OK) {
-    //TODO: handle failed r_login
+  if (server_response.tag == TAG_ERR) {
+    //DONE: handle failed r_login
+    std::cerr << server_response.data;
+    exit(3);
   }
   Message join = Message(TAG_JOIN, room_name);
   if (!conn.send(join)) {
@@ -45,8 +47,10 @@ int main(int argc, char **argv) {
   if (!conn.receive(server_response)) {
     //TODO: handle failed receive
   }
-  if (!server_response.tag == TAG_OK) {
-    //TODO: handle failed join
+  if (server_response.tag == TAG_ERR) {
+    //DONE: handle failed join
+    std::cerr << server_response.data;
+    exit(3);
   }
   // TODO: loop waiting for messages from server
   //       (which should be tagged with TAG_DELIVERY)
@@ -55,7 +59,15 @@ int main(int argc, char **argv) {
     if (!conn.receive(new_message)) {
       //TODO: handle failed receive
     }
-    
+    if (new_message.tag == TAG_ERR) {
+      //DONE: handle error case
+      std::cerr << new_message.data;
+      exit(3);
+    } else if (new_message.tag == TAG_DELIVERY) {
+      //TODO: handle delivered message from user
+      //usage: delivery:room:sender:message_text
+      
+    }
   }
 
   return 0;
