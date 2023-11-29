@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
   }
   if (server_response.tag == TAG_ERR) {
     //DONE: handle failed r_login
-    std::cerr << server_response.data;
+    std::cerr << server_response.data << "\n";
     exit(3);
   }
   Message join = Message(TAG_JOIN, room_name);
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
   }
   if (server_response.tag == TAG_ERR) {
     //DONE: handle failed join
-    std::cerr << server_response.data;
+    std::cerr << server_response.data << "\n";
     exit(3);
   }
   // TODO: loop waiting for messages from server
@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
     }
     if (new_message.tag == TAG_ERR) {
       //DONE: handle error case
-      std::cerr << new_message.data;
+      std::cerr << new_message.data << "\n";
       exit(3);
     } else if (new_message.tag == TAG_DELIVERY) {
       //TODO: handle delivered message from user

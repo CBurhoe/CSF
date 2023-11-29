@@ -35,12 +35,17 @@ int main(int argc, char **argv) {
     //TODO: handle failed receive
   }
   if (server_response.tag == TAG_ERR) {
-    std::cerr << server_response.data << endl;
+    std::cerr << server_response.data << "\n";
     exit(3);
   }
 
   // TODO: loop reading commands from user, sending messages to
   //       server as appropriate
 
+  while(std::cin) {
+    std::string command;
+    std::getline(std::cin, command);
+    
+  }
   return 0;
 }
