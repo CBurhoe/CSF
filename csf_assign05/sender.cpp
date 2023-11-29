@@ -41,10 +41,26 @@ int main(int argc, char **argv) {
 
   // TODO: loop reading commands from user, sending messages to
   //       server as appropriate
-
-  while(std::cin) {
-    std::string command;
-    std::getline(std::cin, command);
+  std::string input;
+  //read in line of input from user
+  while(std::getline(std::cin, input)) {
+    Message new_message;
+    //check if message or command and handle accordingly
+    if (input.compare(0, 0, '/') != 0) {
+      new_message.tag = TAG_SENDALL;
+      new_message.data = input.substr(0, new_message.MAX_LEN);
+    } else if (input.compare(0, 6, "/join ") == 0) {
+      new_message.tag = TAG_JOIN;
+      new_message.data = input.substr(6);
+    } else if (input.compare(0, 6, "/leave") == 0) {
+      new_message.tag = TAG_LEAVE;
+      new_message.data = "";
+    } else if (input.compare(0, 5, "/quit") == 0) {
+      new_message.tag = TAG_QUIT;
+      new_message.data = "";
+    } else {
+      //TODO: handle bad command input
+    }
     
   }
   return 0;
