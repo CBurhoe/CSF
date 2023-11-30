@@ -1,6 +1,8 @@
 #include <sstream>
 #include <cctype>
 #include <cassert>
+#include <cstring>
+#include <string>
 #include "csapp.h"
 #include "message.h"
 #include "connection.h"
@@ -14,12 +16,16 @@ Connection::Connection(int fd)
   : m_fd(fd)
   , m_last_result(SUCCESS) {
   // TODO: call rio_readinitb to initialize the rio_t object
-  
+  Rio_readinitb(m_fdbuf, fd);
 }
 
 void Connection::connect(const std::string &hostname, int port) {
   // TODO: call open_clientfd to connect to the server
+  const char* hn = hostname.c_str();
+  const char* pn = itoa(port);
+  open_clientfd(hn, pn);
   // TODO: call rio_readinitb to initialize the rio_t object
+  
 }
 
 Connection::~Connection() {
