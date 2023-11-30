@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
     std::cerr << server_response.data << "\n";
     exit(3);
   }
-
+  
   // TODO: loop reading commands from user, sending messages to
   //       server as appropriate
   std::string input;
@@ -59,9 +59,24 @@ int main(int argc, char **argv) {
       new_message.tag = TAG_QUIT;
       new_message.data = "";
     } else {
-      //TODO: handle bad command input
+      std::cerr << "Invalid command.\n";
+      continue;
     }
     
+    conn.send(new_message);
+    Message server_response;
+    conn.receive(server_response);
+    if ((server_response.tag == TAG_ERR) && (new_message.tag == TAG_SLOGIN)) {
+      std::cerr << server_response.data << "\n";
+      exit(4);
+    } else if (server_response.tag == TAG_ERR) {
+      std::cerr << server_response.data << "\n";
+      continue;
+    } else if ((server_response.tag == TAG_OK) && (new_message.tag == TAG_QUIT)) {
+      exit(0);
+    } else if (server_response.tag == TAG_OK) {
+      continue;
+    }
   }
   return 0;
 }
