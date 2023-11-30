@@ -28,11 +28,15 @@ int main(int argc, char **argv) {
   //       the server for each one)
   Message r_login = Message(TAG_RLOGIN, username);
   if (!conn.send(r_login)) {
-    //TODO: handle failed send
+    //FIXME: handle failed send
+    std::cerr << "Message to server failed to send.\n";
+    exit(2);
   }
   //DONE: listen for response
   if (!conn.receive(server_response)) {
-    //TODO: handle failed receive
+    //FIXME: handle failed receive
+    std::cerr << "Failed to receive a response from server.\n";
+    exit(2);
   }
   if (server_response.tag == TAG_ERR) {
     //DONE: handle failed r_login
@@ -41,11 +45,15 @@ int main(int argc, char **argv) {
   }
   Message join = Message(TAG_JOIN, room_name);
   if (!conn.send(join)) {
-    //TODO: handle failed send
+    //FIXME: handle failed send
+    std::cerr << "Message to server failed to send.\n";
+    exit(2);
   }
   //DONE: listen for response
   if (!conn.receive(server_response)) {
-    //TODO: handle failed receive
+    //FIXME: handle failed receive
+    std::cerr << "Failed to receive a response from server.\n";
+    exit(2);
   }
   if (server_response.tag == TAG_ERR) {
     //DONE: handle failed join
@@ -57,7 +65,9 @@ int main(int argc, char **argv) {
   while(true) {
     Message new_message;
     if (!conn.receive(new_message)) {
-      //TODO: handle failed receive
+      //FIXME: handle failed receive
+      std::cerr << "Failed to receive a response from server.\n";
+      exit(2);
     }
     if (new_message.tag == TAG_ERR) {
       //DONE: handle error case
