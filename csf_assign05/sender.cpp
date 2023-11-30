@@ -21,15 +21,15 @@ int main(int argc, char **argv) {
   server_port = std::stoi(argv[2]);
   username = argv[3];
 
-  // TODO: connect to server
+  // DONE: connect to server
   Connection conn;
   Message server_response;
   conn.connect(server_hostname, server_response);
 
-  // TODO: send slogin message
+  // DONE: send slogin message
   Message s_login= Message(TAG_SLOGIN, username);
   if (!conn.send(s_login)) {
-    //TODO: handle failed send
+    std::cerr << "Message to server"
   }
   if (!conn.receive(server_response)) {
     //TODO: handle failed receive
