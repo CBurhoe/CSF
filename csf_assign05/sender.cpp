@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
   conn.connect(server_hostname, server_response);
 
   // DONE: send slogin message
-  Message s_login= Message(TAG_SLOGIN, username);
+  Message s_login = Message(TAG_SLOGIN, username);
   if (!conn.send(s_login)) {
     //FIXME: handle failed send
     std::cerr << "Message to server failed to send.\n";
@@ -39,6 +39,7 @@ int main(int argc, char **argv) {
     exit(2);
   }
   if (server_response.tag == TAG_ERR) {
+    //DONE: handle failed s_login
     std::cerr << server_response.data << "\n";
     exit(3);
   }
@@ -77,10 +78,7 @@ int main(int argc, char **argv) {
       std::cerr << "Failed to receive a response from server.\n";
       exit(2);
     }
-    if ((server_response.tag == TAG_ERR) && (new_message.tag == TAG_SLOGIN)) {
-      std::cerr << server_response.data << "\n";
-      exit(4);
-    } else if (server_response.tag == TAG_ERR) {
+    if (server_response.tag == TAG_ERR) {
       std::cerr << server_response.data << "\n";
       continue;
     } else if ((server_response.tag == TAG_OK) && (new_message.tag == TAG_QUIT)) {

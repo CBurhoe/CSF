@@ -62,8 +62,8 @@ int main(int argc, char **argv) {
   }
   // TODO: loop waiting for messages from server
   //       (which should be tagged with TAG_DELIVERY)
+  Message new_message;
   while(true) {
-    Message new_message;
     if (!conn.receive(new_message)) {
       //FIXME: handle failed receive
       std::cerr << "Failed to receive a response from server.\n";
