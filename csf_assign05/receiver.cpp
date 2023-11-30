@@ -19,14 +19,14 @@ int main(int argc, char **argv) {
   std::string room_name = argv[4];
 
   Connection conn;
-  Message server_response;
+  struct Message server_response;
   
   // DONE: connect to server
   //connect via hostname and port number
   conn.connect(server_hostname, server_port);
   // TODO: send rlogin and join messages (expect a response from
   //       the server for each one)
-  Message r_login = Message(TAG_RLOGIN, username);
+  struct Message r_login = Message(TAG_RLOGIN, username);
   if (!conn.send(r_login)) {
     //FIXME: handle failed send
     std::cerr << "Message to server failed to send.\n";
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
     std::cerr << server_response.data << "\n";
     exit(3);
   }
-  Message join = Message(TAG_JOIN, room_name);
+  struct Message join = Message(TAG_JOIN, room_name);
   if (!conn.send(join)) {
     //FIXME: handle failed send
     std::cerr << "Message to server failed to send.\n";
@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
   }
   // TODO: loop waiting for messages from server
   //       (which should be tagged with TAG_DELIVERY)
-  Message new_message;
+  struct Message new_message;
   while(true) {
     if (!conn.receive(new_message)) {
       //FIXME: handle failed receive

@@ -23,11 +23,11 @@ int main(int argc, char **argv) {
 
   // DONE: connect to server
   Connection conn;
-  Message server_response;
+  struct Message server_response;
   conn.connect(server_hostname, server_response);
 
   // DONE: send slogin message
-  Message s_login = Message(TAG_SLOGIN, username);
+  struct Message s_login = Message(TAG_SLOGIN, username);
   if (!conn.send(s_login)) {
     //FIXME: handle failed send
     std::cerr << "Message to server failed to send.\n";
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
   std::string input;
   //read in line of input from user
   while(std::getline(std::cin, input)) {
-    Message new_message;
+    struct Message new_message;
     //check if message or command and handle accordingly
     if (input.compare(0, 0, '/') != 0) {
       new_message.tag = TAG_SENDALL;
