@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
   if (!conn.send(r_login)) {
     //TODO: handle failed send
   }
-  //TODO: listen for response
+  //DONE: listen for response
   if (!conn.receive(server_response)) {
     //TODO: handle failed receive
   }
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
   if (!conn.send(join)) {
     //TODO: handle failed send
   }
-  //TODO: listen for response
+  //DONE: listen for response
   if (!conn.receive(server_response)) {
     //TODO: handle failed receive
   }
@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
       std::cerr << new_message.data << "\n";
       exit(3);
     } else if (new_message.tag == TAG_DELIVERY) {
-      //TODO: handle delivered message from user
+      //DONE: handle delivered message from user
       //usage: delivery:room:sender:message_text
       std::vector delivery_payload = new_message.split_delivery_payload();
       std::string sender = delivery_payload[1];

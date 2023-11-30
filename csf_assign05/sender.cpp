@@ -63,9 +63,13 @@ int main(int argc, char **argv) {
       continue;
     }
     
-    conn.send(new_message);
+    if (!conn.send(new_message)) {
+      //TODO: handle failed send
+    }
     Message server_response;
-    conn.receive(server_response);
+    if (!conn.receive(server_response)) {
+      //TODO: handle failed receive
+    }
     if ((server_response.tag == TAG_ERR) && (new_message.tag == TAG_SLOGIN)) {
       std::cerr << server_response.data << "\n";
       exit(4);
