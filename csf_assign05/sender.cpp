@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
   // DONE: connect to server
   Connection conn;
   struct Message server_response;
-  conn.connect(server_hostname, server_response);
+  conn.connect(server_hostname, server_port);
 
   // DONE: send slogin message
   struct Message s_login = Message(TAG_SLOGIN, username);
