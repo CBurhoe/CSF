@@ -2,6 +2,7 @@
 #include <cctype>
 #include <cassert>
 #include <cstring>
+#include <cstdlib>
 #include <string>
 #include "csapp.h"
 #include "message.h"
@@ -22,10 +23,10 @@ Connection::Connection(int fd)
 void Connection::connect(const std::string &hostname, int port) {
   // TODO: call open_clientfd to connect to the server
   const char* hn = hostname.c_str();
-  const char* pn = std::itoa(port);
+  const char* pn = itoa(port);
   this->m_fd = Open_clientfd(hn, pn);
   // TODO: call rio_readinitb to initialize the rio_t object
-  Rio_readinitb(this->m_fdbuf, this->m_fd);
+  Rio_readinitb(&m_fdbuf, this->m_fd);
 }
 
 Connection::~Connection() {
