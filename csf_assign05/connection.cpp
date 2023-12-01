@@ -50,9 +50,30 @@ bool Connection::send(const Message &msg) {
   // make sure that m_last_result is set appropriately
   if (!is_open()) {
     this->m_last_result = EOF_OR_ERROR;
+    return false;
   }
-  std::string message_to_server;
+
+  size_t tag_length = msg.tag.length();
+  size_t data_length = msg.data.length();
+  if (tag_length + data_length + 1 > msg.MAX_LEN) {
+    this->m_last_result = INVALID_MSG;
+    return false;
+  }
+  char msg_to_server[msg.MAX_LEN + 1];
   
+  msg.tag.copy(msg_to_server, tag_length);
+  msg_to_server[tag_length] = ':';
+  msg.data.copy(msg_to_server + tag_length + 1, data_length);
+  msg_to_server[tag_length + data_length + 1] = '\0';
+  size_t n = tag_length + data_length;
+  
+  if (Rio_writen(this->m_fd, msg_to_server, n) < 1) {
+    this->m_last_result = EOF_OR_ERROR;
+    return false;
+  }
+  
+  this->m_last_result = SUCCESS;
+  return true;
 }
 
 bool Connection::receive(Message &msg) {
@@ -61,6 +82,21 @@ bool Connection::receive(Message &msg) {
   // make sure that m_last_result is set appropriately
   if (!is_open()) {
     this->m_last_result = EOF_OR_ERROR;
+    return false;
   }
+  char msg_from_server[msg.MAX_LEN + 1];
+  //read line from server and store in msg_from_server
+  //FIXME: need to check if '\n' is last char?
+  if (Rio_readlineb(this->m_fdbuf, msg_from_server, msg.MAX_LEN) < 1) {
+    this->m_last_result = EOF_OR_ERROR;
+    return false;
+  }
+  //split input into tag and data in msg
+  std::string message_string(msg_from_server);
+  size_t split_on = message_string.find(':');
+  msg.tag = message_string.substr(0, split_on);
+  msg.data = message_string.substr(split_on + 1);
   
+  this->m_last_result = SUCCESS;
+  return true;
 }
