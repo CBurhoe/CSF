@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
     //check if message or command and handle accordingly
     if (input[0] != '/') {
       new_message.tag = TAG_SENDALL;
-      new_message.data = input.substr(0, new_message.MAX_LEN);
+      new_message.data = input.substr(0, Message::MAX_LEN);
     } else if (input.compare(0, 6, "/join ") == 0) {
       new_message.tag = TAG_JOIN;
       new_message.data = input.substr(6);
