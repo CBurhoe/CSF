@@ -66,7 +66,7 @@ bool Connection::send(const Message &msg) {
   msg.tag.copy(msg_to_server, tag_length);
   msg_to_server[tag_length] = ':';
   msg.data.copy(msg_to_server + tag_length + 1, data_length);
-  msg_to_server[tag_length + data_length + 1] = '\0';
+  msg_to_server[tag_length + data_length + 1] = '\n';
   size_t n = tag_length + data_length + 1;
   
   if (rio_writen(this->m_fd, msg_to_server, n) < 1) {
