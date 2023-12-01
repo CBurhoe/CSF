@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
   }
   if (server_response.tag == TAG_ERR) {
     //DONE: handle failed s_login
-    std::cerr << server_response.data << "\n";
+    std::cerr << server_response.data;
     exit(3);
   }
   
@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
       exit(2);
     }
     if (server_response.tag == TAG_ERR) {
-      std::cerr << server_response.data << "\n";
+      std::cerr << server_response.data;
       continue;
     } else if ((server_response.tag == TAG_OK) && (new_message.tag == TAG_QUIT)) {
       exit(0);
