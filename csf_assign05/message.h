@@ -24,11 +24,21 @@ struct Message {
   std::vector<std::string> split_delivery_payload() {
     std::vector<std::string> result;
     std::string token;
-    std::istringstream iss(data);
     
-    while (std::getline(iss, token, ":")) {
+    for (char ch : data) {
+      if (ch == ':') {
+        if (!token.empty()) {
+          result.push_back(token);
+          token.clear();
+        }
+      } else {
+        token += ch;
+      }
+    }
+    if (!token.empty()) {
       result.push_back(token);
     }
+    
     return result;
   }
 };
