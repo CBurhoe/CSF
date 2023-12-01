@@ -24,12 +24,18 @@ struct Message {
   std::vector<std::string> split_delivery_payload() {
     std::vector<std::string> result;
     std::string token;
+    int segments = 0;
     
     for (char ch : data) {
       if (ch == ':') {
-        if (!token.empty()) {
-          result.push_back(token);
-          token.clear();
+        if (segments < 2) {
+          if (!token.empty()) {
+            result.push_back(token);
+            token.clear();
+          }
+          segments++;
+        } else {
+          token += ch;
         }
       } else {
         token += ch;
