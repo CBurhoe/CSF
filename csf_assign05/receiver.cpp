@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
       std::vector<std::string> delivery_payload = new_message.split_delivery_payload();
       std::string sender = delivery_payload[1];
       std::string message_text = delivery_payload[2];
-      std::cout << sender << ": " << message_text << endl; //extra newline?
+      std::cout << sender << ": " << message_text; //extra newline?
     }
   }
 
