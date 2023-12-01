@@ -71,6 +71,9 @@ int main(int argc, char **argv) {
     if (!conn.send(new_message)) {
       //TODO: handle failed send
       std::cerr << "Message to server failed to send.\n";
+      if (conn.get_last_result() == Connection::INVALID_MSG) {
+        std::cerr << "Message is too long.\n";
+      }
       exit(2);
     }
     if (!conn.receive(server_response)) {
