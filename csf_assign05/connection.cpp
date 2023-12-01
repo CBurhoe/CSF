@@ -16,7 +16,7 @@ Connection::Connection(int fd)
   : m_fd(fd)
   , m_last_result(SUCCESS) {
   // TODO: call rio_readinitb to initialize the rio_t object
-  Rio_readinitb(this->m_fdbuf, fd);
+  Rio_readinitb(m_fdbuf, fd);
 }
 
 void Connection::connect(const std::string &hostname, int port) {
