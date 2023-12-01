@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
   while(std::getline(std::cin, input)) {
     struct Message new_message;
     //check if message or command and handle accordingly
-    if (input.compare(0, 0, '/') != 0) {
+    if (input[0] != '/') {
       new_message.tag = TAG_SENDALL;
       new_message.data = input.substr(0, new_message.MAX_LEN);
     } else if (input.compare(0, 6, "/join ") == 0) {
