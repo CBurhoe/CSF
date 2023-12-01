@@ -69,7 +69,7 @@ bool Connection::send(const Message &msg) {
   msg_to_server[tag_length + data_length + 1] = '\0';
   size_t n = tag_length + data_length;
   
-  if (Rio_writen(this->m_fd, msg_to_server, n) < 1) {
+  if (rio_writen(this->m_fd, msg_to_server, n) < 1) {
     this->m_last_result = EOF_OR_ERROR;
     return false;
   }
@@ -89,7 +89,7 @@ bool Connection::receive(Message &msg) {
   char msg_from_server[msg.MAX_LEN + 1];
   //read line from server and store in msg_from_server
   //FIXME: need to check if '\n' is last char?
-  if (Rio_readlineb(this->m_fdbuf, msg_from_server, msg.MAX_LEN) < 1) {
+  if (Rio_readlineb(&m_fdbuf, msg_from_server, msg.MAX_LEN) < 1) {
     this->m_last_result = EOF_OR_ERROR;
     return false;
   }
