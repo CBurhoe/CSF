@@ -23,7 +23,8 @@ Connection::Connection(int fd)
 void Connection::connect(const std::string &hostname, int port) {
   // TODO: call open_clientfd to connect to the server
   const char* hn = hostname.c_str();
-  const char* pn = itoa(port);
+  std::string s = std::to_string(port);
+  const char* pn = s.c_str();
   this->m_fd = Open_clientfd(hn, pn);
   // TODO: call rio_readinitb to initialize the rio_t object
   Rio_readinitb(&m_fdbuf, this->m_fd);
