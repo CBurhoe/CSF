@@ -61,10 +61,6 @@ bool Connection::send(const Message &msg) {
     this->m_last_result = INVALID_MSG;
     return false;
   }
-  if (msg.data.back() != '\n') {
-    this->m_last_result = INVALID_MSG;
-    return false;
-  }
   char msg_to_server[msg.MAX_LEN + 1];
   
   msg.tag.copy(msg_to_server, tag_length);
@@ -102,10 +98,6 @@ bool Connection::receive(Message &msg) {
   size_t split_on = message_string.find(':');
   msg.tag = message_string.substr(0, split_on);
   msg.data = message_string.substr(split_on + 1);
-  if (msg.data.back() != '\n') {
-    this->m_last_result = INVALID_MSG;
-    return false;
-  }
   
   this->m_last_result = SUCCESS;
   return true;
