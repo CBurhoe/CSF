@@ -37,7 +37,7 @@ Connection::~Connection() {
 
 bool Connection::is_open() const {
   // TODO: return true if the connection is open
-  return (this->m_fd > -1);
+  return (this->m_fd > 0);
 }
 
 void Connection::close() {
