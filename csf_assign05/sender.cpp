@@ -21,40 +21,33 @@ int main(int argc, char **argv) {
   server_port = std::stoi(argv[2]);
   username = argv[3];
 
-  // DONE: connect to server
+  // connect to server
   Connection conn;
   struct Message server_response;
   conn.connect(server_hostname, server_port);
-  if (!conn.is_open()) {
-    std::cerr << "TCP socket failed to open.\n";
-    exit(4);
-  }
-
-  // DONE: send slogin message
+  // send slogin message
   struct Message s_login = Message(TAG_SLOGIN, username);
   if (!conn.send(s_login)) {
-    //FIXME: handle failed send
     std::cerr << "Message to server failed to send.\n";
     exit(2);
   }
   if (!conn.receive(server_response)) {
-    //FIXME: handle failed receive
     std::cerr << "Failed to receive a response from server.\n";
     exit(2);
   }
   if (server_response.tag == TAG_ERR) {
-    //DONE: handle failed s_login
+    // handle failed s_login
     std::cerr << server_response.data;
     exit(3);
   }
   
-  // TODO: loop reading commands from user, sending messages to
+  // loop reading commands from user, sending messages to
   //       server as appropriate
   std::string input;
-  //read in line of input from user
+  // read in line of input from user
   while(std::getline(std::cin, input)) {
     struct Message new_message;
-    //check if message or command and handle accordingly
+    // check if message or command and handle accordingly
     if (input[0] != '/') {
       new_message.tag = TAG_SENDALL;
       new_message.data = input.substr(0, Message::MAX_LEN);
@@ -73,12 +66,12 @@ int main(int argc, char **argv) {
     }
     
     if (!conn.send(new_message)) {
-      //TODO: handle failed send
+      // handle failed send
       std::cerr << "Message to server failed to send.\n";
       exit(2);
     }
     if (!conn.receive(server_response)) {
-      //TODO: handle failed receive
+      // handle failed receive
       std::cerr << "Failed to receive a response from server.\n";
       exit(2);
     }

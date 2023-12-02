@@ -12,7 +12,6 @@ int main(int argc, char **argv) {
     std::cerr << "Usage: ./receiver [server_address] [port] [username] [room]\n";
     return 1;
   }
-  //FIXME: May need to check input string lengths
   std::string server_hostname = argv[1];
   int server_port = std::stoi(argv[2]);
   std::string username = argv[3];
@@ -21,69 +20,65 @@ int main(int argc, char **argv) {
   Connection conn;
   struct Message server_response;
   
-  // DONE: connect to server
+  // connect to server
   //connect via hostname and port number
   conn.connect(server_hostname, server_port);
-  if (!conn.is_open()) {
-    std::cerr << "TCP socket failed to open.\n";
-    exit(4);
-  }
-  // TODO: send rlogin and join messages (expect a response from
+  // send rlogin and join messages (expect a response from
   //       the server for each one)
   struct Message r_login = Message(TAG_RLOGIN, username);
   if (!conn.send(r_login)) {
-    //FIXME: handle failed send
+    // handle failed send
     std::cerr << "Message to server failed to send.\n";
     exit(2);
   }
-  //DONE: listen for response
+  // listen for response
   if (!conn.receive(server_response)) {
-    //FIXME: handle failed receive
+    // handle failed receive
     std::cerr << "Failed to receive a response from server.\n";
     exit(2);
   }
   if (server_response.tag == TAG_ERR) {
-    //DONE: handle failed r_login
+    // handle failed r_login
     std::cerr << server_response.data;
     exit(3);
   }
   struct Message join = Message(TAG_JOIN, room_name);
   if (!conn.send(join)) {
-    //FIXME: handle failed send
+    // handle failed send
     std::cerr << "Message to server failed to send.\n";
     exit(2);
   }
-  //DONE: listen for response
+  // listen for response
   if (!conn.receive(server_response)) {
-    //FIXME: handle failed receive
+    // handle failed receive
     std::cerr << "Failed to receive a response from server.\n";
     exit(2);
   }
   if (server_response.tag == TAG_ERR) {
-    //DONE: handle failed join
+    // handle failed join
     std::cerr << server_response.data;
     exit(3);
   }
-  // TODO: loop waiting for messages from server
+  // loop waiting for messages from server
   //       (which should be tagged with TAG_DELIVERY)
   struct Message new_message;
   while(true) {
     if (!conn.receive(new_message)) {
-      //FIXME: handle failed receive
+      // handle failed receive
       std::cerr << "Failed to receive a response from server.\n";
       exit(2);
     }
     if (new_message.tag == TAG_ERR) {
-      //DONE: handle error case
+      // handle error case
       std::cerr << new_message.data;
       exit(3);
     } else if (new_message.tag == TAG_DELIVERY) {
-      //DONE: handle delivered message from user
+      // handle delivered message from user
       //usage: delivery:room:sender:message_text
       std::vector<std::string> delivery_payload = new_message.split_delivery_payload();
       std::string sender = delivery_payload[1];
       std::string message_text = delivery_payload[2];
-      std::cout << sender << ": " << message_text; //extra newline?
+      std::cout << sender << ": " << message_text;
     }
   }
 

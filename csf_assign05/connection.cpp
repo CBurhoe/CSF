@@ -16,38 +16,42 @@ Connection::Connection()
 Connection::Connection(int fd)
   : m_fd(fd)
   , m_last_result(SUCCESS) {
-  // TODO: call rio_readinitb to initialize the rio_t object
+  // call rio_readinitb to initialize the rio_t object
   Rio_readinitb(&m_fdbuf, fd);
 }
 
 void Connection::connect(const std::string &hostname, int port) {
-  // TODO: call open_clientfd to connect to the server
+  // call open_clientfd to connect to the server
   const char* hn = hostname.c_str();
   std::string s = std::to_string(port);
   const char* pn = s.c_str();
   this->m_fd = Open_clientfd(hn, pn);
-  // TODO: call rio_readinitb to initialize the rio_t object
+  if (!is_open()) {
+    std::cerr << "TCP socket failed to open.\n";
+    exit(4);
+  }
+  // call rio_readinitb to initialize the rio_t object
   Rio_readinitb(&m_fdbuf, this->m_fd);
 }
 
 Connection::~Connection() {
-  // TODO: close the socket if it is open
+  // close the socket if it is open
   Close(this->m_fd);
 }
 
 bool Connection::is_open() const {
-  // TODO: return true if the connection is open
+  // return true if the connection is open
   return (this->m_fd > 0);
 }
 
 void Connection::close() {
-  // TODO: close the connection if it is open
+  // close the connection if it is open
   Close(this->m_fd);
   this->m_fd = -1;
 }
 
 bool Connection::send(const Message &msg) {
-  // TODO: send a message
+  // send a message
   // return true if successful, false if not
   // make sure that m_last_result is set appropriately
   if (!is_open()) {
@@ -79,7 +83,7 @@ bool Connection::send(const Message &msg) {
 }
 
 bool Connection::receive(Message &msg) {
-  // TODO: receive a message, storing its tag and data in msg
+  // receive a message, storing its tag and data in msg
   // return true if successful, false if not
   // make sure that m_last_result is set appropriately
   if (!is_open()) {
@@ -87,13 +91,12 @@ bool Connection::receive(Message &msg) {
     return false;
   }
   char msg_from_server[msg.MAX_LEN + 1];
-  //read line from server and store in msg_from_server
-  //FIXME: need to check if '\n' is last char?
+  // read line from server and store in msg_from_server
   if (Rio_readlineb(&m_fdbuf, msg_from_server, msg.MAX_LEN) < 1) {
     this->m_last_result = EOF_OR_ERROR;
     return false;
   }
-  //split input into tag and data in msg
+  // split input into tag and data in msg
   std::string message_string(msg_from_server);
   size_t split_on = message_string.find(':');
   msg.tag = message_string.substr(0, split_on);
