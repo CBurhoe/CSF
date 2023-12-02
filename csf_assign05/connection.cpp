@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstring>
 #include <cstdlib>
+#include <iostream>
 #include <string>
 #include "csapp.h"
 #include "message.h"
