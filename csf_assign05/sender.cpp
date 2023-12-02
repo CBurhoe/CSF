@@ -25,6 +25,10 @@ int main(int argc, char **argv) {
   Connection conn;
   struct Message server_response;
   conn.connect(server_hostname, server_port);
+  if (!conn.is_open()) {
+    std::cerr << "TCP socket failed to open.\n";
+    exit(4);
+  }
 
   // DONE: send slogin message
   struct Message s_login = Message(TAG_SLOGIN, username);

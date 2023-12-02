@@ -24,6 +24,10 @@ int main(int argc, char **argv) {
   // DONE: connect to server
   //connect via hostname and port number
   conn.connect(server_hostname, server_port);
+  if (!conn.is_open()) {
+    std::cerr << "TCP socket failed to open.\n";
+    exit(4);
+  }
   // TODO: send rlogin and join messages (expect a response from
   //       the server for each one)
   struct Message r_login = Message(TAG_RLOGIN, username);
