@@ -6,6 +6,10 @@
 #include <vector>
 #include <cctype>
 #include <cassert>
+#include <cstring>
+#include <cstdlib>
+#include <iostream>
+#include <string>
 #include "message.h"
 #include "connection.h"
 #include "user.h"
@@ -65,14 +69,17 @@ Server::~Server() {
 bool Server::listen() {
   // TODO: use open_listenfd to create the server socket, return true
   //       if successful, false if not
+  std::string s = std::to_string(port);
+  const char* pn = s.c_str();
+  this->m_ssock = Open_listenfd(pn);
+  return (this->m_ssock >= 0);
 }
 
 void Server::handle_client_requests() {
   // TODO: infinite loop calling accept or Accept, starting a new
-  //       pthread for each connected client
+  //       pthread for each connection
 }
 
-Room *Server::find_or_create_room(const std::string &room_name) {
-  // TODO: return a pointer to the unique Room object representing
-  //       the named chat room, creating a new one if necessary
+Room *find_or_create_room(const std::string &room_name) {
+  // TODO:
 }
