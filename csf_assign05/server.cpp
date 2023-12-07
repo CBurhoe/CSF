@@ -27,7 +27,6 @@
 
 struct ClientInfo {
     int client_fd;
-    std::string client_type;
     Connection *conn;
     struct User *usr;
 };
@@ -86,10 +85,29 @@ void *worker(void *arg) {
 }
 
 void chat_with_sender(void *arg) {
+  struct ClientInfo *info = arg;
+  while(1) {
+    struct Message new_message;
+    if (!info->conn->receive(new_message)) {
+      //TODO
+    }
+    if (new_message.tag == TAG_JOIN) {
+      //TODO: register to room
+    } else if (new_message.tag == TAG_LEAVE) {
+      //TODO: de-register from room
+    } else if (new_message.tag == TAG_QUIT) {
+      //TODO: tear down thread (client quit)
+    } else if (new_message.tag == TAG_SENDALL) {
+      //TODO: synch and broadcast message to room
+    }
+  }
+  
   //TODO
 }
 
 void chat_with_receiver(void *arg) {
+  struct ClientInfo *info = arg;
+  
   //TODO
 }
 
