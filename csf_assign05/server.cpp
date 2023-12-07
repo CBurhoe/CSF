@@ -126,7 +126,8 @@ void Server::handle_client_requests() {
     
     //FIXME: find end of scope of info and free()
     struct ClientInfo *info = malloc(sifeof(struct ClientInfo));
-    info->client_fd = c_fd;
+    Connection client_connection = new Connection(c_fd);
+    info->conn = &client_connection;
     
     pthread_t thread_id;
     
