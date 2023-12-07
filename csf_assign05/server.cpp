@@ -52,7 +52,7 @@ void *worker(void *arg) {
   if (!info->conn.receive(login_msg)) {
     //TODO: handle failed read
   }
-
+  info->usr = User(login_msg.data);
   // TODO: depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
   //       separate helper functions for each of these possibilities
@@ -80,7 +80,7 @@ void *worker(void *arg) {
       //TODO: Handle failed send
     }
   }
-  Close(info->client_fd)
+  delete info->conn;
   free(info);
   return nullptr;
 }
