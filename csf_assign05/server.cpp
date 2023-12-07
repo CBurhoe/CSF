@@ -28,6 +28,9 @@
 struct ClientInfo {
     int client_fd;
     std::string client_type;
+    Connection *conn;
+    User *usr;
+    Room *rm;
     
     
     ClientInfo() { }
