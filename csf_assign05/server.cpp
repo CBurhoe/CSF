@@ -29,7 +29,7 @@ struct ClientInfo {
     int client_fd;
     std::string client_type;
     Connection *conn;
-    User *usr;
+    struct User *usr;
     Room *rm;
     
     
@@ -53,13 +53,40 @@ void *worker(void *arg) {
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   //buffer to store message line from fd
   char login_message[Message::MAX_LEN + 1];
-
+  rio_t *reader;
+  //initialize rio_t object
+  Rio_readinitb(reader, info->client_fd);
+  size_t max = Message::MAX_LEN;
+  //read message from socket FIXME: handle read line error
+  ssize_t message_len = Rio_readlineb(reader, login_message, max);
+  if (message_len > max) {
+    char response = "err:Invalid message: too long.\n";
+    Rio_writen(info->client_fd, &response, 31);
+  }
+  //split input message to determine tag
+  std::string message_string(login_message);
+  size_t split_on message_string.find(':');
+  std::string msg_tag = message_string.substr(0, split_on);
+  std::string username = message_string.substr(split_on + 1);
+  char response = "ok:Logged in\n";
   // TODO: depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
   //       separate helper functions for each of these possibilities
   //       is a good idea)
-
+  if (msg_tag.compare(TAG_SLOGIN) == 0) {
+    chat_with_sender(info);
+  } else if (msg_tag.compare(TAG_RLOGIN) == 0) {
+    chat_with_receiver(info);
+  }
   return nullptr;
+}
+
+void chat_with_sender(void *arg) {
+  //TODO
+}
+
+void chat_with_receiver(void *arg) {
+  //TODO
 }
 
 }
@@ -96,7 +123,6 @@ void Server::handle_client_requests() {
     int c_fd = Accept(this->m_ssock, NULL, NULL);
     if (c_fd < 0) {
       std::cerr << "Error accepting client connection.\n";
-      exit(1);
     }
     
     //FIXME: find end of scope of info and free()
