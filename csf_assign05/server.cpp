@@ -79,6 +79,14 @@ bool Server::listen() {
 void Server::handle_client_requests() {
   // TODO: infinite loop calling accept or Accept, starting a new
   //       pthread for each connected client
+  while(1) {
+    int client_fd = Accept(this->m_ssock, NULL, NULL);
+    if (client_fd < 0) {
+      std::cerr << "Error accepting client connection.\n";
+      exit(1);
+    }
+    
+  }
 }
 
 Room *Server::find_or_create_room(const std::string &room_name) {
