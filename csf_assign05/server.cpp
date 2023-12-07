@@ -30,11 +30,8 @@ struct ClientInfo {
     std::string client_type;
     Connection *conn;
     struct User *usr;
-    Room *rm;
-    
-    
-    ClientInfo() { }
 };
+
 ////////////////////////////////////////////////////////////////////////
 // Client thread functions
 ////////////////////////////////////////////////////////////////////////
@@ -78,6 +75,8 @@ void *worker(void *arg) {
   } else if (msg_tag.compare(TAG_RLOGIN) == 0) {
     chat_with_receiver(info);
   }
+  Close(info->client_fd)
+  free(info);
   return nullptr;
 }
 
