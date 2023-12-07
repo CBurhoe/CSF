@@ -25,6 +25,13 @@
 // TODO: add any additional data types that might be helpful
 //       for implementing the Server member functions
 
+struct ClientInfo {
+    int client_fd;
+    std::string client_type;
+    
+    
+    ClientInfo() { }
+};
 ////////////////////////////////////////////////////////////////////////
 // Client thread functions
 ////////////////////////////////////////////////////////////////////////
@@ -80,12 +87,18 @@ void Server::handle_client_requests() {
   // TODO: infinite loop calling accept or Accept, starting a new
   //       pthread for each connected client
   while(1) {
-    int client_fd = Accept(this->m_ssock, NULL, NULL);
-    if (client_fd < 0) {
+    int c_fd = Accept(this->m_ssock, NULL, NULL);
+    if (c_fd < 0) {
       std::cerr << "Error accepting client connection.\n";
       exit(1);
     }
     
+    struct ClientInfo *info = malloc(sifeof(struct ClientInfo));
+    info->client_fd = c_fd;
+    
+    pthread_t thread_id;
+    
+    Pthread_create(&thread_id, NULL, worker, info);
   }
 }
 
