@@ -199,7 +199,7 @@ Server::Server(int port)
   : m_port(port)
   , m_ssock(-1) {
   // TODO: initialize mutex
-  pthread_mutex_init(this->m_lock, NULL);
+  pthread_mutex_init(&this->m_lock, NULL);
 }
 
 Server::~Server() {
