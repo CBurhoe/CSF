@@ -57,7 +57,7 @@ void chat_with_sender(void *arg) {
       } else {
         Room *room_to_register = info->server->find_or_create_room(new_message.data);
         info->rm = room_to_register;
-        room_to_register.add_member(info->usr);
+        room_to_register->add_member(info->usr);
         info->in_room = true;
         server_response.tag = TAG_OK;
         server_response.data = "Joined room.\n";
