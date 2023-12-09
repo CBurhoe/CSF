@@ -124,11 +124,11 @@ void chat_with_receiver(void *arg) {
   
   //continuously look for messages
   while(1) {
-    struct Message new_delivery = info->usr->mqueue.dequeue();
+    struct Message *new_delivery = info->usr->mqueue.dequeue();
     if (new_delivery == nullptr) {
       continue;
     }
-    if (!info->conn->send(new_delivery)) {
+    if (!info->conn->send(*new_delivery)) {
       //TODO: Handle failed send
     }
   }
