@@ -55,8 +55,8 @@ void chat_with_sender(void *arg) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must leave current room before joining another.\n";
       } else {
-        Room room_to_register = info->server->find_or_create_room(new_message.data);
-        info->rm = &room_to_register;
+        Room *room_to_register = info->server->find_or_create_room(new_message.data);
+        info->rm = room_to_register;
         room_to_register.add_member(info->usr);
         info->in_room = true;
         server_response.tag = TAG_OK;
@@ -111,8 +111,8 @@ void chat_with_receiver(void *arg) {
     }
     return;
   }
-  Room room_to_register = info->server->find_or_create_room(new_message.data);
-  info->rm = &room_to_register;
+  Room *room_to_register = info->server->find_or_create_room(new_message.data);
+  info->rm = room_to_register;
   room_to_register.add_member(info->usr);
   info->in_room = true;
   struct Message server_response;
