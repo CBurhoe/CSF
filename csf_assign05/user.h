@@ -6,7 +6,7 @@
 
 struct User {
   std::string username;
-
+  bool is_receiver = false;
   // queue of pending messages awaiting delivery
   MessageQueue mqueue;
 

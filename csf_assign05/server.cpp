@@ -73,6 +73,7 @@ void *worker(void *arg) {
     if (!info->conn.send(server_response)) {
       //TODO: Handle failed send
     }
+    info->usr->is_receiver = true;
     chat_with_receiver(info);
   } else {
     server_response.tag = TAG_ERR;
@@ -128,7 +129,7 @@ void chat_with_sender(void *arg) {
       //TODO: tear down thread (client quit)
       break;
     } else if (new_message.tag == TAG_SENDALL) {
-      //TODO: synch and broadcast message to room
+      //TODO: sync and broadcast message to room
       if (!info->in_room) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must join room before sending messages.\n";
