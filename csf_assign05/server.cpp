@@ -172,6 +172,16 @@ void chat_with_receiver(void *arg) {
     //TODO: Handle failed send
   }
   
+  //continuously look for messages
+  while(1) {
+    struct Message *new_delivery = info->usr->mqueue.dequeue();
+    if (new_delivery == nullptr) {
+      continue;
+    }
+    if (!info->conn->send(new_delivery)) {
+      //TODO: Handle failed send
+    }
+  }
   //TODO
 }
 
