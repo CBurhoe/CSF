@@ -222,9 +222,8 @@ void Server::handle_client_requests() {
       std::cerr << "Error accepting client connection.\n";
     }
     
-    struct ClientInfo *info = malloc(sifeof(struct ClientInfo));
-    Connection client_connection = new Connection(c_fd);
-    info->conn = &client_connection;
+    struct ClientInfo *info = malloc(sizeof(struct ClientInfo));
+    info->conn = new Connection(c_fd);
     
     pthread_t thread_id;
     
