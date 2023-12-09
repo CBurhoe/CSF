@@ -50,10 +50,10 @@ void *worker(void *arg) {
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   struct Message login_msg;
-  if (!info->conn.receive(login_msg)) {
+  if (!info->conn->receive(login_msg)) {
     //TODO: handle failed read
   }
-  info->usr = User(login_msg.data);
+  info->usr = &User(login_msg.data);
   // TODO: depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
   //       separate helper functions for each of these possibilities
