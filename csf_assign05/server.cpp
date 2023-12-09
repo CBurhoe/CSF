@@ -65,14 +65,14 @@ void *worker(void *arg) {
   if (login_msg.tag == TAG_SLOGIN) {
     server_response.tag = TAG_OK;
     server_response.data = "Logged in\n";
-    if (!info->conn.send(server_response)) {
+    if (!info->conn->send(server_response)) {
       //TODO: Handle failed send
     }
     chat_with_sender(info);
   } else if (login_msg.tag == TAG_RLOGIN) {
     server_response.tag = TAG_OK;
     server_response.data = "Logged in\n";
-    if (!info->conn.send(server_response)) {
+    if (!info->conn->send(server_response)) {
       //TODO: Handle failed send
     }
     info->usr->is_receiver = true;
@@ -80,7 +80,7 @@ void *worker(void *arg) {
   } else {
     server_response.tag = TAG_ERR;
     server_response.data = "Not logged in\n";
-    if (!info->conn.send(server_response)) {
+    if (!info->conn->send(server_response)) {
       //TODO: Handle failed send
     }
   }
