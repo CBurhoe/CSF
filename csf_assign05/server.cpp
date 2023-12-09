@@ -40,60 +40,6 @@ struct ClientInfo {
 
 namespace {
 
-void *worker(void *arg) {
-  pthread_detach(pthread_self());
-
-  // TODO: use a static cast to convert arg from a void* to
-  //       whatever pointer type describes the object(s) needed
-  //       to communicate with a client (sender or receiver)
-  struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
-
-  // TODO: read login message (should be tagged either with
-  //       TAG_SLOGIN or TAG_RLOGIN), send response
-  struct Message login_msg;
-  if (!info->conn->receive(login_msg)) {
-    //TODO: handle failed read
-  }
-  User new_user(rtrim(login_msg.data));
-  info->usr = &new_user;
-  // TODO: depending on whether the client logged in as a sender or
-  //       receiver, communicate with the client (implementing
-  //       separate helper functions for each of these possibilities
-  //       is a good idea)
-  struct Message server_response;
-  
-  if (login_msg.tag == TAG_SLOGIN) {
-    server_response.tag = TAG_OK;
-    server_response.data = "Logged in\n";
-    if (!info->conn->send(server_response)) {
-      //TODO: Handle failed send
-    }
-    chat_with_sender(info);
-  } else if (login_msg.tag == TAG_RLOGIN) {
-    server_response.tag = TAG_OK;
-    server_response.data = "Logged in\n";
-    if (!info->conn->send(server_response)) {
-      //TODO: Handle failed send
-    }
-    info->usr->is_receiver = true;
-    chat_with_receiver(info);
-  } else {
-    server_response.tag = TAG_ERR;
-    server_response.data = "Not logged in\n";
-    if (!info->conn->send(server_response)) {
-      //TODO: Handle failed send
-    }
-  }
-  server_response.tag = TAG_OK;
-  server_response.data = "Client quit.\n";
-  if (!info->conn->send(server_response)) {
-    //TODO: Handle failed send
-  }
-  delete info->conn;
-  free(info);
-  return nullptr;
-}
-
 void chat_with_sender(void *arg) {
   struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
   while(1) {
@@ -186,6 +132,60 @@ void chat_with_receiver(void *arg) {
     }
   }
   //TODO
+}
+
+void *worker(void *arg) {
+  pthread_detach(pthread_self());
+
+  // TODO: use a static cast to convert arg from a void* to
+  //       whatever pointer type describes the object(s) needed
+  //       to communicate with a client (sender or receiver)
+  struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
+
+  // TODO: read login message (should be tagged either with
+  //       TAG_SLOGIN or TAG_RLOGIN), send response
+  struct Message login_msg;
+  if (!info->conn->receive(login_msg)) {
+    //TODO: handle failed read
+  }
+  User new_user(rtrim(login_msg.data));
+  info->usr = &new_user;
+  // TODO: depending on whether the client logged in as a sender or
+  //       receiver, communicate with the client (implementing
+  //       separate helper functions for each of these possibilities
+  //       is a good idea)
+  struct Message server_response;
+  
+  if (login_msg.tag == TAG_SLOGIN) {
+    server_response.tag = TAG_OK;
+    server_response.data = "Logged in\n";
+    if (!info->conn->send(server_response)) {
+      //TODO: Handle failed send
+    }
+    chat_with_sender(info);
+  } else if (login_msg.tag == TAG_RLOGIN) {
+    server_response.tag = TAG_OK;
+    server_response.data = "Logged in\n";
+    if (!info->conn->send(server_response)) {
+      //TODO: Handle failed send
+    }
+    info->usr->is_receiver = true;
+    chat_with_receiver(info);
+  } else {
+    server_response.tag = TAG_ERR;
+    server_response.data = "Not logged in\n";
+    if (!info->conn->send(server_response)) {
+      //TODO: Handle failed send
+    }
+  }
+  server_response.tag = TAG_OK;
+  server_response.data = "Client quit.\n";
+  if (!info->conn->send(server_response)) {
+    //TODO: Handle failed send
+  }
+  delete info->conn;
+  free(info);
+  return nullptr;
 }
 
 }
