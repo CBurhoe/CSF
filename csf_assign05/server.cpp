@@ -45,7 +45,7 @@ void *worker(void *arg) {
   // TODO: use a static cast to convert arg from a void* to
   //       whatever pointer type describes the object(s) needed
   //       to communicate with a client (sender or receiver)
-  struct ClientInfo *info = arg;
+  struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
 
   // TODO: read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
@@ -93,7 +93,7 @@ void *worker(void *arg) {
 }
 
 void chat_with_sender(void *arg) {
-  struct ClientInfo *info = arg;
+  struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
   while(1) {
     struct Message new_message;
     struct Message server_response;
@@ -149,7 +149,7 @@ void chat_with_sender(void *arg) {
 }
 
 void chat_with_receiver(void *arg) {
-  struct ClientInfo *info = arg;
+  struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
   struct Message new_message;
   if (!info->conn->receive()) {
     //TODO: Handle failed receive
@@ -222,7 +222,7 @@ void Server::handle_client_requests() {
       std::cerr << "Error accepting client connection.\n";
     }
     
-    struct ClientInfo *info = malloc(sizeof(struct ClientInfo));
+    struct ClientInfo *info = static_cast<struct ClientInfo*>(malloc(sizeof(struct ClientInfo)));
     info->conn = new Connection(c_fd);
     
     pthread_t thread_id;
