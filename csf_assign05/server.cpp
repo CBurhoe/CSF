@@ -32,7 +32,7 @@ struct ClientInfo {
     struct User *usr;
     Room *rm;
     bool in_room = false;
-    Server server;
+    Server *server;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -227,7 +227,7 @@ void Server::handle_client_requests() {
     
     struct ClientInfo *info = static_cast<struct ClientInfo*>(malloc(sizeof(struct ClientInfo)));
     info->conn = new Connection(c_fd);
-    info->server = this;
+    info->server = &this;
     
     pthread_t thread_id;
     
