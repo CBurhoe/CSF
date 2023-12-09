@@ -12,6 +12,7 @@
 #include <map>
 #include <string>
 #include "message.h"
+#include "client_util.h"
 #include "connection.h"
 #include "user.h"
 #include "room.h"
@@ -53,7 +54,8 @@ void *worker(void *arg) {
   if (!info->conn->receive(login_msg)) {
     //TODO: handle failed read
   }
-  struct User new_user = User(login_msg.data);
+  struct User new_user;
+  new_user.username = rtrim(login_msg.data);
   info->usr = &new_user;
   // TODO: depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
