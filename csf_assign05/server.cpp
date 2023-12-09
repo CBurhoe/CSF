@@ -100,7 +100,7 @@ void chat_with_sender(void *arg) {
 void chat_with_receiver(void *arg) {
   struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
   struct Message new_message;
-  if (!info->conn->receive()) {
+  if (!info->conn->receive(new_message)) {
     //TODO: Handle failed receive
   }
   //FIXME: shouldn't need to check this
@@ -113,7 +113,7 @@ void chat_with_receiver(void *arg) {
   }
   Room *room_to_register = info->server->find_or_create_room(new_message.data);
   info->rm = room_to_register;
-  room_to_register.add_member(info->usr);
+  room_to_register->add_member(info->usr);
   info->in_room = true;
   struct Message server_response;
   server_response.tag = TAG_OK;
@@ -124,7 +124,7 @@ void chat_with_receiver(void *arg) {
   
   //continuously look for messages
   while(1) {
-    struct Message *new_delivery = info->usr->mqueue.dequeue();
+    struct Message new_delivery = info->usr->mqueue.dequeue();
     if (new_delivery == nullptr) {
       continue;
     }
