@@ -83,7 +83,7 @@ void chat_with_sender(void *arg) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must join room before sending messages.\n";
       } else {
-        std::string msg = TAG_DELIVERY + ":" + new_message.data;
+        std::string msg = std::string(TAG_DELIVERY) + ":" + new_message.data;
         info->rm->broadcast_message(info->usr->username, msg);
         server_response.tag = TAG_OK;
         server_response.data = "Message delivered.\n";
