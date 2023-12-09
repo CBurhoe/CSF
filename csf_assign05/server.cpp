@@ -32,6 +32,7 @@ struct ClientInfo {
     struct User *usr;
     Room *rm;
     bool in_room = false;
+    Server server;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -54,7 +55,7 @@ void chat_with_sender(void *arg) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must leave current room before joining another.\n";
       } else {
-        Room room_to_register = find_or_create_room(new_message.data);
+        Room room_to_register = info->server->find_or_create_room(new_message.data);
         info->rm = &room_to_register;
         room_to_register.add_member(info->usr);
         info->in_room = true;
@@ -110,7 +111,7 @@ void chat_with_receiver(void *arg) {
     }
     return;
   }
-  Room room_to_register = find_or_create_room(new_message.data);
+  Room room_to_register = info->server->find_or_create_room(new_message.data);
   info->rm = &room_to_register;
   room_to_register.add_member(info->usr);
   info->in_room = true;
@@ -226,6 +227,7 @@ void Server::handle_client_requests() {
     
     struct ClientInfo *info = static_cast<struct ClientInfo*>(malloc(sizeof(struct ClientInfo)));
     info->conn = new Connection(c_fd);
+    info->server = this;
     
     pthread_t thread_id;
     
