@@ -204,7 +204,7 @@ Server::Server(int port)
 
 Server::~Server() {
   // TODO: destroy mutex
-  pthread_mutex_destroy(this->m_lock);
+  pthread_mutex_destroy(&this->m_lock);
 }
 
 bool Server::listen() {
