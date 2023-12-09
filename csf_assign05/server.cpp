@@ -210,7 +210,7 @@ Server::~Server() {
 bool Server::listen() {
   // DONE: use open_listenfd to create the server socket, return true
   //       if successful, false if not
-  std::string s = std::to_string(port);
+  std::string s = std::to_string(m_port);
   const char* pn = s.c_str();
   this->m_ssock = Open_listenfd(pn);
   return (this->m_ssock > 0);
@@ -227,7 +227,7 @@ void Server::handle_client_requests() {
     
     struct ClientInfo *info = static_cast<struct ClientInfo*>(malloc(sizeof(struct ClientInfo)));
     info->conn = new Connection(c_fd);
-    info->server = &this;
+    info->server = this;
     
     pthread_t thread_id;
     
@@ -244,9 +244,9 @@ Room *Server::find_or_create_room(const std::string &room_name) {
     if (search_rooms != this->m_rooms.end()) {
       return search_rooms.second();
     } else {
-      Room *new_room = Room(room_name);
+      Room new_room = new Room(room_name);
       this->m_rooms.insert({room_name, new_room});
-      return new_room;
+      return &new_room;
     }
   }
 }
