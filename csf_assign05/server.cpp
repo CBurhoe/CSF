@@ -222,7 +222,6 @@ void Server::handle_client_requests() {
       std::cerr << "Error accepting client connection.\n";
     }
     
-    //FIXME: find end of scope of info and free()
     struct ClientInfo *info = malloc(sifeof(struct ClientInfo));
     Connection client_connection = new Connection(c_fd);
     info->conn = &client_connection;
