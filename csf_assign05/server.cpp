@@ -29,6 +29,8 @@ struct ClientInfo {
     int client_fd;
     Connection *conn;
     struct User *usr;
+    Room *rm;
+    bool in_room = false;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -79,6 +81,11 @@ void *worker(void *arg) {
       //TODO: Handle failed send
     }
   }
+  server_response.tag = TAG_OK;
+  server_response.data = "Client quit.\n";
+  if (!info->conn->send(server_response)) {
+    //TODO: Handle failed send
+  }
   delete info->conn;
   free(info);
   return nullptr;
@@ -88,17 +95,52 @@ void chat_with_sender(void *arg) {
   struct ClientInfo *info = arg;
   while(1) {
     struct Message new_message;
+    struct Message server_response;
     if (!info->conn->receive(new_message)) {
       //TODO
     }
     if (new_message.tag == TAG_JOIN) {
       //TODO: register to room
+      if (info->in_room) {
+        server_response.tag = TAG_ERR;
+        server_response.data = "Must leave current room before joining another.\n";
+      } else {
+        Room room_to_register = Server::find_or_create_room(new_message.data);
+        info->rm = &room_to_register;
+        room_to_register.add_member(info->usr);
+        info->in_room = true;
+        server_response.tag = TAG_OK;
+        server_response.data = "Joined room.\n";
+      }
     } else if (new_message.tag == TAG_LEAVE) {
       //TODO: de-register from room
+      if (info->in_room) {
+        info->rm->remove_member(info->usr);
+        info->rm = NULL;
+        info->in_room = false;
+        server_response.tag = TAG_OK;
+        server_response.data = "Left room.\n";
+      } else {
+        server_response.tag = TAG_ERR;
+        server_response.data = "Not in a room.\n";
+      }
     } else if (new_message.tag == TAG_QUIT) {
       //TODO: tear down thread (client quit)
+      break;
     } else if (new_message.tag == TAG_SENDALL) {
       //TODO: synch and broadcast message to room
+      if (!info->in_room) {
+        server_response.tag = TAG_ERR;
+        server_response.data = "Must join room before sending messages.\n";
+      } else {
+        std::string msg = TAG_DELIVERY + ":" + new_message.data;
+        info->rm->broadcast_message(info->usr->username, msg);
+        server_response.tag = TAG_OK;
+        server_response.data = "Message delivered.\n";
+      }
+    }
+    if (!info->conn->send(server_response)) {
+      //TODO: Handle failed send
     }
   }
   
@@ -107,6 +149,28 @@ void chat_with_sender(void *arg) {
 
 void chat_with_receiver(void *arg) {
   struct ClientInfo *info = arg;
+  struct Message new_message;
+  if (!info->conn->receive()) {
+    //TODO: Handle failed receive
+  }
+  //FIXME: shouldn't need to check this
+  if (new_message.tag != TAG_JOIN) {
+    struct Message server_response = Message(TAG_ERR, "Must join room.\n");
+    if (!info->conn->send(server_response)) {
+      //TODO: Handle failed send
+    }
+    return;
+  }
+  Room room_to_register = Server::find_or_create_room(new_message.data);
+  info->rm = &room_to_register;
+  room_to_register.add_member(info->usr);
+  info->in_room = true;
+  struct Message server_response;
+  server_response.tag = TAG_OK;
+  server_response.data = "Joined room.\n";
+  if (!info->conn->send(server_response)) {
+    //TODO: Handle failed send
+  }
   
   //TODO
 }
@@ -154,7 +218,6 @@ void Server::handle_client_requests() {
     
     pthread_t thread_id;
     
-    //FIXME: need to find end of thread scope and destroy zombie?
     Pthread_create(&thread_id, NULL, worker, info);
   }
 }
