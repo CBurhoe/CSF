@@ -239,10 +239,6 @@ void Server::handle_client_requests() {
   //       pthread for each connected client
   while(1) {
     int c_fd = Accept(this->m_ssock, NULL, NULL);
-    if (c_fd < 0) {
-      std::cerr << "Error accepting client connection.\n";
-      exit(1);
-    }
     
     struct ClientInfo *info = static_cast<struct ClientInfo*>(malloc(sizeof(struct ClientInfo)));
     info->conn = new Connection(c_fd);

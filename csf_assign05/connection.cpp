@@ -62,7 +62,7 @@ bool Connection::send(const Message &msg) {
 
   size_t tag_length = msg.tag.length();
   size_t data_length = msg.data.length();
-  if (tag_length + data_length + 1 > msg.MAX_LEN || msg.data[data_length - 1] != '\n') {
+  if (tag_length + data_length + 1 > msg.MAX_LEN) {
     this->m_last_result = INVALID_MSG;
     return false;
   }
