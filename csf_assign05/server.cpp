@@ -33,6 +33,11 @@ struct ClientInfo {
     Room *rm;
     bool in_room = false;
     Server *server;
+    
+    ~ClientInfo() {
+      delete conn;
+      delete server;
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -49,6 +54,9 @@ void chat_with_sender(void *arg) {
     struct Message server_response;
     if (!info->conn->receive(new_message)) {
       std::cerr << "Failed to receive response.\n";
+      if (info->conn->get_last_result() == Connection::EOF_OR_ERROR) {
+        break;
+      }
     }
     if (new_message.tag == TAG_JOIN) {
       // register to room
@@ -78,10 +86,10 @@ void chat_with_sender(void *arg) {
         server_response.data = "Not in a room.";
       }
     } else if (new_message.tag == TAG_QUIT) {
-      //TODO: tear down thread (client quit)
+      // tear down thread (client quit)
       break;
     } else if (new_message.tag == TAG_SENDALL) {
-      //TODO: sync and broadcast message to room
+      // sync and broadcast message to room
       if (!info->in_room) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must join room before sending messages.";
