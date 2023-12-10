@@ -55,6 +55,8 @@ void chat_with_sender(void *arg) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must leave current room before joining another.";
       } else {
+        size_t end = new_message.data.find_last_not_of(" \n\r\t\f\v");
+        new_message.data = (end == std::string::npos) ? "" : new_message.data.substr(0, end + 1);
         Room *room_to_register = info->server->find_or_create_room(new_message.data);
         info->rm = room_to_register;
         room_to_register->add_member(info->usr);
@@ -83,8 +85,8 @@ void chat_with_sender(void *arg) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must join room before sending messages.";
       } else {
-        std::string msg = std::string(TAG_DELIVERY) + ":" + new_message.data;
-        info->rm->broadcast_message(info->usr->username, msg);
+//        std::string msg = std::string(TAG_DELIVERY) + ":" + new_message.data;
+        info->rm->broadcast_message(info->usr->username, new_message.data);
         server_response.tag = TAG_OK;
         server_response.data = "Message delivered.";
       }
@@ -111,6 +113,8 @@ void chat_with_receiver(void *arg) {
     }
     return;
   }
+  size_t end = new_message.data.find_last_not_of(" \n\r\t\f\v");
+  new_message.data = (end == std::string::npos) ? "" : new_message.data.substr(0, end + 1);
   Room *room_to_register = info->server->find_or_create_room(new_message.data);
   info->rm = room_to_register;
   room_to_register->add_member(info->usr);
