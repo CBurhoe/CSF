@@ -149,6 +149,7 @@ void *worker(void *arg) {
   if (!info->conn->receive(login_msg)) {
     //TODO: handle failed read
   }
+  //from client_util.cpp
   size_t end = login_msg.data.find_last_not_of(" \n\r\t\f\v");
   login_msg.data = (end == std::string::npos) ? "" : login_msg.data.substr(0, end + 1);
   User new_user(login_msg.data);
