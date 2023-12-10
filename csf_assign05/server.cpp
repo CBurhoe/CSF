@@ -33,11 +33,6 @@ struct ClientInfo {
     Room *rm;
     bool in_room = false;
     Server *server;
-    
-    ~ClientInfo() {
-      delete conn;
-      delete server;
-    }
 };
 
 ////////////////////////////////////////////////////////////////////////
