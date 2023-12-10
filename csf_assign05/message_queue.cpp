@@ -21,10 +21,10 @@ void MessageQueue::enqueue(Message *msg) {
   {
     Guard(this->m_lock);
     m_messages.push_back(msg);
+    // be sure to notify any thread waiting for a message to be
+    // available by calling sem_post
+    V(&m_avail);
   }
-  // be sure to notify any thread waiting for a message to be
-  // available by calling sem_post
-  V(&m_avail);
 }
 
 Message *MessageQueue::dequeue() {
