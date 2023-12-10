@@ -38,7 +38,7 @@ struct ClientInfo {
     
     ~ClientInfo() {
       delete conn;
-      delete server;
+      delete usr;
     }
 };
 
@@ -192,6 +192,8 @@ void *worker(void *arg) {
   if (!info->conn->send(server_response)) {
     // Handle failed send
   }
+  info->rm->remove_member(info->usr);
+  delete info;
   return nullptr;
 }
   
