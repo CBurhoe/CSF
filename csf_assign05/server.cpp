@@ -246,7 +246,7 @@ Room *Server::find_or_create_room(const std::string &room_name) {
     } else {
       Room *new_room = new Room(room_name);
       this->m_rooms.insert(std::make_pair(room_name, new_room));
-      return &new_room;
+      return new_room;
     }
   }
 }
