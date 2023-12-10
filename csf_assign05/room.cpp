@@ -36,9 +36,9 @@ void Room::remove_member(User *user) {
 
 void Room::broadcast_message(const std::string &sender_username, const std::string &message_text) {
   // TODO: send a message to every (receiver) User in the room
-  struct Message new_message = new Message();
-  new_message.tag = TAG_DELIVERY;
-  new_message.data = this->room_name + ":" + sender_username + ":" + message_text;
+  struct Message *new_message = new Message();
+  new_message->tag = TAG_DELIVERY;
+  new_message->data = this->room_name + ":" + sender_username + ":" + message_text;
   { //lock the room using a guard during the critical section
     Guard(this->lock);
     for (User *usr: this->members) {
