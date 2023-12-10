@@ -242,7 +242,7 @@ Room *Server::find_or_create_room(const std::string &room_name) {
     Guard(this->m_lock);
     auto search_rooms = this->m_rooms.find(room_name);
     if (search_rooms != this->m_rooms.end()) {
-      return search_rooms.second();
+      return search_rooms->second;
     } else {
       Room *new_room = new Room(room_name);
       this->m_rooms.insert(std::make_pair(room_name, new_room));
