@@ -149,7 +149,9 @@ void *worker(void *arg) {
   if (!info->conn->receive(login_msg)) {
     //TODO: handle failed read
   }
-  User new_user(client_util::rtrim(login_msg.data));
+  size_t end = login_msg.data.find_last_not_of(" \n\r\t\f\v");
+  login_msg.data = (end == std::string::npos) ? "" : login_msg.data.substr(0, end + 1);
+  User new_user(login_msg.data);
   info->usr = &new_user;
   // TODO: depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
