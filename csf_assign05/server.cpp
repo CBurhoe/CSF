@@ -33,6 +33,13 @@ struct ClientInfo {
     Room *rm;
     bool in_room = false;
     Server *server;
+    
+    ClientInfo() {}
+    
+    ~ClientInfo() {
+      delete conn;
+      delete server;
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -185,9 +192,6 @@ void *worker(void *arg) {
   if (!info->conn->send(server_response)) {
     // Handle failed send
   }
-  delete info->usr;
-  delete info->conn;
-  free(info);
   return nullptr;
 }
   
@@ -228,7 +232,7 @@ void Server::handle_client_requests() {
   while(1) {
     int c_fd = Accept(this->m_ssock, NULL, NULL);
     
-    struct ClientInfo *info = static_cast<struct ClientInfo*>(malloc(sizeof(struct ClientInfo)));
+    struct ClientInfo *info = new ClientInfo();
     info->conn = new Connection(c_fd);
     info->server = this;
     
