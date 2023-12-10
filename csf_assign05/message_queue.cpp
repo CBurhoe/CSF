@@ -19,7 +19,7 @@ MessageQueue::~MessageQueue() {
 void MessageQueue::enqueue(Message *msg) {
   // TODO: put the specified message on the queue
   {
-    Guard(m_lock);
+    Guard(this->m_lock);
     m_messages.push_back(msg);
   }
   // be sure to notify any thread waiting for a message to be
@@ -46,7 +46,7 @@ Message *MessageQueue::dequeue() {
   }
   // TODO: remove the next message from the queue, return it
   {
-    Guard(m_lock);
+    Guard(this->m_lock);
     if (!m_messages.empty()) {
       Message *msg = m_messages.front();
       m_messages.pop_front();
