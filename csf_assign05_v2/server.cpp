@@ -23,7 +23,7 @@
 // Server implementation data types
 ////////////////////////////////////////////////////////////////////////
 
-// TODO: add any additional data types that might be helpful
+// add any additional data types that might be helpful
 //       for implementing the Server member functions
 
 struct ClientInfo {
@@ -48,16 +48,14 @@ void chat_with_sender(void *arg) {
     struct Message new_message;
     struct Message server_response;
     if (!info->conn->receive(new_message)) {
-      //TODO
+      //handle failed receive
     }
     if (new_message.tag == TAG_JOIN) {
-      //TODO: register to room
+      // register to room
       if (info->in_room) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must leave current room before joining another.";
       } else {
-//        size_t end = new_message.data.find_last_not_of(" \n\r\t\f\v");
-//        new_message.data = (end == std::string::npos) ? "" : new_message.data.substr(0, end + 1);
         Room *room_to_register = info->server->find_or_create_room(new_message.data);
         info->rm = room_to_register;
         room_to_register->add_member(info->usr);
@@ -66,7 +64,7 @@ void chat_with_sender(void *arg) {
         server_response.data = "Joined room.";
       }
     } else if (new_message.tag == TAG_LEAVE) {
-      //TODO: de-register from room
+      // de-register from room
       if (info->in_room) {
         info->rm->remove_member(info->usr);
         info->rm = NULL;
@@ -78,44 +76,38 @@ void chat_with_sender(void *arg) {
         server_response.data = "Not in a room.";
       }
     } else if (new_message.tag == TAG_QUIT) {
-      //TODO: tear down thread (client quit)
+      // tear down thread (client quit)
       break;
     } else if (new_message.tag == TAG_SENDALL) {
-      //TODO: sync and broadcast message to room
+      // sync and broadcast message to room
       if (!info->in_room) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must join room before sending messages.";
       } else {
-//        std::string msg = std::string(TAG_DELIVERY) + ":" + new_message.data;
         info->rm->broadcast_message(info->usr->username, new_message.data);
         server_response.tag = TAG_OK;
         server_response.data = "Message delivered.";
       }
     }
     if (!info->conn->send(server_response)) {
-      //TODO: Handle failed send
+      // Handle failed send
     }
   }
-  
-  //TODO
 }
 
 void chat_with_receiver(void *arg) {
   struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
   struct Message new_message;
   if (!info->conn->receive(new_message)) {
-    //TODO: Handle failed receive
+    // Handle failed receive
   }
-  //FIXME: shouldn't need to check this
   if (new_message.tag != TAG_JOIN) {
     struct Message server_response = Message(TAG_ERR, "Must join room.");
     if (!info->conn->send(server_response)) {
-      //TODO: Handle failed send
+      // Handle failed send
     }
     return;
   }
-//  size_t end = new_message.data.find_last_not_of(" \n\r\t\f\v");
-//  new_message.data = (end == std::string::npos) ? "" : new_message.data.substr(0, end + 1);
   Room *room_to_register = info->server->find_or_create_room(new_message.data);
   info->rm = room_to_register;
   room_to_register->add_member(info->usr);
@@ -124,7 +116,7 @@ void chat_with_receiver(void *arg) {
   server_response.tag = TAG_OK;
   server_response.data = "Joined room.";
   if (!info->conn->send(server_response)) {
-    //TODO: Handle failed send
+    // Handle failed send
   }
   
   //continuously look for messages
@@ -134,32 +126,28 @@ void chat_with_receiver(void *arg) {
       continue;
     }
     if (!info->conn->send(*new_delivery)) {
-      //TODO: Handle failed send
+      // Handle failed send
     }
   }
-  //TODO
 }
 
 void *worker(void *arg) {
   pthread_detach(pthread_self());
 
-  // TODO: use a static cast to convert arg from a void* to
+  //  use a static cast to convert arg from a void* to
   //       whatever pointer type describes the object(s) needed
   //       to communicate with a client (sender or receiver)
   struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
 
-  // TODO: read login message (should be tagged either with
+  // read login message (should be tagged either with
   //       TAG_SLOGIN or TAG_RLOGIN), send response
   struct Message login_msg;
   if (!info->conn->receive(login_msg)) {
-    //TODO: handle failed read
+    // handle failed read
   }
-  //from client_util.cpp
-//  size_t end = login_msg.data.find_last_not_of(" \n\r\t\f\v");
-//  login_msg.data = (end == std::string::npos) ? "" : login_msg.data.substr(0, end + 1);
   User new_user(login_msg.data);
   info->usr = &new_user;
-  // TODO: depending on whether the client logged in as a sender or
+  // depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
   //       separate helper functions for each of these possibilities
   //       is a good idea)
@@ -169,14 +157,14 @@ void *worker(void *arg) {
     server_response.tag = TAG_OK;
     server_response.data = "Logged in.";
     if (!info->conn->send(server_response)) {
-      //TODO: Handle failed send
+      // Handle failed send
     }
     chat_with_sender(info);
   } else if (login_msg.tag == TAG_RLOGIN) {
     server_response.tag = TAG_OK;
     server_response.data = "Logged in.";
     if (!info->conn->send(server_response)) {
-      //TODO: Handle failed send
+      // Handle failed send
     }
     info->usr->is_receiver = true;
     chat_with_receiver(info);
@@ -184,13 +172,13 @@ void *worker(void *arg) {
     server_response.tag = TAG_ERR;
     server_response.data = "Not logged in";
     if (!info->conn->send(server_response)) {
-      //TODO: Handle failed send
+      // Handle failed send
     }
   }
   server_response.tag = TAG_OK;
   server_response.data = "Client quit.";
   if (!info->conn->send(server_response)) {
-    //TODO: Handle failed send
+    // Handle failed send
   }
   delete info->conn;
   free(info);
@@ -206,17 +194,17 @@ void *worker(void *arg) {
 Server::Server(int port)
   : m_port(port)
   , m_ssock(-1) {
-  // TODO: initialize mutex
+  // initialize mutex
   pthread_mutex_init(&this->m_lock, NULL);
 }
 
 Server::~Server() {
-  // TODO: destroy mutex
+  // destroy mutex
   pthread_mutex_destroy(&this->m_lock);
 }
 
 bool Server::listen() {
-  // DONE: use open_listenfd to create the server socket, return true
+  // use open_listenfd to create the server socket, return true
   //       if successful, false if not
   std::string s = std::to_string(m_port);
   const char* pn = s.c_str();
@@ -225,7 +213,7 @@ bool Server::listen() {
 }
 
 void Server::handle_client_requests() {
-  // DONE: infinite loop calling accept or Accept, starting a new
+  // infinite loop calling accept or Accept, starting a new
   //       pthread for each connected client
   while(1) {
     int c_fd = Accept(this->m_ssock, NULL, NULL);
@@ -244,7 +232,7 @@ void Server::handle_client_requests() {
 }
 
 Room *Server::find_or_create_room(const std::string &room_name) {
-  // DONE: return a pointer to the unique Room object representing
+  // return a pointer to the unique Room object representing
   //       the named chat room, creating a new one if necessary
   {
     Guard(this->m_lock);
