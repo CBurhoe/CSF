@@ -48,10 +48,10 @@ void chat_with_sender(void *arg) {
     struct Message new_message;
     struct Message server_response;
     if (!info->conn->receive(new_message)) {
-      std::cerr << "Failed to receive response.\n";
-      if (info->conn->get_last_result() == Connection::EOF_OR_ERROR) {
-        break;
-      }
+//      std::cerr << "Failed to receive response.\n";
+//      if (info->conn->get_last_result() == Connection::EOF_OR_ERROR) {
+//        break;
+//      }
     }
     if (new_message.tag == TAG_JOIN) {
       // register to room
@@ -95,7 +95,7 @@ void chat_with_sender(void *arg) {
       }
     }
     if (!info->conn->send(server_response)) {
-      std::cerr << "Failed to deliver message.\n";
+//      std::cerr << "Failed to deliver message.\n";
     }
   }
 }
@@ -104,14 +104,14 @@ void chat_with_receiver(void *arg) {
   struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
   struct Message new_message;
   if (!info->conn->receive(new_message)) {
-    std::cerr << "Failed to receive response.\n";
+//    std::cerr << "Failed to receive response.\n";
   }
   //FIXME: shouldn't need to check this
   if (new_message.tag != TAG_JOIN) {
     struct Message server_response = Message(TAG_ERR, "Must join room.");
     if (!info->conn->send(server_response)) {
       //TODO: Handle failed send
-      std::cerr << "Failed to deliver message.\n";
+//      std::cerr << "Failed to deliver message.\n";
     }
     return;
   }
@@ -124,7 +124,7 @@ void chat_with_receiver(void *arg) {
   server_response.tag = TAG_OK;
   server_response.data = "Joined room.";
   if (!info->conn->send(server_response)) {
-    std::cerr << "Failed to deliver message.\n";
+//    std::cerr << "Failed to deliver message.\n";
   }
   
   // continuously look for messages
@@ -134,9 +134,9 @@ void chat_with_receiver(void *arg) {
       continue;
     }
     if (!info->conn->send(*new_delivery)) {
-      delete new_delivery;
-      std::cerr << "Failed to deliver message.\n";
-      break;
+//      delete new_delivery;
+//      std::cerr << "Failed to deliver message.\n";
+//      break;
     }
     delete new_delivery;
   }
@@ -171,14 +171,14 @@ void *worker(void *arg) {
     server_response.tag = TAG_OK;
     server_response.data = "Logged in.";
     if (!info->conn->send(server_response)) {
-      std::cerr << "Failed to deliver message.\n";
+//      std::cerr << "Failed to deliver message.\n";
     }
     chat_with_sender(info);
   } else if (login_msg.tag == TAG_RLOGIN) {
     server_response.tag = TAG_OK;
     server_response.data = "Logged in.";
     if (!info->conn->send(server_response)) {
-      std::cerr << "Failed to deliver message.\n";
+//      std::cerr << "Failed to deliver message.\n";
     }
     info->usr->is_receiver = true;
     chat_with_receiver(info);
@@ -186,13 +186,13 @@ void *worker(void *arg) {
     server_response.tag = TAG_ERR;
     server_response.data = "Not logged in";
     if (!info->conn->send(server_response)) {
-      std::cerr << "Failed to deliver message.\n";
+//      std::cerr << "Failed to deliver message.\n";
     }
   }
   server_response.tag = TAG_OK;
   server_response.data = "Client quit.";
   if (!info->conn->send(server_response)) {
-    std::cerr << "Failed to deliver message.\n";
+//    std::cerr << "Failed to deliver message.\n";
   }
   delete info->usr;
   delete info->conn;
