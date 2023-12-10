@@ -43,6 +43,7 @@ namespace {
 
 void chat_with_sender(void *arg) {
   struct ClientInfo *info = static_cast<struct ClientInfo*>(arg);
+  info->in_room = false;
   while(1) {
     struct Message new_message;
     struct Message server_response;
