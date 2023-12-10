@@ -104,8 +104,6 @@ void chat_with_sender(void *arg) {
       std::cerr << "Failed to deliver message.\n";
     }
   }
-  
-  //TODO
 }
 
 void chat_with_receiver(void *arg) {
@@ -143,9 +141,14 @@ void chat_with_receiver(void *arg) {
       continue;
     }
     if (!info->conn->send(*new_delivery)) {
+      delete new_delivery;
       std::cerr << "Failed to deliver message.\n";
+      break;
     }
+    delete new_delivery;
   }
+  
+  info->rm->remove_member(info->usr);
 }
 
 void *worker(void *arg) {
@@ -163,7 +166,7 @@ void *worker(void *arg) {
     // handle failed read
   }
   //from client_util.cpp
-  User new_user(login_msg.data);
+  User new_user = new User(login_msg.data);
   info->usr = &new_user;
   //  depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
@@ -198,6 +201,7 @@ void *worker(void *arg) {
   if (!info->conn->send(server_response)) {
     std::cerr << "Failed to deliver message.\n";
   }
+  delete info->usr;
   delete info->conn;
   free(info);
   return nullptr;
