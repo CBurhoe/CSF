@@ -53,14 +53,14 @@ void chat_with_sender(void *arg) {
       //TODO: register to room
       if (info->in_room) {
         server_response.tag = TAG_ERR;
-        server_response.data = "Must leave current room before joining another.\n";
+        server_response.data = "Must leave current room before joining another.";
       } else {
         Room *room_to_register = info->server->find_or_create_room(new_message.data);
         info->rm = room_to_register;
         room_to_register->add_member(info->usr);
         info->in_room = true;
         server_response.tag = TAG_OK;
-        server_response.data = "Joined room.\n";
+        server_response.data = "Joined room.";
       }
     } else if (new_message.tag == TAG_LEAVE) {
       //TODO: de-register from room
@@ -69,10 +69,10 @@ void chat_with_sender(void *arg) {
         info->rm = NULL;
         info->in_room = false;
         server_response.tag = TAG_OK;
-        server_response.data = "Left room.\n";
+        server_response.data = "Left room.";
       } else {
         server_response.tag = TAG_ERR;
-        server_response.data = "Not in a room.\n";
+        server_response.data = "Not in a room.";
       }
     } else if (new_message.tag == TAG_QUIT) {
       //TODO: tear down thread (client quit)
@@ -81,12 +81,12 @@ void chat_with_sender(void *arg) {
       //TODO: sync and broadcast message to room
       if (!info->in_room) {
         server_response.tag = TAG_ERR;
-        server_response.data = "Must join room before sending messages.\n";
+        server_response.data = "Must join room before sending messages.";
       } else {
         std::string msg = std::string(TAG_DELIVERY) + ":" + new_message.data;
         info->rm->broadcast_message(info->usr->username, msg);
         server_response.tag = TAG_OK;
-        server_response.data = "Message delivered.\n";
+        server_response.data = "Message delivered.";
       }
     }
     if (!info->conn->send(server_response)) {
@@ -105,7 +105,7 @@ void chat_with_receiver(void *arg) {
   }
   //FIXME: shouldn't need to check this
   if (new_message.tag != TAG_JOIN) {
-    struct Message server_response = Message(TAG_ERR, "Must join room.\n");
+    struct Message server_response = Message(TAG_ERR, "Must join room.");
     if (!info->conn->send(server_response)) {
       //TODO: Handle failed send
     }
@@ -117,7 +117,7 @@ void chat_with_receiver(void *arg) {
   info->in_room = true;
   struct Message server_response;
   server_response.tag = TAG_OK;
-  server_response.data = "Joined room.\n";
+  server_response.data = "Joined room.";
   if (!info->conn->send(server_response)) {
     //TODO: Handle failed send
   }
@@ -162,14 +162,14 @@ void *worker(void *arg) {
   
   if (login_msg.tag == TAG_SLOGIN) {
     server_response.tag = TAG_OK;
-    server_response.data = "Logged in\n";
+    server_response.data = "Logged in.";
     if (!info->conn->send(server_response)) {
       //TODO: Handle failed send
     }
     chat_with_sender(info);
   } else if (login_msg.tag == TAG_RLOGIN) {
     server_response.tag = TAG_OK;
-    server_response.data = "Logged in\n";
+    server_response.data = "Logged in.";
     if (!info->conn->send(server_response)) {
       //TODO: Handle failed send
     }
@@ -177,13 +177,13 @@ void *worker(void *arg) {
     chat_with_receiver(info);
   } else {
     server_response.tag = TAG_ERR;
-    server_response.data = "Not logged in\n";
+    server_response.data = "Not logged in";
     if (!info->conn->send(server_response)) {
       //TODO: Handle failed send
     }
   }
   server_response.tag = TAG_OK;
-  server_response.data = "Client quit.\n";
+  server_response.data = "Client quit.";
   if (!info->conn->send(server_response)) {
     //TODO: Handle failed send
   }
