@@ -55,8 +55,8 @@ void chat_with_sender(void *arg) {
         server_response.tag = TAG_ERR;
         server_response.data = "Must leave current room before joining another.";
       } else {
-        size_t end = new_message.data.find_last_not_of(" \n\r\t\f\v");
-        new_message.data = (end == std::string::npos) ? "" : new_message.data.substr(0, end + 1);
+//        size_t end = new_message.data.find_last_not_of(" \n\r\t\f\v");
+//        new_message.data = (end == std::string::npos) ? "" : new_message.data.substr(0, end + 1);
         Room *room_to_register = info->server->find_or_create_room(new_message.data);
         info->rm = room_to_register;
         room_to_register->add_member(info->usr);
@@ -113,8 +113,8 @@ void chat_with_receiver(void *arg) {
     }
     return;
   }
-  size_t end = new_message.data.find_last_not_of(" \n\r\t\f\v");
-  new_message.data = (end == std::string::npos) ? "" : new_message.data.substr(0, end + 1);
+//  size_t end = new_message.data.find_last_not_of(" \n\r\t\f\v");
+//  new_message.data = (end == std::string::npos) ? "" : new_message.data.substr(0, end + 1);
   Room *room_to_register = info->server->find_or_create_room(new_message.data);
   info->rm = room_to_register;
   room_to_register->add_member(info->usr);
@@ -154,8 +154,8 @@ void *worker(void *arg) {
     //TODO: handle failed read
   }
   //from client_util.cpp
-  size_t end = login_msg.data.find_last_not_of(" \n\r\t\f\v");
-  login_msg.data = (end == std::string::npos) ? "" : login_msg.data.substr(0, end + 1);
+//  size_t end = login_msg.data.find_last_not_of(" \n\r\t\f\v");
+//  login_msg.data = (end == std::string::npos) ? "" : login_msg.data.substr(0, end + 1);
   User new_user(login_msg.data);
   info->usr = &new_user;
   // TODO: depending on whether the client logged in as a sender or

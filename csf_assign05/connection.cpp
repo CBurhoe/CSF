@@ -102,6 +102,8 @@ bool Connection::receive(Message &msg) {
   size_t split_on = message_string.find(':');
   msg.tag = message_string.substr(0, split_on);
   msg.data = message_string.substr(split_on + 1);
+  size_t end = msg.data.find_last_not_of(" \n\r\t\f\v");
+  msg.data = (end == std::string::npos) ? "" : msg.data.substr(0, end + 1);
   
   this->m_last_result = SUCCESS;
   return true;
