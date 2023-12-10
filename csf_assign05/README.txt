@@ -19,3 +19,9 @@ The critical sections in my code are in the functions that attempt to change one
  Additionally, semaphores were used with the MessageQueue structure
  as a way to indicate to receivers when a sender has broadcast messages within a room, and when
  those messages were available to be read.
+
+ Since Guard objects are used, locks are guaranteed to be released once
+ out of the scope of a function. Additionally, Guards are invoked such that
+ they will not prevent the proper operation of semaphores in the MessageQueue
+ so that senders are able to notify receivers when messages are available,
+ and receivers are able to see that notification.
