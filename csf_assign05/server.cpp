@@ -166,8 +166,8 @@ void *worker(void *arg) {
     // handle failed read
   }
   //from client_util.cpp
-  User new_user = new User(login_msg.data);
-  info->usr = &new_user;
+  User *new_user = new User(login_msg.data);
+  info->usr = new_user;
   //  depending on whether the client logged in as a sender or
   //       receiver, communicate with the client (implementing
   //       separate helper functions for each of these possibilities
@@ -251,7 +251,7 @@ void Server::handle_client_requests() {
     pthread_t thread_id;
     
     if (pthread_create(&thread_id, NULL, worker, info) != 0) {
-      std::cerr << "Failed to create new client thread.\n"
+      std::cerr << "Failed to create new client thread.\n";
       break;
     }
   }
