@@ -214,8 +214,12 @@ bool Server::listen() {
   //       if successful, false if not
   std::string s = std::to_string(m_port);
   const char* pn = s.c_str();
-  this->m_ssock = Open_listenfd(pn);
-  return (this->m_ssock > 0);
+  this->m_ssock = open_listenfd(pn);
+  if (this->m_ssock < 0) {
+    std::cerr << "Failed to create socket.\n";
+    return false;
+  }
+  return true;
 }
 
 void Server::handle_client_requests() {
@@ -238,7 +242,7 @@ void Server::handle_client_requests() {
 }
 
 Room *Server::find_or_create_room(const std::string &room_name) {
-  // DONE: return a pointer to the unique Room object representing
+  // return a pointer to the unique Room object representing
   //       the named chat room, creating a new one if necessary
   {
     Guard(this->m_lock);

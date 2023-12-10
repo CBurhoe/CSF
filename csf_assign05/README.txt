@@ -12,3 +12,10 @@ The critical sections in my code are in the functions that attempt to change one
  and Room::add_member() and Room::remove_member(). For each of these functions,
  the entire function scope was considered to be a critical section, with the exception
  of MessgaeQueue::dequeue().
+
+ These critical sections were synchronized with the use of mutex locks, which were abstracted
+ by use of the Guard object. Locks prevent multiple threads from accessing a critical section
+ simultaneously, and thus are used to prevent accesses to the shared data structures in this program.
+ Additionally, semaphores were used with the MessageQueue structure
+ as a way to indicate to receivers when a sender has broadcast messages within a room, and when
+ those messages were available to be read.
