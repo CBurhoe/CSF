@@ -238,7 +238,10 @@ void Server::handle_client_requests() {
     
     pthread_t thread_id;
     
-    Pthread_create(&thread_id, NULL, worker, info);
+    if (pthread_create(&thread_id, NULL, worker, info) != 0) {
+      std::cerr << "Failed to create new client thread.\n"
+      break;
+    }
   }
 }
 
