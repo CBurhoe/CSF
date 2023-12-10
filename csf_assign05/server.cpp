@@ -219,13 +219,10 @@ bool Server::listen() {
 }
 
 void Server::handle_client_requests() {
-  // DONE: infinite loop calling accept or Accept, starting a new
+  // infinite loop calling accept or Accept, starting a new
   //       pthread for each connected client
   while(1) {
     int c_fd = Accept(this->m_ssock, NULL, NULL);
-//    if (c_fd < 0) {
-//      std::cerr << "Error accepting client connection.\n";
-//    }
     
     struct ClientInfo *info = static_cast<struct ClientInfo*>(malloc(sizeof(struct ClientInfo)));
     info->conn = new Connection(c_fd);
