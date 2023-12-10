@@ -2,6 +2,7 @@
 #include <ctime>
 #include "message_queue.h"
 #include "csapp.h"
+#include "guard.h"
 
 MessageQueue::MessageQueue() {
   // TODO: initialize the mutex and the semaphore
