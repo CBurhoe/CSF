@@ -48,7 +48,7 @@ Message *MessageQueue::dequeue() {
   
   if (sem_timedwait(&m_avail, &ts) == 0) {
     Guard(this->m_lock);
-    msg =m_messages.front();
+    msg = m_messages.front();
     m_messages.pop_front();
   }
   

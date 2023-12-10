@@ -200,17 +200,17 @@ void *worker(void *arg) {
 Server::Server(int port)
     : m_port(port)
     , m_ssock(-1) {
-  // TODO: initialize mutex
+  // initialize mutex
   pthread_mutex_init(&this->m_lock, NULL);
 }
 
 Server::~Server() {
-  // TODO: destroy mutex
+  // destroy mutex
   pthread_mutex_destroy(&this->m_lock);
 }
 
 bool Server::listen() {
-  // DONE: use open_listenfd to create the server socket, return true
+  // use open_listenfd to create the server socket, return true
   //       if successful, false if not
   std::string s = std::to_string(m_port);
   const char* pn = s.c_str();
