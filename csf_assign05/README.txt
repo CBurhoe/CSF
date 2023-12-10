@@ -11,4 +11,4 @@ The critical sections in my code are in the functions that attempt to change one
  Server::find_or_create_room(), MessageQueue::enqueue() and MessageQueue::dequeue(),
  and Room::add_member() and Room::remove_member(). For each of these functions,
  the entire function scope was considered to be a critical section, with the exception
- of
+ of MessgaeQueue::dequeue().

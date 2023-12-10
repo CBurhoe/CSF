@@ -135,9 +135,11 @@ namespace {
         }
         if (!info->conn->send(*new_delivery)) {
           //TODO: Handle failed send
+          delete new_delivery;
+          break;
         }
+        delete new_delivery;
       }
-      //TODO
     }
     
     void *worker(void *arg) {
@@ -229,9 +231,9 @@ void Server::handle_client_requests() {
   //       pthread for each connected client
   while(1) {
     int c_fd = Accept(this->m_ssock, NULL, NULL);
-    if (c_fd < 0) {
-      std::cerr << "Error accepting client connection.\n";
-    }
+//    if (c_fd < 0) {
+//      std::cerr << "Error accepting client connection.\n";
+//    }
     
     struct ClientInfo *info = static_cast<struct ClientInfo*>(malloc(sizeof(struct ClientInfo)));
     info->conn = new Connection(c_fd);
@@ -239,7 +241,10 @@ void Server::handle_client_requests() {
     
     pthread_t thread_id;
     
-    Pthread_create(&thread_id, NULL, worker, info);
+    if (pthread_create(&thread_id, NULL, worker, info) != 0) {
+      std::cerr << "Failed to create client thread.\n";
+      exit(0);
+    }
   }
 }
 
