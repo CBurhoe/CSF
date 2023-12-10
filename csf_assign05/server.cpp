@@ -244,8 +244,8 @@ Room *Server::find_or_create_room(const std::string &room_name) {
     if (search_rooms != this->m_rooms.end()) {
       return search_rooms.second();
     } else {
-      Room new_room = new Room(room_name);
-      this->m_rooms.insert(std::make_pair(room_name, &new_room));
+      Room *new_room = new Room(room_name);
+      this->m_rooms.insert(std::make_pair(room_name, new_room));
       return &new_room;
     }
   }
