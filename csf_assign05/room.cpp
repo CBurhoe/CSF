@@ -27,10 +27,7 @@ void Room::remove_member(User *user) {
   // TODO: remove User from the room
   {
     Guard(this->lock);
-    auto it = members.find(user);
-    if (it != members.end()) {
-      members.erase(it);
-    }
+    members.erase(user);
   }
 }
 
